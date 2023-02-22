@@ -34,10 +34,10 @@ for i=1:size(filenames, 2)
     
     subplot(4, 4, i);
     hold on;
-    for i=1:numOfPulses
-        plot(pulses{i}(:, signalNumberToPlot)); 
+    for j=1:numOfPulses
+        plot(pulses{j}(:, signalNumberToPlot)); 
     end
-    %title(filenames(i), 'Interpreter', 'none');
+    title(filenames(i), 'Interpreter', 'none');
 end
 
 
