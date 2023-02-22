@@ -1,1 +1,1 @@
-# straighteningMachine
+# StraighteningMachineThesis
