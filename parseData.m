@@ -22,6 +22,8 @@ filenames = [ "B_01_04" "B_02_04" "B_03_04" "B_04_04", "B_05_04" ...
               "B_11_04" "B_12_04" "B_13_04" "B_30_03" "B_31_03" ];
 
 
+figure(); 
+signalNumberToPlot = 5;
 for i=1:size(filenames, 2)
     dataStruct = load(filenames(i) + ".mat");
     dataArray = struct2array(dataStruct);
@@ -29,18 +31,19 @@ for i=1:size(filenames, 2)
     [pulses, flag] = stateDetection(dataArray, threshold);
     
     [~, numOfPulses] = size(pulses);
-    figure; hold on;
-    title(filenames(i), 'Interpreter', 'none');
-    signalNumberToPlot = 5;
+    
+    subplot(4, 4, i);
+    hold on;
     for i=1:numOfPulses
         plot(pulses{i}(:, signalNumberToPlot)); 
     end
+    %title(filenames(i), 'Interpreter', 'none');
 end
 
 
 
 figure();
-signalNumberToPlot = 10;
+signalNumberToPlot = 5;
 for i=1:size(filenames, 2)
     dataStruct = load(filenames(i) + ".mat");
     dataArray = struct2array(dataStruct);
@@ -48,6 +51,7 @@ for i=1:size(filenames, 2)
     [pulses, flag] = stateDetection(dataArray, threshold);
 
     subplot(4, 4, i);
+    hold on;
     plot(cell2mat(dataArray(signalNumberToPlot, 2)));
     plot(flag);
     title(filenames(i), 'Interpreter', 'none');
