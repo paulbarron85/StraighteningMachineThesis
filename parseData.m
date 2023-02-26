@@ -18,6 +18,7 @@ close all
 clear all
 threshold = 600;
 
+% Names of the signals in the data
 SensorName = [  "21:28 Vibration measurements. Incoming material) (mm/s)"...
                 "21:36 Actual force (measured value for the foce) (KN)"...
                 "21:35 Set point force (reference value for the force)  (KN)"...
@@ -36,10 +37,13 @@ filenames = [ "B_01_04" "B_02_04" "B_03_04" "B_04_04", "B_05_04" ...
               "B_06_04" "B_07_04" "B_08_04" "B_09_04" "B_10_04", ...
               "B_11_04" "B_12_04" "B_13_04" "B_30_03" "B_31_03" ];
 
-
+% Loop through the files, load the data the perform the state detection
+% Extract the pulses for each sensor signal based on Signal 20
 figure(); 
 signalNumberToPlot = 5;
-for i=1:size(filenames, 2)
+numOfFiles = size(filenames, 2);
+allPulses = {numOfFiles};
+for i=1:numOfFiles
     dataStruct = load(filenames(i) + ".mat");
     dataArray = struct2array(dataStruct);
 
@@ -52,11 +56,14 @@ for i=1:size(filenames, 2)
     for j=1:numOfPulses
         plot(pulses{j}(:, signalNumberToPlot)); 
     end
+
+    allPulses{i} = pulses;
+
     title(filenames(i), 'Interpreter', 'none');
 end
 
 
-
+% Plot the state detection signal vs Signal 20
 figure();
 signalNumberToPlot = 5;
 for i=1:size(filenames, 2)

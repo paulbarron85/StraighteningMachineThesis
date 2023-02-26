@@ -45,4 +45,6 @@ function [pulses, maskingFunction] = stateDetection(dataArrayLocal, threshold)
         end
         pulses{i} = signalArray;
     end
+
+    % Todo: Add check to see if there are any false pulses
 end
