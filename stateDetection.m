@@ -51,6 +51,8 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
     end
 
     % Todo: Add check to see if there are any false
-
+    for i=1:size(startValues)
+        sprintf("End values: %d Start values: %d Length: %d", endValues(i), startValues(i), endValues(i) - startValues(i))
+    end
     flag = false;
 end
