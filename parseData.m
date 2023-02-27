@@ -79,3 +79,5 @@ for i=1:size(filenames, 2)
     plot(flag);
     title(filenames(i), 'Interpreter', 'none');
 end
+
+pulseTable = cell2table (pulses);
