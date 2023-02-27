@@ -14,9 +14,8 @@ SIGNALS (Ts = 0.02s)
 21:17 Viknlar undervals (Angles under roll) (degrees) 0.02s
 %}
 
-close all
-clear all
-threshold = 600;
+close all; clear;
+threshold = 600; % Threshold for state detection given by company
 
 % Names of the signals in the data
 SensorName = [  "21:28 Vibration measurements. Incoming material) (mm/s)"...
@@ -40,26 +39,28 @@ filenames = [ "B_01_04" "B_02_04" "B_03_04" "B_04_04", "B_05_04" ...
 % Loop through the files, load the data the perform the state detection
 % Extract the pulses for each sensor signal based on Signal 20
 figure(); 
-signalNumberToPlot = 5;
+signalNumberToPlot = 5; % 
 numOfFiles = size(filenames, 2);
 allPulses = {numOfFiles};
 for i=1:numOfFiles
     dataStruct = load(filenames(i) + ".mat");
-    dataArray = struct2array(dataStruct);
+    dataArray = struct2array(dataStruct); 
 
-    [pulses, flag] = stateDetection(dataArray, threshold);
+    %pulses is a 2D array with dimensions (1 * numOfPulses)
+    [pulses, mask, flag] = stateDetection(dataArray, threshold);
     
     [~, numOfPulses] = size(pulses);
     
+    % Plot the etracted signal 20 pulses for this particular files
     subplot(4, 4, i);
     hold on;
     for j=1:numOfPulses
         plot(pulses{j}(:, signalNumberToPlot)); 
     end
-
-    allPulses{i} = pulses;
-
     title(filenames(i), 'Interpreter', 'none');
+
+    % Combine the pulse data for this file with all the others
+    allPulses{i} = pulses;
 end
 
 

@@ -2,24 +2,29 @@
 Description: This function
 Date: 
 Author: Paul Barron
+pulses: numOfPulses x numOfSignals x pulseNumOfSamples
+mask: array of length numOfSamples
 %}
 
-function [pulses, maskingFunction] = stateDetection(dataArrayLocal, threshold)
+function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
     
+    % Extract signal #5 (Signal 20)
     signal20 = dataArrayLocal(5,2);
     signal20 = cell2mat(signal20);
     
-    [dataLength, ~] = size(signal20);
+    % 
+    [fullDataLength, ~] = size(signal20);
     [numOfSignals, ~] = size(dataArrayLocal);
-    x = [1:dataLength];
-    maskingFunction = zeros(1, dataLength);
+    mask = zeros(1, fullDataLength);
     
+    % Loop through the data and record transitions from below 600 to above
+    % and visa versa
     startValues = [];
     endValues = [];
     startLow = false;
-    for i=2:dataLength
+    for i=2:fullDataLength
         if signal20(i) > threshold
-            maskingFunction(i) = threshold;
+            mask(i) = threshold;
         end
 
         if signal20(i) > threshold & signal20(i-1) <= threshold
@@ -32,8 +37,7 @@ function [pulses, maskingFunction] = stateDetection(dataArrayLocal, threshold)
         end
     end
 
-    arraySize = size(startValues);
-    numOfPulses = arraySize(2);
+    [~, numOfPulses] = size(startValues);
     
     pulses = {};
     for i = 1:numOfPulses
@@ -46,5 +50,7 @@ function [pulses, maskingFunction] = stateDetection(dataArrayLocal, threshold)
         pulses{i} = signalArray;
     end
 
-    % Todo: Add check to see if there are any false pulses
+    % Todo: Add check to see if there are any false
+
+    flag = false;
 end
