@@ -56,11 +56,9 @@ for i=1:numOfFiles
     subplot(4, 4, i);
     hold on;
     [~, numOfPulses] = size(pulses);
-    if (numOfPulses > 0)
         for j=1:numOfPulses
             plot(pulses{j}(:, signalNumberToPlot)); 
         end
-    end
     title(filenames(i), 'Interpreter', 'none');
 
 
@@ -72,13 +70,12 @@ for i=1:numOfFiles
         end
     end
     
-    %{
+    % Combine the pulse data for this file with all the others       
     for pulseIndex = 1:numOfPulses
         for columnIndex = 1:12
             Z{totalPulses + pulseIndex}(:,columnIndex) = timetable(pulses{pulseIndex}(:,columnIndex), 'SampleRate', 1/Ts);
         end
     end
-    %}
 
     totalPulses = totalPulses + numOfPulses;
 end
