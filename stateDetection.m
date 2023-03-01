@@ -1,5 +1,5 @@
 %{
-Description: This function
+Description: This function...
 Date: 
 Author: Paul Barron
 pulses: numOfPulses x numOfSignals x pulseNumOfSamples
@@ -13,16 +13,16 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
     signal20 = cell2mat(signal20);
     
     % 
-    [fullDataLength, ~] = size(signal20);
-    [numOfSignals, ~] = size(dataArrayLocal);
-    mask = zeros(1, fullDataLength);
+    [numOfDataSamples, ~] = size(signal20);
+    [numOfSensors, ~] = size(dataArrayLocal);
+    mask = zeros(1, numOfDataSamples);
     
     % Loop through the data and record transitions from below 600 to above
     % and visa versa
     startValues = [];
     endValues = [];
     startLow = false;
-    for i=2:fullDataLength
+    for i=2:numOfDataSamples
         if signal20(i) > threshold
             mask(i) = threshold;
         end
@@ -37,12 +37,12 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
         end
     end
 
+
     [~, numOfPulses] = size(startValues);
-    
     pulses = {};
     for i = 1:numOfPulses
         signalArray = zeros(endValues(i)-startValues(i)+1, 12);
-        for j = 1:numOfSignals
+        for j = 1:numOfSensors
             arrayData = cell2mat(dataArrayLocal(j,2));
             columnToAdd = arrayData( startValues(i):endValues(i) );
             signalArray(:,j) = columnToAdd;
@@ -50,9 +50,15 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
         pulses{i} = signalArray;
     end
 
-    % Todo: Add check to see if there are any false
-    for i=1:size(startValues)
-        sprintf("End values: %d Start values: %d Length: %d", endValues(i), startValues(i), endValues(i) - startValues(i))
+
+    % Check whether we think any of the pulses are not valid
+    pulseLengths = endValues - startValues;
+    flag = false(size(numOfPulses));
+    medianPulseLength = median(pulseLengths);
+    for i = 1:numOfPulses
+        sprintf("Median %d Length: %d", medianPulseLength, pulseLengths(i));
+        if ((pulseLengths(i) > (medianPulseLength * 1.2)) || (pulseLengths(i) < (medianPulseLength * 0.8)))
+            flag(i) = true;
+        end
     end
-    flag = false;
 end
