@@ -6,7 +6,7 @@ pulses: numOfPulses x numOfSignals x pulseNumOfSamples
 mask: array of length numOfSamples
 %}
 
-function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
+function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold)
     
     % Extract signal #5 (Signal 20)
     signal20 = dataArrayLocal(5,2);
@@ -53,11 +53,12 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold)
 
     % Check whether we think any of the pulses are not valid
     pulseLengths = endValues - startValues;
-    flag = false(size(numOfPulses));
+    flag = false(numOfPulses);
     medianPulseLength = median(pulseLengths);
     for i = 1:numOfPulses
         sprintf("Median %d Length: %d", medianPulseLength, pulseLengths(i));
-        if ((pulseLengths(i) > (medianPulseLength * 1.2)) || (pulseLengths(i) < (medianPulseLength * 0.8)))
+        %if ((pulseLengths(i) > (medianPulseLength * 1.2)) || (pulseLengths(i) < (medianPulseLength * 0.8)))
+        if pulseLengths(i) < minPulseTimeThreshold
             flag(i) = true;
         end
     end
