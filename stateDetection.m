@@ -6,10 +6,10 @@ pulses: numOfPulses x numOfSignals x pulseNumOfSamples
 mask: array of length numOfSamples
 %}
 
-function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold)
+function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
     
     % Extract signal #5 (Signal 20)
-    signal20 = dataArrayLocal(5,2);
+    signal20 = dataArrayLocal(signalNumber,2);
     signal20 = cell2mat(signal20);
     
     % 
