@@ -12,7 +12,7 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPul
     signal20 = dataArrayLocal(signalNumber,2);
     signal20 = cell2mat(signal20);
     
-    % 
+    % Extract number of samples and sensors
     [numOfDataSamples, ~] = size(signal20);
     [numOfSensors, ~] = size(dataArrayLocal);
     mask = zeros(1, numOfDataSamples);
