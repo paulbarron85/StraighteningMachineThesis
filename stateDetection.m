@@ -1,12 +1,14 @@
 %{
 Description: This function...
-Date: 
+Date: 2023/03/19
 Author: Paul Barron
 pulses: numOfPulses x numOfSignals x pulseNumOfSamples
-mask: array of length numOfSamples
+mask:   array that is 1 x length (numOfSamples)
+flag:   array that is 1 x numOfPulses, true = number of samples in pulse is
+        less than min threshold to be considred a real pulse
 %}
 
-function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
+function [pulses, mask, flag, maxPulseLength] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
     
     % Extract signal #5 (Signal 20)
     signal20 = dataArrayLocal(signalNumber,2);
@@ -38,7 +40,7 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPul
     end
 
 
-    [~, numOfPulses] = size(startValues);
+    [~, numOfPulses] = size(startValues); % Calculate number of pulses depending on number of positive transitions
     pulses = {};
     for i = 1:numOfPulses
         signalArray = zeros(endValues(i)-startValues(i)+1, 12);
@@ -57,9 +59,13 @@ function [pulses, mask, flag] = stateDetection(dataArrayLocal, threshold, minPul
     medianPulseLength = median(pulseLengths);
     for i = 1:numOfPulses
         sprintf("Median %d Length: %d", medianPulseLength, pulseLengths(i));
-        %if ((pulseLengths(i) > (medianPulseLength * 1.2)) || (pulseLengths(i) < (medianPulseLength * 0.8)))
         if pulseLengths(i) < minPulseTimeThreshold
             flag(i) = true;
         end
     end
+
+    if (size(pulseLengths) <= 0)
+        maxPulseLength = 0;
+    else
+        maxPulseLength = max(pulseLengths);
 end

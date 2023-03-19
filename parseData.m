@@ -33,6 +33,7 @@ sensorNames = [ "21:07 Angle over Rolls (degrees)"...
 pulseThreshold = 600; % Threshold for state detection given by company
 minPulseTimeThreshold = 500; % Samples
 Ts = 0.02; % Sampling interval for data
+subfolder = "Data/";
 filenames = [ "B_01_04" "B_02_04" "B_03_04" "B_04_04", "B_05_04" ...
               "B_06_04" "B_07_04" "B_08_04" "B_09_04" "B_10_04", ...
               "B_11_04" "B_12_04" "B_13_04" "B_30_03" "B_31_03" ];
@@ -40,47 +41,55 @@ filenames = [ "B_01_04" "B_02_04" "B_03_04" "B_04_04", "B_05_04" ...
 % Loop through the files, load the data the perform the state detection
 % Extract the pulses for each sensor signal based on Signal 20
 figure(); 
-signalNumber = 5;
+signalNumberForDetection = 5;
 signalNumberToPlot = 5; % This is signal 21:20
+numOfSensors = 12;
 [~,numOfFiles] = size(filenames);
 mask = {numOfFiles};
 flag = {numOfFiles};
-pulsesInSingleFile = {numOfFiles};
+pulsesData = {numOfFiles};
 rawDataArray = {numOfFiles};
 totalPulses = 1;
 for fileIndex=1:numOfFiles
     % Load the data for the current file
-    rawDataStruct = load(filenames(fileIndex) + ".mat");
+    rawDataStruct = load(subfolder + filenames(fileIndex) + ".mat");
     rawDataArray{fileIndex} = struct2array(rawDataStruct); 
 
     %pulses is a 2D array with dimensions (1 * numOfPulses)
-    [pulsesInSingleFile{fileIndex}, mask{fileIndex}, flag{fileIndex}] = stateDetection(rawDataArray{fileIndex}, pulseThreshold, minPulseTimeThreshold, signalNumber);
+    [pulsesData{fileIndex}, mask{fileIndex}, flag{fileIndex}, maxPulseLengths(fileIndex)] = stateDetection(rawDataArray{fileIndex}, pulseThreshold, minPulseTimeThreshold, signalNumberForDetection);
     
     % Plot the extracted Signal 20 pulses for this particular file
     subplot(4, 4, fileIndex);
     hold on;
     numOfFalsePulses = 0;
     numOfTruePulses = 0;
-    [~, numOfPulses] = size(pulsesInSingleFile{fileIndex});
+    [~, numOfPulses] = size(pulsesData{fileIndex});
     for pulseIndex=1:numOfPulses
-        plot(pulsesInSingleFile{fileIndex}{pulseIndex}(:, signalNumberToPlot)); 
-        if (flag{fileIndex}(pulseIndex) == true)
-            numOfFalsePulses = numOfFalsePulses + 1;
-        else
-            numOfTruePulses = numOfTruePulses + 1;
-        end
+        plot(pulsesData{fileIndex}{pulseIndex}(:, signalNumberToPlot));
     end
     title(filenames(fileIndex), 'Interpreter', 'none');
-    %sprintf("%d: False: %d True: %d", i, numOfFalsePulses, numOfTruePulses)
 
     % Combine the pulse data for this file with all the others    
     for pulseIndex = 1:numOfPulses
-        if flag{fileIndex}(pulseIndex) == false
-            for sensorIndex = 1:12
-                combinedPulseData{totalPulses, sensorIndex} = timetable(pulsesInSingleFile{fileIndex}{pulseIndex}(:, sensorIndex), 'SampleRate', 1/Ts, 'VariableNames', sensorNames(sensorIndex));
+        if flag{fileIndex}(pulseIndex) == false % Only include pulses that aren't marked as potential false ones
+            for sensorIndex = 1:numOfSensors % Add data for each sensor
+                tempData = pulsesData{fileIndex}{pulseIndex}(:, sensorIndex);
+                pulseData_Timetable{totalPulses, sensorIndex} = timetable(tempData, 'SampleRate', 1/Ts, 'VariableNames', sensorNames(sensorIndex));
             end
             totalPulses = totalPulses + 1;
         end
+    end
+end
+
+
+% Pad to the length of longest pulse
+maxPulseLength = max(maxPulseLengths)
+for fileIndex = 1:numOfFiles
+    for pulseIndex = 1:size(pulsesData{fileIndex})
+        temp = pulsesData{fileIndex}{pulseIndex};
+        samplesShort = maxPulseLength - size(temp, 1)
+        temp2 = padarray (temp, samplesShort, 12, "post");
+        size(temp2)
     end
 end
 
