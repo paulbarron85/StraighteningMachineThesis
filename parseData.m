@@ -47,7 +47,7 @@ numOfSensors = 12;
 [~,numOfFiles] = size(filenames);
 mask = {numOfFiles};
 flag = {numOfFiles};
-pulsesData = {numOfFiles};
+pulseData_FunctionOutput = {numOfFiles};
 rawDataArray = {numOfFiles};
 totalPulses = 1;
 for fileIndex=1:numOfFiles
@@ -56,16 +56,16 @@ for fileIndex=1:numOfFiles
     rawDataArray{fileIndex} = struct2array(rawDataStruct); 
 
     %pulses is a 2D array with dimensions (1 * numOfPulses)
-    [pulsesData{fileIndex}, mask{fileIndex}, flag{fileIndex}, maxPulseLengths(fileIndex)] = stateDetection(rawDataArray{fileIndex}, pulseThreshold, minPulseTimeThreshold, signalNumberForDetection);
+    [pulseData_FunctionOutput{fileIndex}, mask{fileIndex}, flag{fileIndex}, maxPulseLengths(fileIndex)] = stateDetection(rawDataArray{fileIndex}, pulseThreshold, minPulseTimeThreshold, signalNumberForDetection);
     
     % Plot the extracted Signal 20 pulses for this particular file
     subplot(4, 4, fileIndex);
     hold on;
     numOfFalsePulses = 0;
     numOfTruePulses = 0;
-    [~, numOfPulses] = size(pulsesData{fileIndex});
+    [~, numOfPulses] = size(pulseData_FunctionOutput{fileIndex});
     for pulseIndex=1:numOfPulses
-        plot(pulsesData{fileIndex}{pulseIndex}(:, signalNumberToPlot));
+        plot(pulseData_FunctionOutput{fileIndex}{pulseIndex}(:, signalNumberToPlot));
     end
     title(filenames(fileIndex), 'Interpreter', 'none');
 
@@ -73,7 +73,7 @@ for fileIndex=1:numOfFiles
     for pulseIndex = 1:numOfPulses
         if flag{fileIndex}(pulseIndex) == false % Only include pulses that aren't marked as potential false ones
             for sensorIndex = 1:numOfSensors % Add data for each sensor
-                tempData = pulsesData{fileIndex}{pulseIndex}(:, sensorIndex);
+                tempData = pulseData_FunctionOutput{fileIndex}{pulseIndex}(:, sensorIndex);
                 pulseData_Timetable{totalPulses, sensorIndex} = timetable(tempData, 'SampleRate', 1/Ts, 'VariableNames', sensorNames(sensorIndex));
             end
             totalPulses = totalPulses + 1;
@@ -81,20 +81,42 @@ for fileIndex=1:numOfFiles
     end
 end
 
-
-% Pad to the length of longest pulse
-maxPulseLength = max(maxPulseLengths)
+%% Pad to the length of longest pulse
+maxPulseLength = max(maxPulseLengths) + 1;
 for fileIndex = 1:numOfFiles
-    for pulseIndex = 1:size(pulsesData{fileIndex})
-        temp = pulsesData{fileIndex}{pulseIndex};
-        samplesShort = maxPulseLength - size(temp, 1)
-        temp2 = padarray (temp, samplesShort, 12, "post");
-        size(temp2)
+    for pulseIndex = 1:size(pulseData_FunctionOutput{fileIndex},2)
+        temp = pulseData_FunctionOutput{fileIndex}{pulseIndex};
+        numSamplesUnderMax = maxPulseLength - size(temp, 1);
+        pulseData_Padded{fileIndex}{pulseIndex} = padarray (temp, numSamplesUnderMax, 12, "post");
+        pulseData_DcRemoved{fileIndex}{pulseIndex} = temp - mean(temp, 1);
     end
 end
 
+%% Combine the data for all padded pulses
+totalPulses = 1;
+for fileIndex=1:numOfFiles
+    for pulseIndex = 1:size(pulseData_FunctionOutput{fileIndex},2)
+        if flag{fileIndex}(pulseIndex) == false % Only include pulses that aren't marked as potential false ones
+            for sensorIndex = 1:numOfSensors % Add data for each sensor
+                tempData = pulseData_Padded{fileIndex}{pulseIndex}(:, sensorIndex);
+                pulseDataPadded_Timetable{totalPulses, sensorIndex} = timetable(tempData, 'SampleRate', 1/Ts, 'VariableNames', sensorNames(sensorIndex));
+            end
+        end
+        totalPulses = totalPulses + 1;
+    end
+end
 
-% Plot the state detection signal vs 21:20 Actual Moment under Rollers
+%% Plot padded data
+figure(); hold on;
+for fileIndex=1:numOfFiles
+    subplot(4, 4, fileIndex); hold on;
+    for pulseIndex = 1:size(pulseData_Padded{fileIndex},2)
+        %plot( pulseData_Padded{fileIndex}{pulseIndex}(:,5) );
+        plot( pulseData_DcRemoved{fileIndex}{pulseIndex}(:,5) );
+    end
+end
+
+%% Plot the state detection signal vs 21:20 Actual Moment under Rollers
 figure();
 for fileIndex=1:numOfFiles
     subplot(4, 4, fileIndex);
