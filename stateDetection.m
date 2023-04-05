@@ -68,4 +68,5 @@ function [pulses, mask, flag, maxPulseLength] = stateDetection(dataArrayLocal, t
         maxPulseLength = 0;
     else
         maxPulseLength = max(pulseLengths);
+    end
 end
