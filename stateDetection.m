@@ -1,11 +1,13 @@
 %{
-Description: This function...
-Date: 2023/03/19
-Author: Paul Barron
-pulses: numOfPulses x numOfSignals x pulseNumOfSamples
-mask:   array that is 1 x length (numOfSamples)
-flag:   array that is 1 x numOfPulses, true = number of samples in pulse is
-        less than min threshold to be considred a real pulse
+    Description: This function...
+    Date: 2023/03/19
+    Author: Paul Barron
+    pulses: numOfPulses x numOfSignals x pulseNumOfSamples
+    mask:   array that is 1 x length (numOfSamples)
+    flag:   array that is 1 x numOfPulses, true = number of samples in pulse is
+            less than min threshold to be considred a real pulse
+    maxPulseLength: integer for the max number of samples in the longest
+    pulse
 %}
 
 function [pulses, mask, flag, maxPulseLength] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
