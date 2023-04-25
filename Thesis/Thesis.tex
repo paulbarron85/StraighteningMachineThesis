@@ -1,5 +1,12 @@
 \documentclass{article}
 \usepackage{cite}
+
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+
+\usepackage{graphicx}
+\graphicspath{ {../} }
+
 \title{My first document}
 \date{2013-09-01}
 \author{John Doe}
@@ -24,32 +31,41 @@
 
   \newpage  
   \section{Methodology}
-  \subsection{Features}
-  \subsubsection{Time Domain}
+  \subsection{Time Domain Features}
+  Features in the time domain.
   \subsubsection{Mean}
+  $$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
   \subsubsection{Standard Deviation}  
-  \[ x^n + y^n = z^n \]
   $$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
-  \subsubsection{Root Mean Square (RMS)}  
-  \subsubsection{Signal to Noise Ratio (SNR)} 
-  \subsubsection{SIgnal-to-Noise And Distortion (SINAD)} 
-  \subsubsection{Peak Value} 
+  \subsubsection{Root Mean Square (RMS)}
+  $$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
+  \subsubsection{Peak Value}
+  $$ PV = max(x_i) $$ 
   \subsubsection{Shape Factor} 
+  $$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
   \subsubsection{Impulse Factor} 
+  $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
   \subsubsection{Kurtosis} 
+  $$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
   \subsubsection{Skewness} 
+  $$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
   \subsubsection{Crest Factor} 
+  $$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
   \subsubsection{Clearance Factor} 
+  $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
+  \subsubsection{Signal to Noise Ratio (SNR)} 
+  \subsubsection{Signal-to-Noise And Distortion (SINAD)} 
   \subsubsection{Total Harmonic Distortion (THD)}   
 
-  \newpage 
-  \subsubsection{Frequency Domain}
+  \subsubsection{Frequency Domain Features}
+  Features in the frequency domain.
   \subsubsection{Band Power}
   \subsubsection{Peak Amplitude}
   \subsubsection{Peak Frequency}
 
   \newpage  
   \section{Results}
+  \includegraphics[scale=1.5]{nodeX}
 
   \newpage  
   \section{Conclusion}
