@@ -4,81 +4,117 @@
 \usepackage{titlesec}
 \setcounter{secnumdepth}{4}
 
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+%% the following commands are needed for some matlab2tikz features
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
+\usepackage{grffile}
+\usepackage{amsmath}
+
 \usepackage{graphicx}
 \graphicspath{ {../} }
 
-\title{My first document}
-\date{2013-09-01}
-\author{John Doe}
+\title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
+\date{2023-XX-XX}
+\author{Paul Barron}
 \begin{document}
-  \pagenumbering{gobble}
-  \maketitle
-  \newpage
-  \pagenumbering{arabic}
-  \tableofcontents
-  \newpage
-  \section{Abstract}
+\pagenumbering{gobble}
+\maketitle
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+\newpage
+\section{Abstract}
+ 
+\newpage
+\section{Introduction}
+
+Understand what signals are related to each other
+Understand signals from a statistical point of view
+Identify which features are the important ones and which are not of interest
+
+\newpage  
+\section{Literature Review}
+Condition monitoring.\\
+Reference ~\cite{caesarendra2017review}.\\
+Reference ~\cite{james2013introduction}.\\
+Reference ~\cite{soualhi2021novel}.
+
+\newpage  
+\section{Methodology}
+Features.
+Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
+Calculate features of the different signals, i.e., correlations between raw signals, kurtosis, mean, skewness, …,
+Verify features which are extracted from the diagnostic feature extraction toolbox, i.e., what it is kurtosis, THD,… for the toolbox. You can compare the results given by the matlab function and the toolbox. Important to look at the formula which is given on the help description of the function. Ongoing
+Compute correlations between 2 features.
+Calculate a in X1 = aX2, where X1 and X2 represents the features.
+Calculate R2, which relates to the variance in linear regression models.
+Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
+Compute a multivariable regression model.
+Guide yourself by eliminating features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
+
+\subsection{Pre processing (state detection)}
+\subsection{feature extraction}
+\subsection{statistical analysis}  
+ 
+\subsection{Time Domain Features} 	
+Features in the time domain.
+\subsection{Statistical Features}
+\subsubsection{Mean}
+$$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
+\subsubsection{Standard Deviation}  
+$$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
+\subsubsection{Root Mean Square (RMS)}
+$$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
+\subsubsection{Shape Factor}
+$$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
+\subsubsection{Kurtosis} 
+$$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
+\subsubsection{Skewness} 
+$$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
   
+\subsection{Impulsive Metrics}  
+\subsubsection{Peak Value}
+$$ PV = max(x_i) $$ 
+\subsubsection{Impulse Factor} 
+$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
+\subsubsection{Crest Factor} 
+$$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
+\subsubsection{Clearance Factor} 
+$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
   
-  \newpage
-  \section{Introduction}
-  Hello World!
+\subsubsection{Signal Processing Metrics}
+\subsubsection{Signal to Noise Ratio (SNR)} 
+\subsubsection{Signal-to-Noise And Distortion (SINAD)} 
+\subsubsection{Total Harmonic Distortion (THD)}   
 
-  \newpage  
-  \section{Literature Review}
-  Blablabla said Nobody ~\cite{caesarendra2017review}.\\
-  Blablabla said Nobody ~\cite{soualhi2021novel}.
+\subsubsection{Frequency Domain Features}
+Features in the frequency domain.
+\subsubsection{Band Power}
+\subsubsection{Peak Amplitude}
+\subsubsection{Peak Frequency}
 
-  \newpage  
-  \section{Methodology}
-  \subsection{Time Domain Features}
-  Features in the time domain.
-  \subsubsection{Mean}
-  $$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
-  \subsubsection{Standard Deviation}  
-  $$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
-  \subsubsection{Root Mean Square (RMS)}
-  $$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
-  \subsubsection{Peak Value}
-  $$ PV = max(x_i) $$ 
-  \subsubsection{Shape Factor} 
-  $$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
-  \subsubsection{Impulse Factor} 
-  $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
-  \subsubsection{Kurtosis} 
-  $$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
-  \subsubsection{Skewness} 
-  $$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
-  \subsubsection{Crest Factor} 
-  $$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
-  \subsubsection{Clearance Factor} 
-  $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
-  \subsubsection{Signal to Noise Ratio (SNR)} 
-  \subsubsection{Signal-to-Noise And Distortion (SINAD)} 
-  \subsubsection{Total Harmonic Distortion (THD)}   
+\newpage  
+\section{Results}
+%\includegraphics[scale=1.5]{TestFigure.fig}
+%\input{myfile.tex}
+%\input{myfile2.tex}
 
-  \subsubsection{Frequency Domain Features}
-  Features in the frequency domain.
-  \subsubsection{Band Power}
-  \subsubsection{Peak Amplitude}
-  \subsubsection{Peak Frequency}
+\newpage  
+\section{Conclusion}
 
-  \newpage  
-  \section{Results}
-  \includegraphics[scale=1.5]{nodeX}
+\newpage 
+\section{Discussion} 
 
-  \newpage  
-  \section{Conclusion}
+\newpage  
+\section{References} 
+\bibliography{References}
+\bibliographystyle{plain} 
 
-  \newpage 
-  \section{Discussion} 
-
-  \newpage  
-  \section{References} 
-  \bibliography{References}
-  \bibliographystyle{plain} 
-
-  \newpage  
-  \section{Appendix A}
+\newpage  
+\section{Appendix A}
 
 \end{document}
