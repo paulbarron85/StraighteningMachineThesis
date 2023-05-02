@@ -4,18 +4,10 @@
 \usepackage{titlesec}
 \setcounter{secnumdepth}{4}
 
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=newest}
-%% the following commands are needed for some matlab2tikz features
-\usetikzlibrary{plotmarks}
-\usetikzlibrary{arrows.meta}
-\usepgfplotslibrary{patchplots}
-\usepackage{grffile}
 \usepackage{amsmath}
 
 \usepackage{graphicx}
-\graphicspath{ {../} }
+\graphicspath{{./figures/}}
 
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
 \date{2023-XX-XX}
@@ -57,8 +49,13 @@ Compute a multivariable regression model.
 Guide yourself by eliminating features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 
 \subsection{Pre processing (state detection)}
-\subsection{feature extraction}
-\subsection{statistical analysis}  
+The state detection for this application will be performed using one signal in particular, 
+
+\subsection{Feature Extraction}
+
+
+\subsection{Statistical analysis}  
+
  
 \subsection{Time Domain Features} 	
 Features in the time domain.
@@ -99,9 +96,14 @@ Features in the frequency domain.
 
 \newpage  
 \section{Results}
-%\includegraphics[scale=1.5]{TestFigure.fig}
-%\input{myfile.tex}
-%\input{myfile2.tex}
+Figure \ref{fig:StateDetection} shows the pulses that were identified for from each file. Two files contained no identified pulses. In total 240(?) pulses were identified to extract features from in the next stage.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics{figures/StateDetectionFig.eps}
+    \caption{State detection signal vs 21:20 Actual moment under Rollers}
+    \label{fig:StateDetection}
+\end{figure}
 
 \newpage  
 \section{Conclusion}
