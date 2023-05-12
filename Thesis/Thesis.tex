@@ -37,14 +37,15 @@ Reference ~\cite{soualhi2021novel}.
 
 \newpage  
 \section{Methodology}
-Features.
 Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
 Calculate features of the different signals, i.e., correlations between raw signals, kurtosis, mean, skewness, …,
-Verify features which are extracted from the diagnostic feature extraction toolbox, i.e., what it is kurtosis, THD,… for the toolbox. You can compare the results given by the matlab function and the toolbox. Important to look at the formula which is given on the help description of the function. Ongoing
+Verify features which are extracted from the diagnostic feature extraction toolbox, i.e., what it is kurtosis, THD,… for the toolbox. You can compare the results given by the matlab function and the toolbox. Important to look at the formula which is given on the help description of the function.
+
 Compute correlations between 2 features.
 Calculate a in X1 = aX2, where X1 and X2 represents the features.
 Calculate R2, which relates to the variance in linear regression models.
 Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
+
 Compute a multivariable regression model.
 Guide yourself by eliminating features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 
@@ -54,8 +55,9 @@ The state detection for this application will be performed using one signal in p
 \subsection{Feature Extraction}
 
 
-\subsection{Statistical analysis}  
-
+\subsection{Statistical analysis}
+$$ AIC = 2k - 2Ln(L) $$  
+$$ nAIC = log $$
  
 \subsection{Time Domain Features} 	
 Features in the time domain.
