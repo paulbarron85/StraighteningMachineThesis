@@ -1,4 +1,5 @@
-load("DFD_FeaturesAll.mat");
+%load("DFD_FeaturesAll.mat");
+load("DFD_FeaturesAll_DcRemoved.mat");
 
 % Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07
 signalName = [  

@@ -10,7 +10,7 @@
     pulse
 %}
 
-function [pulses, mask, flag, maxPulseLength] = stateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
+function [pulses, mask, flag, maxPulseLength] = fnStateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
     
     % Extract signal #5 (Signal 20)
     signal20 = dataArrayLocal(signalNumber,2);
