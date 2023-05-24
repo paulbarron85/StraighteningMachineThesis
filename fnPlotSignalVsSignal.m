@@ -1,4 +1,4 @@
-function [R2] = fnPlotSignalVsSignal(featureIndex, FeaturesAll, featureNames, signalName, sensorNames)
+function [R2] = fnPlotSignalVsSignal(lowerBound, upperBound, featureIndex, FeaturesAll, featureNames, signalName, sensorNames)
     figure();
     t = tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');
     title(t, "Feature " + featureIndex + ": " + featureNames(featureIndex) );
@@ -22,7 +22,7 @@ function [R2] = fnPlotSignalVsSignal(featureIndex, FeaturesAll, featureNames, si
 
                 DataX = interp1( [0 1], xlim(), 0.5 );
                 DataY = interp1( [0 1], ylim(), 0.5 );
-                if R2(signalIndex1, signalIndex2) > 0.3
+                if R2(signalIndex1, signalIndex2) > lowerBound && R2(signalIndex1, signalIndex2) < upperBound
                     text(DataX, DataY, num2str(R2(signalIndex1, signalIndex2), 2), 'HorizontalAlignment','center');
                 end
             end

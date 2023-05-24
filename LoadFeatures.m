@@ -1,8 +1,8 @@
-%load("DFD_FeaturesAll.mat");
+load("DFD_FeaturesAll.mat");
 load("DFD_FeaturesAll_DcRemoved.mat");
 
 % Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07
-signalName = [  
+signalNames = [  
                 "TimeTable_sigstats/"...
                 "TimeTable1_sigstats/"...
                 "TimeTable2_sigstats/"...
@@ -38,7 +38,7 @@ numOfFeatures = size(featureNames, 2);
 load("DFD_Features_FrequencyDomain.mat");
 
 % Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07
-signalName_Freq = [  
+signalNames_Freq = [  
                 "TimeTable_ps_spec/"...
                 "TimeTable1_ps_spec/"...
                 "TimeTable2_ps_spec/"...
@@ -52,7 +52,7 @@ signalName_Freq = [
                 "TimeTable10_ps_spec/"...
                 "TimeTable11_ps_spec/"
               ];
-numOfSignals = size(signalName, 2);
+numOfSignals = size(signalNames, 2);
 
 % Time domain features produced by Matlab DFD
 featureNames_Freq = [
