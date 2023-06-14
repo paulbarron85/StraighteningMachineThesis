@@ -30,11 +30,15 @@ Identify which features are the important ones and which are not of interest
 
 \newpage  
 \section{Literature Review}
+\subsection{Condition Monitoring)}
 Condition monitoring.\\
 Reference ~\cite{caesarendra2017review}.\\
 Reference ~\cite{james2013introduction}.\\
 Reference ~\cite{soualhi2021novel}.
-
+"We tend to select statistical learning methods on the basis of whether
+the response is quantitative or qualitative; i.e. we might use linear regression
+when quantitative and logistic regression when qualitative." From textbook.
+\subsection{Straightening Machine)}
 \newpage  
 \section{Methodology}
 Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
@@ -49,16 +53,26 @@ Plot some of the regression models between 2 features which are highly correlate
 Compute a multivariable regression model.
 Guide yourself by eliminating features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 
-\subsection{Pre processing (state detection)}
-The state detection for this application will be performed using one signal in particular, 
-
+\subsection{Description of Data}
+The data used for this analysis consists of an hour of operational data for 15 days. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics{figures/SignalTrace21.07.png}
+    \caption{SignalTrace21.07}
+    \label{fig:SignalTrace21.07}
+\end{figure}
+\subsection{Pre-processing sand State detection}
+The state detection for this application will be performed using one signal in particular./n
+Discuss how many pulses were identified and how many were ruled out by being too short./n
+Some of the files contained no pulses at all, B\_30\_03 and B\_04\_04, which means they contribute nothing to this analysis.
+Of the remaining 13(?) files 240 pulses were identified using script/function xx./n
+When looking at these 240 pulses a number of them are too short and deemed to be false pulses so a threshold of XXs is used to only retain pulses that we think are legitimate pulses.
+If we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
 \subsection{Feature Extraction}
-
-
+Blah
 \subsection{Statistical analysis}
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC = log $$
- 
 \subsection{Time Domain Features} 	
 Features in the time domain.
 \subsection{Statistical Features}
@@ -99,18 +113,34 @@ Features in the frequency domain.
 
 \newpage  
 \section{Results}
+Add some plots from the DFD of all pulses and comment on the shape of them all.
+Signal 21.07 Angle over Rolls and 21.XX, 21.31, etc are fairly unexciting. They are just straight lines.
+Where as signal XX.XX contains a lot of information.
+
+21.35 is a constant signal so when we remove the mean all signals are exactly the same.
+
 Figure \ref{fig:StateDetection} shows the pulses that were identified for from each file. Two files contained no identified pulses. In total 240(?) pulses were identified to extract features from in the next stage.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \includegraphics{figures/StateDetectionFig.eps}
     \caption{State detection signal vs 21:20 Actual moment under Rollers}
     \label{fig:StateDetection}
 \end{figure}
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics{figures/IdentifiedPulsesFig.eps}
+    \caption{XXX}
+    \label{fig:IdentifiedPulses}
+\end{figure}
+
 \newpage  
 \section{Conclusion}
-
+- We are doing inference and not prediciton
+- One conlcusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10%)".
+- Another conclusion could be that we need to go forward to doing this and that.
+- Conclusion could be what we say to the company or what we need.
 \newpage 
 \section{Discussion} 
 
