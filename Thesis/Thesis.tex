@@ -5,7 +5,7 @@
 \setcounter{secnumdepth}{4}
 
 \usepackage{amsmath}
-
+\usepackage{caption}
 \usepackage{graphicx}
 \graphicspath{{./figures/}}
 
@@ -30,15 +30,14 @@ Identify which features are the important ones and which are not of interest
 
 \newpage  
 \section{Literature Review}
-\subsection{Condition Monitoring)}
+\subsection{Condition Monitoring}
 Condition monitoring.\\
 Reference ~\cite{caesarendra2017review}.\\
 Reference ~\cite{james2013introduction}.\\
 Reference ~\cite{soualhi2021novel}.
 "We tend to select statistical learning methods on the basis of whether
-the response is quantitative or qualitative; i.e. we might use linear regression
-when quantitative and logistic regression when qualitative." From textbook.
-\subsection{Straightening Machine)}
+the response is quantitative or qualitative; i.e. we might use linear regression when quantitative and logistic regression when qualitative." From textbook.
+\subsection{Straightening Machine}
 \newpage  
 \section{Methodology}
 Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
@@ -55,17 +54,76 @@ Guide yourself by eliminating features which are highly correlated between each 
 
 \subsection{Description of Data}
 The data used for this analysis consists of an hour of operational data for 15 days. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.
-
+The file names are given in \ref{fileNames}.
 \begin{center}
-\begin{tabular}{ |c|c|c| }
+\begin{tabular}{ |l| } 
  \hline
- cell1 & cell2 & cell3 \\ 
+ B\_30\_03.mat \\
+ \hline 
+ B\_31\_03.mat \\
+ \hline 
+ B\_01\_04.mat \\
+ \hline 
+ B\_02\_04.mat \\
  \hline
- cell4 & cell5 & cell6 \\  
+ B\_03\_04.mat \\
+ \hline 
+ B\_04\_04.mat \\
+ \hline 
+ B\_05\_04.mat \\
  \hline
- cell7 & cell8 & cell9  \\
+ B\_06\_04.mat \\
+ \hline 
+ B\_07\_04.mat \\
+ \hline 
+ B\_08\_04.mat \\
+ \hline 
+ B\_09\_04.mat \\
+ \hline 
+ B\_10\_04.mat \\
+ \hline
+ B\_11\_04.mat \\
+ \hline 
+ B\_12\_04.mat \\
+ \hline
+ B\_13\_04.mat \\
  \hline
 \end{tabular}
+\captionof{table}{File names which indicate the day the data was taken}\label{fileNames}
+\end{center}
+
+The list of signals given be the company are given in Table \ref{signalNames}.
+\begin{center}
+\begin{tabular}{ |c|l| }
+ \hline
+ Signal Number & Signal Name \\ 
+ \hline
+21:07 & Angle over Rolls (degrees) \\
+ \hline
+21:10 & Position over Rolls (mm) \\
+ \hline
+21:12 & Actual moment over Rolls (Nm) \\
+ \hline
+21:17 & Angle under roll (degrees) \\
+ \hline
+21:20 & Actual moment under Rolls (Nm) \\
+ \hline
+21:28 & Vibration measurements (mm per s) \\ 
+ \hline              
+21:31 & Width position (mm) \\
+ \hline
+21:32 & Height position (mm) \\
+ \hline
+21:33 & Error position for height (mm) \\
+ \hline
+21:34 & Error position for the width (mm) \\
+ \hline
+21:35 & Set point force (KN) \\
+ \hline
+21:36 & Actual force (KN) \\
+ \hline
+\end{tabular}
+\captionof{table}{Signal Names}\label{signalNames}
 \end{center}
 
 Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
