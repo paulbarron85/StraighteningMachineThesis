@@ -1,12 +1,10 @@
 \documentclass{article}
 \usepackage{cite}
-
 \usepackage{titlesec}
-\setcounter{secnumdepth}{4}
-
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{graphicx}
+\setcounter{secnumdepth}{4}
 \graphicspath{{./figures/}}
 
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
@@ -20,14 +18,15 @@
 \tableofcontents
 \newpage
 \section{Abstract}
- 
+Large large machinery is expensive to run and downtime can be very costly. There is a large area of work dedicated to analyzing the health of a machine, predicting the remaining life and time to failure.
 \newpage
 \section{Introduction}
-
-Understand what signals are related to each other
-Understand signals from a statistical point of view
-Identify which features are the important ones and which are not of interest
-
+The aims of this project are to:
+\begin{itemize}
+\item Understand what signals are related to each other
+\item Understand signals from a statistical point of view
+\item Identify which features are the important ones and which are not of interest
+\end{itemize}
 \newpage  
 \section{Literature Review}
 \subsection{Condition Monitoring}
@@ -131,7 +130,7 @@ Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.20.png}
-    \caption{SignalTrace21.20}
+    \caption{Signal Trace 21.20}
     \label{fig:SignalTrace21.20}
 \end{figure}
 
@@ -139,7 +138,7 @@ Figure \ref{fig:SignalTrace21.12} shows ...
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.12.png}
-    \caption{SignalTrace21.12}
+    \caption{Signal Trace 21.12}
     \label{fig:SignalTrace21.12}
 \end{figure}
 
@@ -147,7 +146,7 @@ Figure \ref{fig:SignalTrace21.28} shows ...
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.28.png}
-    \caption{SignalTrace21.28}
+    \caption{Signal Trace 21.28}
     \label{fig:SignalTrace21.28}
 \end{figure}
 
@@ -155,16 +154,18 @@ Figure \ref{fig:SignalTrace21.35} shows ...
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.35.png}
-    \caption{SignalTrace21.35}
+    \caption{Signal Trace 21.35}
     \label{fig:SignalTrace21.35}
 \end{figure}
 \subsection{Pre-processing sand State detection}
-The state detection for this application will be performed using one signal in particular./n
+The state detection for this application is performed using one signal in particular./n
 Discuss how many pulses were identified and how many were ruled out by being too short./n
 Some of the files contained no pulses at all, B\_30\_03 and B\_04\_04, which means they contribute nothing to this analysis.
 Of the remaining 13(?) files 240 pulses were identified using script/function xx./n
 When looking at these 240 pulses a number of them are too short and deemed to be false pulses so a threshold of XXs is used to only retain pulses that we think are legitimate pulses.
 If we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
+
+Talk about how the data could further classified into different pipe widths.
 \subsection{Feature Extraction}
 There are a number of features that can be extracted from data 
 \subsection{Statistical analysis}
@@ -195,7 +196,7 @@ $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$
 $$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
 \subsubsection{Clearance Factor} 
 $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
-  
+
 \subsubsection{Signal Processing Metrics}
 \subsubsection{Signal to Noise Ratio (SNR)} 
 \subsubsection{Signal-to-Noise And Distortion (SINAD)} 
@@ -216,13 +217,26 @@ Where as signal XX.XX contains a lot of information.
 
 21.35 is a constant signal so when we remove the mean all signals are exactly the same.
 
-Figure \ref{fig:StateDetection} shows the pulses that were identified for from each file. Two files contained no identified pulses. In total 240(?) pulses were identified to extract features from in the next stage.
+\subsubsection{Correlation}
+Before attempting to extract signal features an analysis of the raw signals was performed using correlation.\\
+\input{tables/correlationTable.tex}    
+\subsubsection{Feature Extraction}
+Figure \ref{fig:StateDetection} shows the pulses that were identified for from each file. Two files contained no identified pulses. In total 240 pulses were identified to extract features from in the next stage.
+
+Some of these identified pulses were believed to be false positives and too short to use in the in further analysis. Thus any pulse under 500 samples was removed from the data for the next stage leaving 2
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig.eps}
     \caption{State detection signal vs 21:20 Actual moment under Rollers}
     \label{fig:StateDetection}
+\end{figure}
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig_B_02_04.eps}
+    \caption{XXX}
+    \label{fig:StateDetectionFig_B_02_04}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -239,6 +253,9 @@ Figure \ref{fig:StateDetection} shows the pulses that were identified for from e
 - Another conclusion could be that we need to go forward to doing this and that.
 - Conclusion could be what we say to the company or what we need.
 - Would temperature of something be good to monitor?
+
+Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due
+to the natural wear of the system.
 \newpage 
 \section{Discussion} 
 
@@ -248,6 +265,6 @@ Figure \ref{fig:StateDetection} shows the pulses that were identified for from e
 \bibliographystyle{plain} 
 
 \newpage  
-\section{Appendix A}
+\section{Appendix A - MATLAB Code}
 
 \end{document}
