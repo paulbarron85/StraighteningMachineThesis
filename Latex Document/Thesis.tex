@@ -4,9 +4,10 @@
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{graphicx}
+\usepackage{float}
 \setcounter{secnumdepth}{4}
 \graphicspath{{./figures/}}
-
+\allowdisplaybreaks
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
 \date{2023-XX-XX}
 \author{Paul Barron}
@@ -157,6 +158,11 @@ Figure \ref{fig:SignalTrace21.35} shows ...
     \caption{Signal Trace 21.35}
     \label{fig:SignalTrace21.35}
 \end{figure}
+\subsection{Coefficient of Determination, R-squared}
+\begin{align*}
+ R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
+ &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
+\end{align*}
 \subsection{Pre-processing sand State detection}
 The state detection for this application is performed using one signal in particular./n
 Discuss how many pulses were identified and how many were ruled out by being too short./n
@@ -214,13 +220,40 @@ Features in the frequency domain.
 Add some plots from the DFD of all pulses and comment on the shape of them all.
 Signal 21.07 Angle over Rolls and 21.XX, 21.31, etc are fairly unexciting. They are just straight lines.
 Where as signal XX.XX contains a lot of information.
-
 21.35 is a constant signal so when we remove the mean all signals are exactly the same.
-
-\subsubsection{Correlation}
-Before attempting to extract signal features an analysis of the raw signals was performed using correlation.\\
+Figure \ref{fig:RawSignalCorrelationsFile1}
+\subsection{Correlation}
+An analysis of the raw signals was performed using R2 correlation. Table \ref{correlationTable} shows stuff.
+\begin{center}
 \input{tables/correlationTable.tex}    
-\subsubsection{Feature Extraction}
+\captionof{table}{R2 values for each signal vs. each other signal}
+\label{correlationTable}
+\end{center}
+
+Figure \ref{fig:RawSignalCorrelationsFile1} is highly linear and from Table \ref{correlationTable} has an R2 correlation value of 0.99. This means that there is not much value to be gained by including bother of these signals and likely one can be exluded from analysis.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
+    \caption{????}
+    \label{fig:RawSignalCorrelationsFile1}
+\end{figure}
+
+Figure \ref{fig:RawSignalCorrelationsFile1} is somewhat linear and from Table \ref{correlationTable} has an R2 correlation value of 0.88.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_12vSignal21_20.eps}
+    \caption{????}
+    \label{fig:Signal21_12vSignal21_20}
+\end{figure}	
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_20vSignal21_28.eps}
+    \caption{????}
+    \label{fig:Signal21_20vSignal21_28}
+\end{figure}	
+	
+\subsection{Feature Extraction}
 Figure \ref{fig:StateDetection} shows the pulses that were identified for from each file. Two files contained no identified pulses. In total 240 pulses were identified to extract features from in the next stage.
 
 Some of these identified pulses were believed to be false positives and too short to use in the in further analysis. Thus any pulse under 500 samples was removed from the data for the next stage leaving 2
@@ -256,10 +289,10 @@ Some of these identified pulses were believed to be false positives and too shor
 
 Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due
 to the natural wear of the system.
-\newpage 
+\pagebreak
 \section{Discussion} 
 
-\newpage  
+\pagebreak
 \section{References} 
 \bibliography{References}
 \bibliographystyle{plain} 
