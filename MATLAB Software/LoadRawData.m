@@ -1,5 +1,9 @@
 %{
-    SIGNALS (Ts = 0.02s)
+    Load the filenames and sensor names to use in other scripts
+%}
+
+%{   
+    Full names of the signals coming from the company
     1 21:28 Vibrationsmätn. Inkommande material (Vibration measurements. Incoming material) (mm/s) (0.02s)
     2 21:36 Actual force (measured value for the foce) (KN) (0.02s)
     3 21:35 Set point force (reference value for the force)  (KN) (0.02s)
@@ -33,7 +37,8 @@ sensorNames = [ "21:07 Angle over Rolls (degrees)"...
 numOfSignals = size(sensorNames, 2);
 
 Ts = 0.02; % Sampling interval for data
-subfolder = "Data/";
+dataSubfolder = "../SMT_data_20220520/";
+
 filenames = [ "B_30_03" "B_31_03" "B_01_04" "B_02_04" ...
               "B_03_04" "B_04_04" "B_05_04" "B_06_04" ...
               "B_07_04" "B_08_04" "B_09_04" "B_10_04" ...

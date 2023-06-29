@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{cite}
 \usepackage{titlesec}
 \usepackage{amsmath}
@@ -28,17 +29,17 @@ The aims of this project are to:
 \item Understand signals from a statistical point of view
 \item Identify which features are the important ones and which are not of interest
 \end{itemize}
-\newpage  
+\clearpage  
 \section{Literature Review}
 \subsection{Condition Monitoring}
-Condition monitoring.\\
 Reference ~\cite{caesarendra2017review}.\\
 Reference ~\cite{james2013introduction}.\\
 Reference ~\cite{soualhi2021novel}.
 "We tend to select statistical learning methods on the basis of whether
 the response is quantitative or qualitative; i.e. we might use linear regression when quantitative and logistic regression when qualitative." From textbook.
+\subsection{Bearing Vibration Analysis?}
 \subsection{Straightening Machine}
-\newpage  
+\clearpage 
 \section{Methodology}
 Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
 Calculate features of the different signals, i.e., correlations between raw signals, kurtosis, mean, skewness, …,
@@ -98,17 +99,17 @@ The list of signals given be the company are given in Table \ref{signalNames}.
  \hline
  Signal Number & Signal Name \\ 
  \hline
-21:07 & Angle over Rolls (degrees) \\
+21:07 & Angle over Rolls (deg) \\
  \hline
 21:10 & Position over Rolls (mm) \\
  \hline
 21:12 & Actual moment over Rolls (Nm) \\
  \hline
-21:17 & Angle under roll (degrees) \\
+21:17 & Angle under roll (deg) \\
  \hline
 21:20 & Actual moment under Rolls (Nm) \\
  \hline
-21:28 & Vibration measurements (mm per s) \\ 
+21:28 & Vibration measurements (mm/s) \\ 
  \hline              
 21:31 & Width position (mm) \\
  \hline
@@ -118,17 +119,16 @@ The list of signals given be the company are given in Table \ref{signalNames}.
  \hline
 21:34 & Error position for the width (mm) \\
  \hline
-21:35 & Set point force (KN) \\
+21:35 & Set point force (kN) \\
  \hline
-21:36 & Actual force (KN) \\
+21:36 & Actual force (kN) \\
  \hline
 \end{tabular}
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
 
 Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
-
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.20.png}
     \caption{Signal Trace 21.20}
@@ -136,7 +136,7 @@ Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
 \end{figure}
 
 Figure \ref{fig:SignalTrace21.12} shows ...
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.12.png}
     \caption{Signal Trace 21.12}
@@ -144,15 +144,23 @@ Figure \ref{fig:SignalTrace21.12} shows ...
 \end{figure}
 
 Figure \ref{fig:SignalTrace21.28} shows ...
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.28.png}
     \caption{Signal Trace 21.28}
     \label{fig:SignalTrace21.28}
 \end{figure}
 
+Figure \ref{fig:SignalTrace21.07} shows 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.07.png}
+    \caption{Signal Trace 21.07}
+    \label{fig:SignalTrace21.07}
+\end{figure}
+
 Figure \ref{fig:SignalTrace21.35} shows ...
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.35.png}
     \caption{Signal Trace 21.35}
@@ -174,12 +182,8 @@ If we remove the mean from some of the signals we are left with nothing, since s
 Talk about how the data could further classified into different pipe widths.
 \subsection{Feature Extraction}
 There are a number of features that can be extracted from data 
-\subsection{Statistical analysis}
-$$ AIC = 2k - 2Ln(L) $$  
-$$ nAIC = log $$
 \subsection{Time Domain Features} 	
-Features in the time domain.
-\subsection{Statistical Features}
+Features in the time domain. Statistical features, Impulsive Metrics, 
 \subsubsection{Mean}
 $$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
 \subsubsection{Standard Deviation}  
@@ -192,8 +196,6 @@ $$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|}
 $$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
 \subsubsection{Skewness} 
 $$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
-  
-\subsection{Impulsive Metrics}  
 \subsubsection{Peak Value}
 $$ PV = max(x_i) $$ 
 \subsubsection{Impulse Factor} 
@@ -202,102 +204,114 @@ $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$
 $$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
 \subsubsection{Clearance Factor} 
 $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
-
-\subsubsection{Signal Processing Metrics}
-\subsubsection{Signal to Noise Ratio (SNR)} 
-\subsubsection{Signal-to-Noise And Distortion (SINAD)} 
-\subsubsection{Total Harmonic Distortion (THD)}   
-
-\subsubsection{Frequency Domain Features}
-Features in the frequency domain.
+\subsubsection{Signal to Noise Ratio} 
+\subsubsection{Signal-to-Noise And Distortion} 
+\subsubsection{Total Harmonic Distortion}   
+\subsection{Frequency Domain Features}
 \subsubsection{Band Power}
 \subsubsection{Peak Amplitude}
 \subsubsection{Peak Frequency}
-\subsubsection{Best Subset Selection}
+\subsection{Models}
+\subsubsection{Feature Selection}
+\subsubsection{Least Squares Model}
+$$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
+\subsubsection{Metrics}
+$$ AIC = 2k - 2Ln(L) $$  
+$$ nAIC = log $$
+\clearpage  
 
-\newpage  
 \section{Results}
 Add some plots from the DFD of all pulses and comment on the shape of them all.
 Signal 21.07 Angle over Rolls and 21.XX, 21.31, etc are fairly unexciting. They are just straight lines.
 Where as signal XX.XX contains a lot of information.
 21.35 is a constant signal so when we remove the mean all signals are exactly the same.
 Figure \ref{fig:RawSignalCorrelationsFile1}
-\subsection{Correlation}
-An analysis of the raw signals was performed using R2 correlation. Table \ref{correlationTable} shows stuff.
+\subsection{R-squared Correlation}
+An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals with the lower triangle being a replica of the upper triangle. 
 \begin{center}
 \input{tables/correlationTable.tex}    
 \captionof{table}{R2 values for each signal vs. each other signal}
 \label{correlationTable}
 \end{center}
-
-Figure \ref{fig:RawSignalCorrelationsFile1} is highly linear and from Table \ref{correlationTable} has an R2 correlation value of 0.99. This means that there is not much value to be gained by including bother of these signals and likely one can be exluded from analysis.
-\begin{figure}[!ht]
+Figure \ref{fig:RawSignalCorrelationsFile1} is highly linear and from Table \ref{correlationTable} has an R2 correlation value of 0.99. This means that there is not much value to be gained by including both of these signals and likely one can be excluded from analysis.
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
-    \caption{????}
+    \caption{Plots of each signal vs every other signal R-square values between 0.2 and 0.9 printed on the plot}
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
-
 Figure \ref{fig:RawSignalCorrelationsFile1} is somewhat linear and from Table \ref{correlationTable} has an R2 correlation value of 0.88.
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_12vSignal21_20.eps}
-    \caption{????}
+    \caption{Signal 21.12 vs Signal 21.20}
     \label{fig:Signal21_12vSignal21_20}
 \end{figure}	
 
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_20vSignal21_28.eps}
-    \caption{????}
+    \caption{Signal 21.20 vs 21.28}
     \label{fig:Signal21_20vSignal21_28}
 \end{figure}	
 	
-\subsection{Feature Extraction}
-Figure \ref{fig:StateDetection} shows the pulses that were identified for from each file. Two files contained no identified pulses. In total 240 pulses were identified to extract features from in the next stage.
+\subsection{Pre-processing}
+Figure \ref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified. Some of these identified pulses were too short and thus believed to be false positives. Thus any pulse under 500 samples (1 second?) was removed from the data for the next stage leaving 224 pulses to extract features from.
 
-Some of these identified pulses were believed to be false positives and too short to use in the in further analysis. Thus any pulse under 500 samples was removed from the data for the next stage leaving 2
-
-\begin{figure}[!ht]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig.eps}
     \caption{State detection signal vs 21:20 Actual moment under Rollers}
     \label{fig:StateDetection}
 \end{figure}
 
-\begin{figure}[!ht]
+Figure \ref{fig:StateDetectionFig_B_02_04} shows one of the plots from Figure \ref{fig:StateDetection} in greater detail. This particular file is the one with the highest number of pulses.
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig_B_02_04.eps}
     \caption{XXX}
     \label{fig:StateDetectionFig_B_02_04}
 \end{figure}
 
-\begin{figure}[!ht]
+Figure \ref{fig:IdentifiedPulses} show 
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/IdentifiedPulsesFig.eps}
-    \caption{XXX}
+    \caption{Identified pulses in each files for file}
     \label{fig:IdentifiedPulses}
 \end{figure}
 
-\newpage  
-\section{Conclusion}
-- We are doing inference and not prediciton
-- One conlcusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10%)".
-- Another conclusion could be that we need to go forward to doing this and that.
-- Conclusion could be what we say to the company or what we need.
-- Would temperature of something be good to monitor?
+\subsection{Feature Extraction}
+\subsubsection{Feature vs Feature}
+Figure \ref{fig:FeatureVsFeatureSignal1} show 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureSignal1.eps}
+    \caption{Feature Vs Feature for Signal 1 21.07}
+    \label{fig:FeatureVsFeatureSignal1}
+\end{figure}
+\subsubsection{Signal vs Signal}
+\subsection{Linear models}
 
+\clearpage 
+\section{Conclusions}
+We are doing inference and not prediction.\\
+One conclusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10\%)".\\
+Another conclusion could be that we need to go forward to doing this and that.\\
+Conclusion could be what we say to the company or what we need.\\
+Would temperature of something be good to monitor?\\
+Worth doing an analysis based on different sizes
 Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due
 to the natural wear of the system.
-\pagebreak
+\newpage
 \section{Discussion} 
-
-\pagebreak
+One of the next tasks should be to investigate apply unsupervised learning approaches to the signals highlighted in this project.
+\clearpage
 \section{References} 
 \bibliography{References}
 \bibliographystyle{plain} 
 
-\newpage  
+\clearpage  
 \section{Appendix A - MATLAB Code}
 
 \end{document}
