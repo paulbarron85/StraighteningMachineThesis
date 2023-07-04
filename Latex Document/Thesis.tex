@@ -1,13 +1,16 @@
 \documentclass{article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
-\usepackage{cite}
+%\usepackage{cite}
 \usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
+\addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
 \graphicspath{{./figures/}}
+\graphicspath{{./images/}}
 \allowdisplaybreaks
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
 \date{2023-XX-XX}
@@ -21,39 +24,127 @@
 \newpage
 \section{Abstract}
 Large large machinery is expensive to run and downtime can be very costly. There is a large area of work dedicated to analyzing the health of a machine, predicting the remaining life and time to failure.
-\newpage
+\clearpage
+\section{Acknowledgments}
+\clearpage
 \section{Introduction}
-The aims of this project are to:
+\subsection{Background}
+%Discuss why condition monitoring is important
+The subject of condition monitoring and predictive maintenance is a large area of research in the machine and manufacturing world. Extracting condition indicators in order to monitor equipment health and predict remaining lifetime can have valuable benefits to any company. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from resources already in place and thus financial benefits.
+
+%What is condition monitoring
+Condition monitoring describes of a set of sensors that measure physical conditions of a machine such vibration, temperature, acoustics etc. in addition to an algorithm that takes the sensor data as input and outputs a health metric.
+
+%Discuss more specifically bearing vibration analysis
+A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. ~\cite{soualhi2021novel}.
+
+%Even more specifically a tube straightening machine
+One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used in the steel industry for the manufacturing of steel tubes. They are crucial for straightening the tube in the longitudinal direction and improving roundness of the product~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics}. 
+
+%Explain why condition monitoring would be useful for a straightening machine
+Such machines expensive to build and/or acquire and down time can be costly. Performance may also be impacted by the machine being in poor condition requiring maintenance. Thus it is in the interest of the operators to be able to assess the machine condition, predict the remaining useful life and prevent unplanned downtime and catastrophic failures.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=90mm, keepaspectratio]{straightening2.png}
+	\caption{A straightening machine~\cite{ma2020effect}}
+	\label{straighteningImage2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[]{straightening1.jpg}
+	\caption{A straightening machine~\cite{kato2014straightening}}
+	\label{straighteningImage1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[]{straightening3.jpg}
+	\caption{A straightening machine~\cite{ma2021analysis}}
+	\label{straighteningImage3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=90mm, keepaspectratio]{Straightening5.png}
+	\caption{A straightening machine~\cite{zhang2019modeling}}
+	\label{straighteningImage5}
+\end{figure}
+
+\subsection{Project Aim}
+The aim of this project is to examine the existing data collection strategy for a tube straightening machine and make some suggestions as to whether it is possible to perform condition monitoring and/or remaining life analysis for this machine. The first step analyze the available data that can be be attained using the existing sensors and data acquisition system. The end foal is to begin developing a strategy that will assist the company to know when the machine requires maintenance. The specific goals of this project are summarized as follows:
 \begin{itemize}
-\item Understand what signals are related to each other
-\item Understand signals from a statistical point of view
-\item Identify which features are the important ones and which are not of interest
+\item Understand what signals are related to each other.
+\item Understand the signals from a statistical point of view.
+\item Identify which features are of significance and which are not useful for condition monitoring i.e. which features may represent degradation condition.
 \end{itemize}
+%\subsection{Tools}
+%MATLAB Diagnostic Feature Designer.
+%\subsection{Structure of the Report}
 \clearpage  
-\section{Literature Review}
-\subsection{Condition Monitoring}
-Reference ~\cite{caesarendra2017review}.\\
-Reference ~\cite{james2013introduction}.\\
-Reference ~\cite{soualhi2021novel}.
-"We tend to select statistical learning methods on the basis of whether
-the response is quantitative or qualitative; i.e. we might use linear regression when quantitative and logistic regression when qualitative." From textbook.
-\subsection{Bearing Vibration Analysis?}
-\subsection{Straightening Machine}
-\clearpage 
-\section{Methodology}
-Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
-Calculate features of the different signals, i.e., correlations between raw signals, kurtosis, mean, skewness, …,
-Verify features which are extracted from the diagnostic feature extraction toolbox, i.e., what it is kurtosis, THD,… for the toolbox. You can compare the results given by the matlab function and the toolbox. Important to look at the formula which is given on the help description of the function.
+\section{Theory}
+\subsection{Feature Extraction}
+%Statistical learning?
 
+%Feature Extraction in general
+Feature extraction is the process of computing numerical values from raw data in order to reduce big data sets but preserves the information. Machine learning algorithms suffer from high volumes of data and information redundancy?
+
+%Feature extraction used in condition monitoring/degradation
+Feature extraction techniques for condition monitoring are used for estimating degradation trends~\cite{caesarendra2017review}~\cite{adams2017comparison}.
+
+\subsection{Time Domain Features} 	
+Features in the time domain. Statistical features, Impulsive Metrics, 
+\subsubsection{Mean}
+The mean is simply the average value of the signal.
+$$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
+\subsubsection{Standard Deviation}  
+Measures the dispersion of a dataset relative to its mean. Square root of variance.
+$$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
+\subsubsection{Root Mean Square (RMS)}
+$$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
+\subsubsection{Shape Factor}
+$$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
+\subsubsection{Kurtosis} 
+$$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
+\subsubsection{Skewness} 
+$$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
+\subsubsection{Peak Value}
+$$ PV = max(x_i) $$ 
+\subsubsection{Impulse Factor} 
+$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
+\subsubsection{Crest Factor} 
+$$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
+\subsubsection{Clearance Factor} 
+$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
+\subsubsection{Signal to Noise Ratio} 
+\subsubsection{Signal-to-Noise And Distortion} 
+\subsubsection{Total Harmonic Distortion}   
+\subsection{Frequency Domain Features}
+\subsubsection{Band Power}
+\subsubsection{Peak Amplitude}
+\subsubsection{Peak Frequency}
+\subsection{Correlations between raw signals}
+\subsection{Coefficient of Determination, R-squared}
 Compute correlations between 2 features.
-Calculate a in X1 = aX2, where X1 and X2 represents the features.
 Calculate R2, which relates to the variance in linear regression models.
+\begin{align*}
+ R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
+ &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
+\end{align*}
+\subsection{Models}
 Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
-
 Compute a multivariable regression model.
 Guide yourself by eliminating features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
-
-\subsection{Description of Data}
+\subsubsection{Feature Selection}
+\subsubsection{Least Squares Model}
+$$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
+\subsubsection{Metrics}
+$$ AIC = 2k - 2Ln(L) $$  
+$$ nAIC = log $$
+\clearpage  
+\section{Description of Data/System/Data Processing}
+The data comes from the company Alleima, who is a Swedish steel manufacturer of high value-added products in advanced stainless steels and special alloys.
 The data used for this analysis consists of an hour of operational data for 15 days. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.
 The file names are given in \ref{fileNames}.
 \begin{center}
@@ -92,7 +183,6 @@ The file names are given in \ref{fileNames}.
 \end{tabular}
 \captionof{table}{File names which indicate the day the data was taken}\label{fileNames}
 \end{center}
-
 The list of signals given be the company are given in Table \ref{signalNames}.
 \begin{center}
 \begin{tabular}{ |c|l| }
@@ -166,60 +256,16 @@ Figure \ref{fig:SignalTrace21.35} shows ...
     \caption{Signal Trace 21.35}
     \label{fig:SignalTrace21.35}
 \end{figure}
-\subsection{Coefficient of Determination, R-squared}
-\begin{align*}
- R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
- &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
-\end{align*}
+
 \subsection{Pre-processing sand State detection}
+Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
 The state detection for this application is performed using one signal in particular./n
 Discuss how many pulses were identified and how many were ruled out by being too short./n
 Some of the files contained no pulses at all, B\_30\_03 and B\_04\_04, which means they contribute nothing to this analysis.
 Of the remaining 13(?) files 240 pulses were identified using script/function xx./n
 When looking at these 240 pulses a number of them are too short and deemed to be false pulses so a threshold of XXs is used to only retain pulses that we think are legitimate pulses.
 If we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
-
 Talk about how the data could further classified into different pipe widths.
-\subsection{Feature Extraction}
-There are a number of features that can be extracted from data 
-\subsection{Time Domain Features} 	
-Features in the time domain. Statistical features, Impulsive Metrics, 
-\subsubsection{Mean}
-$$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
-\subsubsection{Standard Deviation}  
-$$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
-\subsubsection{Root Mean Square (RMS)}
-$$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
-\subsubsection{Shape Factor}
-$$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
-\subsubsection{Kurtosis} 
-$$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
-\subsubsection{Skewness} 
-$$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
-\subsubsection{Peak Value}
-$$ PV = max(x_i) $$ 
-\subsubsection{Impulse Factor} 
-$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
-\subsubsection{Crest Factor} 
-$$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
-\subsubsection{Clearance Factor} 
-$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
-\subsubsection{Signal to Noise Ratio} 
-\subsubsection{Signal-to-Noise And Distortion} 
-\subsubsection{Total Harmonic Distortion}   
-\subsection{Frequency Domain Features}
-\subsubsection{Band Power}
-\subsubsection{Peak Amplitude}
-\subsubsection{Peak Frequency}
-\subsection{Models}
-\subsubsection{Feature Selection}
-\subsubsection{Least Squares Model}
-$$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
-\subsubsection{Metrics}
-$$ AIC = 2k - 2Ln(L) $$  
-$$ nAIC = log $$
-\clearpage  
-
 \section{Results}
 Add some plots from the DFD of all pulses and comment on the shape of them all.
 Signal 21.07 Angle over Rolls and 21.XX, 21.31, etc are fairly unexciting. They are just straight lines.
@@ -247,7 +293,7 @@ Figure \ref{fig:RawSignalCorrelationsFile1} is somewhat linear and from Table \r
     \caption{Signal 21.12 vs Signal 21.20}
     \label{fig:Signal21_12vSignal21_20}
 \end{figure}	
-
+Figure \ref{fig:Signal21_20vSignal21_28} could be a non-linear relationship
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_20vSignal21_28.eps}
@@ -291,7 +337,8 @@ Figure \ref{fig:FeatureVsFeatureSignal1} show
     \label{fig:FeatureVsFeatureSignal1}
 \end{figure}
 \subsubsection{Signal vs Signal}
-\subsection{Linear models}
+\subsection{Linear Models}
+\subsection{Multivariate models}
 
 \clearpage 
 \section{Conclusions}
@@ -301,16 +348,16 @@ Another conclusion could be that we need to go forward to doing this and that.\\
 Conclusion could be what we say to the company or what we need.\\
 Would temperature of something be good to monitor?\\
 Worth doing an analysis based on different sizes
-Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due
-to the natural wear of the system.
+Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
+One conclusion might be just to discard all the signals with constant values.
 \newpage
 \section{Discussion} 
 One of the next tasks should be to investigate apply unsupervised learning approaches to the signals highlighted in this project.
+KNN or
+Discuss results and put in context/comparison with references at the beginning. Future work.
 \clearpage
 \section{References} 
-\bibliography{References}
-\bibliographystyle{plain} 
-
+\printbibliography 
 \clearpage  
 \section{Appendix A - MATLAB Code}
 
