@@ -6,14 +6,20 @@
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{matlab-prettifier}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
+
+\makeatletter
+\def\input@path{"./MATLAB Software"}
+\makeatother
+
 \graphicspath{{./figures/}}
 \graphicspath{{./images/}}
 \allowdisplaybreaks
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
-\date{2023-XX-XX}
+\date{2023-09-XX}
 \author{Paul Barron}
 \begin{document}
 \pagenumbering{gobble}
@@ -35,14 +41,20 @@ The subject of condition monitoring and predictive maintenance is a large area o
 %What is condition monitoring
 Condition monitoring describes of a set of sensors that measure physical conditions of a machine such vibration, temperature, acoustics etc. in addition to an algorithm that takes the sensor data as input and outputs a health metric.
 
+Advanced monitoring of machining operations~\cite{teti2010advanced}
+
 %Discuss more specifically bearing vibration analysis
 A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. ~\cite{soualhi2021novel}.
-
+[A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used in the steel industry for the manufacturing of steel tubes. They are crucial for straightening the tube in the longitudinal direction and improving roundness of the product~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics}. 
 
 %Explain why condition monitoring would be useful for a straightening machine
 Such machines expensive to build and/or acquire and down time can be costly. Performance may also be impacted by the machine being in poor condition requiring maintenance. Thus it is in the interest of the operators to be able to assess the machine condition, predict the remaining useful life and prevent unplanned downtime and catastrophic failures.
+
+%Difficult to obtain failure data
+"Because slewing bearing is a large low-speed heavy-load bearing, vibration signal is insufficient. On the other hand, because of the influence of the
+environment, it is difficult to obtain failure data of slewing bearing under actual working conditions, and tests also will entails high costs, so that the failure data is limit."This paper discusses a life forcasting model~\cite{wang2016multiple}
 
 \begin{figure}[H]
 	\centering
@@ -93,29 +105,50 @@ Feature extraction is the process of computing numerical values from raw data in
 %Feature extraction used in condition monitoring/degradation
 Feature extraction techniques for condition monitoring are used for estimating degradation trends~\cite{caesarendra2017review}~\cite{adams2017comparison}.
 
+%Techniques for selecting features
+This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
+This paper talks about defines feature goodness metrics of correlation (Corr), monotonicity (Mon) and robustness (Rob) ~\cite{zhang2016degradation}.
+
+%Automatic feature extraction? Manual Feature extraction?
+Acoustic emission signals. Ant colony optimization-based feature selection methods?~\cite{liao2010feature}.
+
+This paper discusses a life forecasting model~\cite{wang2016multiple}
+
+This PhD thesis does this..~\cite{martin2017unsupervised}
+
 \subsection{Time Domain Features} 	
 Features in the time domain. Statistical features, Impulsive Metrics, 
+\subsubsection{Cross correlation}
 \subsubsection{Mean}
 The mean is simply the average value of the signal.
 $$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
 \subsubsection{Standard Deviation}  
-Measures the dispersion of a dataset relative to its mean. Square root of variance.
+Measures the dispersion of a data set relative to its mean. Square root of variance.
 $$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
 \subsubsection{Root Mean Square (RMS)}
+
 $$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
 \subsubsection{Shape Factor}
+
 $$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
-\subsubsection{Kurtosis} 
+\subsubsection{Kurtosis}
+
 $$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
 \subsubsection{Skewness} 
+A measure of asymmetry of through probability density function.
 $$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
 \subsubsection{Peak Value}
+Maximum vale of a signal
 $$ PV = max(x_i) $$ 
 \subsubsection{Impulse Factor} 
+Impulse? Divides the maximum absolute value by the mean of absolute value
 $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
 \subsubsection{Crest Factor} 
+Impact. Divide the maximum absolute value of vibration signal and
+RMS value.
 $$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
 \subsubsection{Clearance Factor} 
+
 $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
 \subsubsection{Signal to Noise Ratio} 
 \subsubsection{Signal-to-Noise And Distortion} 
@@ -126,26 +159,32 @@ $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
 \subsubsection{Peak Frequency}
 \subsection{Correlations between raw signals}
 \subsection{Coefficient of Determination, R-squared}
-Compute correlations between 2 features.
+Compute cross correlations between 2 features (this can maybe be a feature as well?)
 Calculate R2, which relates to the variance in linear regression models.
 \begin{align*}
  R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
  &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
 \end{align*}
 \subsection{Models}
+We are doing inference and not prediction.
 Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
 Compute a multivariable regression model.
-Guide yourself by eliminating features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
+Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 \subsubsection{Feature Selection}
-\subsubsection{Least Squares Model}
+This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. "The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.\\
+This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.\\
+This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
 $$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
 \subsubsection{Metrics}
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC = log $$
+
+~\cite{}
+
 \clearpage  
 \section{Description of Data/System/Data Processing}
-The data comes from the company Alleima, who is a Swedish steel manufacturer of high value-added products in advanced stainless steels and special alloys.
-The data used for this analysis consists of an hour of operational data for 15 days. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.
+The data for this project comes from the company Alleima which is a Swedish steel manufacturer of products in advanced stainless steels and special alloys.
+It consists of one hour of data over a 15 day period. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.
 The file names are given in \ref{fileNames}.
 \begin{center}
 \begin{tabular}{ |l| } 
@@ -342,7 +381,6 @@ Figure \ref{fig:FeatureVsFeatureSignal1} show
 
 \clearpage 
 \section{Conclusions}
-We are doing inference and not prediction.\\
 One conclusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10\%)".\\
 Another conclusion could be that we need to go forward to doing this and that.\\
 Conclusion could be what we say to the company or what we need.\\
@@ -354,11 +392,14 @@ One conclusion might be just to discard all the signals with constant values.
 \section{Discussion} 
 One of the next tasks should be to investigate apply unsupervised learning approaches to the signals highlighted in this project.
 KNN or
+K-means clustering approach.
 Discuss results and put in context/comparison with references at the beginning. Future work.
 \clearpage
 \section{References} 
 \printbibliography 
 \clearpage  
 \section{Appendix A - MATLAB Code}
-
+\UseRawInputEncoding
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadRawData.m"}
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadFeatures.m"}
 \end{document}
