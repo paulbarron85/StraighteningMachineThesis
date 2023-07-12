@@ -43,6 +43,8 @@ Condition monitoring describes of a set of sensors that measure physical conditi
 
 Advanced monitoring of machining operations~\cite{teti2010advanced}
 
+Not only machines but other engineering structures like bridges and also in biological systems.
+
 %Discuss more specifically bearing vibration analysis
 A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. ~\cite{soualhi2021novel}.
 [A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
@@ -113,7 +115,6 @@ This paper talks about defines feature goodness metrics of correlation (Corr), m
 Acoustic emission signals. Ant colony optimization-based feature selection methods?~\cite{liao2010feature}.
 
 This paper discusses a life forecasting model~\cite{wang2016multiple}
-
 This PhD thesis does this..~\cite{martin2017unsupervised}
 
 \subsection{Time Domain Features} 	
@@ -150,9 +151,12 @@ $$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
 \subsubsection{Clearance Factor} 
 
 $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
-\subsubsection{Signal to Noise Ratio} 
-\subsubsection{Signal-to-Noise And Distortion} 
-\subsubsection{Total Harmonic Distortion}   
+\subsubsection{Signal to Noise Ratio}
+
+\subsubsection{Signal-to-Noise And Distortion}
+
+\subsubsection{Total Harmonic Distortion}
+   
 \subsection{Frequency Domain Features}
 \subsubsection{Band Power}
 \subsubsection{Peak Amplitude}
@@ -176,6 +180,7 @@ This article needs to be read but looks promising. "It has been shown that combi
 This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
 $$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
 \subsubsection{Metrics}
+Normalized residual sum of squares (NRSS).
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC = log $$
 
@@ -271,45 +276,6 @@ The list of signals given be the company are given in Table \ref{signalNames}.
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
 
-Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.20.png}
-    \caption{Signal Trace 21.20}
-    \label{fig:SignalTrace21.20}
-\end{figure}
-
-Figure \ref{fig:SignalTrace21.12} shows ...
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.12.png}
-    \caption{Signal Trace 21.12}
-    \label{fig:SignalTrace21.12}
-\end{figure}
-
-Figure \ref{fig:SignalTrace21.28} shows ...
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.28.png}
-    \caption{Signal Trace 21.28}
-    \label{fig:SignalTrace21.28}
-\end{figure}
-
-Figure \ref{fig:SignalTrace21.07} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.07.png}
-    \caption{Signal Trace 21.07}
-    \label{fig:SignalTrace21.07}
-\end{figure}
-
-Figure \ref{fig:SignalTrace21.35} shows ...
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.35.png}
-    \caption{Signal Trace 21.35}
-    \label{fig:SignalTrace21.35}
-\end{figure}
 
 \subsection{Pre-processing sand State detection}
 Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
@@ -321,13 +287,62 @@ When looking at these 240 pulses a number of them are too short and deemed to be
 If we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
 Talk about how the data could further classified into different pipe widths.
 \section{Results}
-Add some plots from the DFD of all pulses and comment on the shape of them all.
+\subsection{Visual Observations}
+Figure \ref{fig:SignalPulses} shows the signals for 225 pulses on each channel.
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}
+    \caption{Signal Pulses for 225 pulses on each of the 12 signal channels}
+    \label{fig:SignalPulses}
+\end{figure}
+
+%Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.20.png}
+%    \caption{Signal Trace 21.20}
+%    \label{fig:SignalTrace21.20}
+%\end{figure}
+%
+%Figure \ref{fig:SignalTrace21.12} shows ...
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.12.png}
+%    \caption{Signal Trace 21.12}
+%    \label{fig:SignalTrace21.12}
+%\end{figure}
+%
+%Figure \ref{fig:SignalTrace21.28} shows ...
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.28.png}
+%    \caption{Signal Trace 21.28}
+%    \label{fig:SignalTrace21.28}
+%\end{figure}
+%
+%Figure \ref{fig:SignalTrace21.07} shows 
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.07.png}
+%    \caption{Signal Trace 21.07}
+%    \label{fig:SignalTrace21.07}
+%\end{figure}
+%
+%Figure \ref{fig:SignalTrace21.35} shows ...
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.35.png}
+%    \caption{Signal Trace 21.35}
+%    \label{fig:SignalTrace21.35}
+%\end{figure}
+
 Signal 21.07 Angle over Rolls and 21.XX, 21.31, etc are fairly unexciting. They are just straight lines.
 Where as signal XX.XX contains a lot of information.
 21.35 is a constant signal so when we remove the mean all signals are exactly the same.
-Figure \ref{fig:RawSignalCorrelationsFile1}
+
 \subsection{R-squared Correlation}
 An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals with the lower triangle being a replica of the upper triangle. 
+Figure \ref{fig:RawSignalCorrelationsFile1}
 \begin{center}
 \input{tables/correlationTable.tex}    
 \captionof{table}{R2 values for each signal vs. each other signal}
@@ -382,16 +397,26 @@ Figure \ref{fig:IdentifiedPulses} show
 \end{figure}
 
 \subsection{Feature Extraction}
+
 \subsubsection{Feature vs Feature}
-Figure \ref{fig:FeatureVsFeatureSignal1} show 
+Figure \ref{fig:FeatureVsFeatureSignal1} shows 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureSignal1.eps}
     \caption{Feature Vs Feature for Signal 1 21.07}
     \label{fig:FeatureVsFeatureSignal1}
 \end{figure}
+
 \subsubsection{Signal vs Signal}
+Figure \ref{fig:FeatureVsFeatureSignal1} shows 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeature1.eps}
+    \caption{Signal Vs Signal for Feature 1}
+    \label{fig:SignalVsSignalFeature1}
+\end{figure}
 \subsection{Linear Models}
+
 \subsection{Multivariate models}
 
 \clearpage 
@@ -417,4 +442,5 @@ Discuss results and put in context/comparison with references at the beginning. 
 \UseRawInputEncoding
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadRawData.m"}
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadFeatures.m"}
+%\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.m"}
 \end{document}
