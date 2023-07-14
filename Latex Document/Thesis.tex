@@ -277,15 +277,14 @@ The list of signals given be the company are given in Table \ref{signalNames}.
 \end{center}
 
 
-\subsection{Pre-processing sand State detection}
-Preprocessing: you could standardize the signals, eliminate the dc-offset, … before calculating the features.
-The state detection for this application is performed using one signal in particular./n
-Discuss how many pulses were identified and how many were ruled out by being too short./n
-Some of the files contained no pulses at all, B\_30\_03 and B\_04\_04, which means they contribute nothing to this analysis.
-Of the remaining 13(?) files 240 pulses were identified using script/function xx./n
-When looking at these 240 pulses a number of them are too short and deemed to be false pulses so a threshold of XXs is used to only retain pulses that we think are legitimate pulses.
-If we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
-Talk about how the data could further classified into different pipe widths.
+\subsection{Pre-processing and State detection}
+The state detection for this application is performed using one signal in particular. Explain why this signal is used???/n
+
+"You could standardize the signals, eliminate the dc-offset, etc. before calculating the features."
+
+However if we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
+
+The straightening machine in this study processes tubes of different diameters. One of the signals can be used to indicate this diameter. This can be used to classify the data further into different pipe widths.
 \section{Results}
 \subsection{R-squared Correlation}
 An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals with the lower triangle being a replica of the upper triangle. 
@@ -296,19 +295,23 @@ Figure \ref{fig:RawSignalCorrelationsFile1}
 \label{correlationTable}
 \end{center}
 Figure \ref{fig:RawSignalCorrelationsFile1} is highly linear and from Table \ref{correlationTable} has an R2 correlation value of 0.99. This means that there is not much value to be gained by including both of these signals and likely one can be excluded from analysis.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
     \caption{Plots of each signal vs every other signal R-square values between 0.2 and 0.9 printed on the plot}
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
+
 Figure \ref{fig:RawSignalCorrelationsFile1} is somewhat linear and from Table \ref{correlationTable} has an R2 correlation value of 0.88.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_12vSignal21_20.eps}
     \caption{Signal 21.12 vs Signal 21.20}
     \label{fig:Signal21_12vSignal21_20}
 \end{figure}	
+
 Figure \ref{fig:Signal21_20vSignal21_28} could be a non-linear relationship
 \begin{figure}[H]
     \centering
@@ -318,7 +321,7 @@ Figure \ref{fig:Signal21_20vSignal21_28} could be a non-linear relationship
 \end{figure}	
 	
 \subsection{Pre-processing}
-Figure \ref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified. Some of these identified pulses were too short and thus believed to be false positives. Thus any pulse under 500 samples (1 second?) was removed from the data for the next stage leaving 224 pulses to extract features from.
+Figure \ref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Some of these identified pulses were too short and thus believed to be false positives. Any pulse under 500 samples (10 seconds) was removed from the data for the next stage leaving 224 pulses to extract features from.
 
 \begin{figure}[H]
     \centering
@@ -328,14 +331,16 @@ Figure \ref{fig:StateDetection} shows the windows that were identified from each
 \end{figure}
 
 Figure \ref{fig:StateDetectionFig_B_02_04} shows one of the plots from Figure \ref{fig:StateDetection} in greater detail. This particular file is the one with the highest number of pulses.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig_B_02_04.eps}
-    \caption{XXX}
+    \caption{State detection for signal 21:20 performed on file B\_02\_04}
     \label{fig:StateDetectionFig_B_02_04}
 \end{figure}
 
-Figure \ref{fig:IdentifiedPulses} show 
+Figure \ref{fig:IdentifiedPulses} shows pulses or windows for the signal 21:20 in each of the fifteen files. As mentioned earlier B\_30\_03 and B\_04\_04 show no pulses as all. All the pulses are around 40 seconds in duration with similar shapes but varying profiles.
+ 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/IdentifiedPulsesFig.eps}
@@ -352,9 +357,9 @@ Figure \ref{fig:SignalPulses} shows the signals for 225 pulses. Each sensor chan
     \label{fig:SignalPulses}
 \end{figure}
 
-Signal 21.07 Angle over Rolls and 21.XX, 21.31, etc are fairly unexciting. They are just straight lines.
-Where as signal XX.XX contains a lot of information.
-21.35 is a constant signal so when we remove the mean all signals are exactly the same.
+Signal 21.07 Angle over Rolls and 21.10 Position over Rolls are fairly constant. They are just straight lines almost looking like a two level discrete signal.
+Signal 21:31 and 21:32 are also fairly constant but contain some information when zoomed in.
+Signal 21.35 is a perfect constant signal. The label is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback.
 
 Figure \ref{fig:SignalPulse5} shows 
 \begin{figure}[H]
@@ -364,45 +369,53 @@ Figure \ref{fig:SignalPulse5} shows
     \label{fig:SignalPulse5}
 \end{figure}
 
-%Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.20.png}
-%    \caption{Signal Trace 21.20}
-%    \label{fig:SignalTrace21.20}
-%\end{figure}
+Figure \ref{fig:SignalPulse5} shows 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulse5.eps}
+    \caption{Signale 5 Pulses}
+    \label{fig:SignalPulse5}
+\end{figure}
+
+Figure \ref{fig:SignalTrace21.20} shows 21:20 Actual moment under Rolls (Nm)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.20.png}
+    \caption{Signal Trace 21.20}
+    \label{fig:SignalTrace21.20}
+\end{figure}
 
 %Figure \ref{fig:SignalTrace21.12} shows ...
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.12.png}
-%    \caption{Signal Trace 21.12}
-%    \label{fig:SignalTrace21.12}
-%\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.12.png}
+    \caption{Signal Trace 21.12}
+    \label{fig:SignalTrace21.12}
+\end{figure}
 
 %Figure \ref{fig:SignalTrace21.28} shows ...
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.28.png}
-%    \caption{Signal Trace 21.28}
-%    \label{fig:SignalTrace21.28}
-%\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.28.png}
+    \caption{Signal Trace 21.28}
+    \label{fig:SignalTrace21.28}
+\end{figure}
 
 %Figure \ref{fig:SignalTrace21.07} shows 
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.07.png}
-%    \caption{Signal Trace 21.07}
-%    \label{fig:SignalTrace21.07}
-%\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.07.png}
+    \caption{Signal Trace 21.07}
+    \label{fig:SignalTrace21.07}
+\end{figure}
 
 %Figure \ref{fig:SignalTrace21.35} shows ...
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.35.png}
-%    \caption{Signal Trace 21.35}
-%    \label{fig:SignalTrace21.35}
-%\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalTrace21.35.png}
+    \caption{Signal Trace 21.35}
+    \label{fig:SignalTrace21.35}
+\end{figure}
 
 \subsection{Feature Extraction}
 
