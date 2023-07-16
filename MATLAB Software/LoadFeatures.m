@@ -1,3 +1,8 @@
+%{
+    This script loads the features calculated by Matlab's Diagnostic
+    Feature Designer
+%}
+
 load("DFD_FeatureTable_TimeDomain.mat");
 % load("DFD_FeatureTable_FreqDomain.mat");
 
