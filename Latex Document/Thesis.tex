@@ -45,6 +45,9 @@ Advanced monitoring of machining operations~\cite{teti2010advanced}
 
 Not only machines but other engineering structures like bridges and also in biological systems.
 
+%Condition Monitoring with Vibration Signals: Compressive Sampling and Learning Algorithms for Rotating Machines - Textbook
+"Machine condition monitoring techniques can be grouped into the following: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring."
+
 %Discuss more specifically bearing vibration analysis
 A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. ~\cite{soualhi2021novel}.
 [A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
@@ -57,6 +60,9 @@ Such machines expensive to build and/or acquire and down time can be costly. Per
 %Difficult to obtain failure data
 "Because slewing bearing is a large low-speed heavy-load bearing, vibration signal is insufficient. On the other hand, because of the influence of the
 environment, it is difficult to obtain failure data of slewing bearing under actual working conditions, and tests also will entails high costs, so that the failure data is limit."This paper discusses a life forcasting model~\cite{wang2016multiple}
+
+%Supervised vs Unsupervised learning
+Supervised classification uses labeled data to perform the task. However, in real applications this is often not the case. More common is to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised or semi-supervised learning.
 
 \begin{figure}[H]
 	\centering
@@ -101,8 +107,15 @@ The aim of this project is to examine the existing data collection strategy for 
 \subsection{Feature Extraction}
 %Statistical learning?
 
+%Why Feature Extraction?
+Problems: dimensionality and irrelevant features
+"High dimensional data requires vast amounts of storage"
+Aim to reduce high dimensional to low dimensionality.
+
 %Feature Extraction in general
 Feature extraction is the process of computing numerical values from raw data in order to reduce big data sets but preserves the information. Machine learning algorithms suffer from high volumes of data and information redundancy?
+"The main task of feature selection is to select
+a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
 
 %Feature extraction used in condition monitoring/degradation
 Feature extraction techniques for condition monitoring are used for estimating degradation trends~\cite{caesarendra2017review}~\cite{adams2017comparison}.
@@ -203,8 +216,9 @@ Physical and Metrological Approach for Feature’s Definition and Selection in C
 
 \clearpage  
 \section{Description of Data/System/Data Processing}
-The data for this project comes from the company Alleima which is a Swedish steel manufacturer of products in advanced stainless steels and special alloys.
-It consists of one hour of data over a 15 day period. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.
+The data for this project comes from a Swedish steel manufacturer of products in advanced stainless steels and special alloys.
+It consists of one hour of data over a 15 day period. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.\\
+The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02s. 
 The file names are given in \ref{fileNames}.
 \begin{center}
 \begin{tabular}{ |l| } 
@@ -276,9 +290,10 @@ The list of signals given be the company are given in Table \ref{signalNames}.
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
 
-
 \subsection{Pre-processing and State detection}
-The state detection for this application is performed using one signal in particular. Explain why this signal is used???/n
+The state detection for this application is performed using one signal in particular. 
+Explain why the state detection is done in the this fashion to extract the pulses.
+Explain why this signal is used???/n
 
 "You could standardize the signals, eliminate the dc-offset, etc. before calculating the features."
 
@@ -420,7 +435,7 @@ Figure \ref{fig:FeatureVsFeatureSignal1} shows
 Figure \ref{fig:FeatureVsFeatureSignal1} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeature1.eps}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeatureTime1.eps}
     \caption{Signal Vs Signal for Feature 1}
     \label{fig:SignalVsSignalFeature1}
 \end{figure}
@@ -451,5 +466,5 @@ Discuss results and put in context/comparison with references at the beginning. 
 \UseRawInputEncoding
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadRawData.m"}
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadFeatures.m"}
-%\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.m"}
+%\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.mlx"}
 \end{document}

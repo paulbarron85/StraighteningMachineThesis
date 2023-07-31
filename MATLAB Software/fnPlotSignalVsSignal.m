@@ -35,5 +35,6 @@ function [R2] = fnPlotSignalVsSignal(FeatureTable, lowerBound, upperBound, featu
         text(0, 0.5, str(1:5));
         xticklabels({});
         yticklabels({});
+        R2(signalIndex1, signalIndex1) = 1;
     end
 end

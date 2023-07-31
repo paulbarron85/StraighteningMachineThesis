@@ -4,6 +4,8 @@
 
 clear;
 close all;
+warning off;
+saveFigures = false;
 
 % Names of the signals in the data
 sensorNames = [ "21:07 Angle over Rolls (degrees)"...
@@ -35,6 +37,7 @@ sensorUnits = [ "Angle over (deg)"...
                 "Act force (KN)"];
 
 Ts = 0.02; % Sampling interval for data
+fs = 1 / Ts;
 dataSubfolder = "../SMT_data_20220520/";
 
 filenames = [ "B_30_03" "B_31_03" "B_01_04" "B_02_04" ...
