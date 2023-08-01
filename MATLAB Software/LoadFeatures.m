@@ -94,5 +94,5 @@ for signalIndex = 1 : numOfSignals
         featureArray(:, featureIndex + numOfTimeFeatures, signalIndex) = DFD_FeatureTable_FreqDomain.(signalNames_Freq(signalIndex) + featureNames_Freq(featureIndex));
     end   
 end
-combinedFeatureNames = [featureNames_Time featureNames_Freq];
-numOfCombinedFeatures = size(combinedFeatureNames,2);
+FeatureNames_Combined = [featureNames_Time featureNames_Freq];
+numOfFeatures_Combined = size(combinedFeatureNames,2);
