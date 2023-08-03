@@ -16,7 +16,7 @@ function [selectedFeatureArray, selectedFeatureData, numOfSelectedFeatures] = fn
     selectedFeatureData = {numOfSelectedFeatures};
     
     for i = 1:numOfSelectedFeatures
-        selectedFeatureData{i} = featureArray(:, i, selectedSignal);
+        selectedFeatureData{i} = featureArray(:, selectedFeatureArray(i), selectedSignal);
     end
     
     numOfSelectedFeatures = size(selectedFeatureArray, 2);

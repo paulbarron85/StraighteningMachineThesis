@@ -95,4 +95,4 @@ for signalIndex = 1 : numOfSignals
     end   
 end
 FeatureNames_Combined = [featureNames_Time featureNames_Freq];
-numOfFeatures_Combined = size(combinedFeatureNames,2);
+numOfFeatures_Combined = size(FeatureNames_Combined,2);
