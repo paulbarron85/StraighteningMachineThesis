@@ -19,6 +19,7 @@ function [beta] = fnPlotModel(Y, X1, txtTitle, labelY, labelX1)
     title(txtTitle, 'Interpreter', 'none');
 
     % Fit equation from compare function
-    FIT = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));
-    fprintf("FIT = %2.2f", FIT);
+    FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));
+
+    annotation('textbox', [0.2 0.8, 0.1, 0.1], 'String', FitValue);
 end
