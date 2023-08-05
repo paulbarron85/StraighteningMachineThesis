@@ -27,6 +27,7 @@ function [Y_est] = fnModelPlot3D(Y, X1, X2, txtTitle, labelY, labelX1, labelX2)
     title(txtTitle, 'Interpreter', 'none');
 
     % Fit equation from compare function
-    FIT = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));
-    fprintf("FIT = %2f", FIT);
+    FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));
+
+    annotation('textbox', [0.1 0.8, 0.1, 0.1], 'String', FitValue);
 end
