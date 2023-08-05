@@ -172,8 +172,13 @@ $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
    
 \subsection{Frequency Domain Features}
 \subsubsection{Band Power}
+The band power is the area beneath the graph, within a frequency range, of the power spectral density vs the frequencies.
+the power of a signal in the selected frequency range.
+The area under the spectrum curve within the chosen band limits.
 \subsubsection{Peak Amplitude}
+
 \subsubsection{Peak Frequency}
+
 \subsection{Correlations between raw signals}
 \subsection{Coefficient of Determination, R-squared}
 Compute cross correlations between 2 features (this can maybe be a feature as well?)
@@ -452,6 +457,7 @@ Would temperature of something be good to monitor?\\
 Worth doing an analysis based on different sizes
 Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
 One conclusion might be just to discard all the signals with constant values.
+These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
 \newpage
 \section{Discussion} 
 One of the next tasks should be to investigate apply unsupervised learning approaches to the signals highlighted in this project.
