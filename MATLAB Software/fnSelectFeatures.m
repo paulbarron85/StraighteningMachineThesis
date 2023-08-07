@@ -1,4 +1,5 @@
-function [selectedFeatureArrayReduced, selectedFeatureDataReduced, numOfSelectedFeaturesReduced] = fnSelectFeatures(selectedSignal, selectedFeature, featureArray, R2, upperR2, lowerR2, r2ReducedThreshold, verbose)
+function [selectedFeatureArrayReduced, selectedFeatureDataReduced, numOfSelectedFeaturesReduced] = fnSelectFeatures( ...
+selectedSignal, selectedFeature, featureArray, R2, upperR2, lowerR2, r2ReducedThreshold, verbose)
 %{
 Description: This function...
 Date: 2023/03/19
@@ -39,7 +40,11 @@ Outputs:
         for index2 = index1 + 1 : size(selectedFeatureArrayReduced, 2)
             if R2(selectedFeatureArrayReduced(index1), selectedFeatureArrayReduced(index2)) > r2ReducedThreshold
                 if verbose == true
-                    fprintf("Sig %.0f Sig %.0f = %.2f", selectedFeatureArrayReduced(index1), selectedFeatureArrayReduced(index2), R2(selectedFeatureArrayReduced(index1), selectedFeatureArrayReduced(index2)));
+                    fprintf("Sig %.0f Sig %.0f = %.2f", ...
+                        selectedFeatureArrayReduced(index1), ...
+                        selectedFeatureArrayReduced(index2), ...
+                        R2(selectedFeatureArrayReduced(index1), ...
+                        selectedFeatureArrayReduced(index2)));
                     fprintf('\n');
                 end
                 duplicates = [duplicates selectedFeatureArrayReduced(index2)];
