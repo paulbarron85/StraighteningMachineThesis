@@ -35,6 +35,6 @@ function [R2] = fnPlotFeatureVsFeature_Array(featureArray, lowerBound, upperBoun
         text(0, 0.5, featureNames(featureIndex));
         xticklabels({});
         yticklabels({});
-        R2(featureIndex1, featureIndex1) = 1;
+        R2(featureIndex, featureIndex) = 1;
     end
 end

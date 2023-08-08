@@ -61,16 +61,6 @@ Outputs:
     % Add the original selected feature back into the array
     selectedFeatureArray = [selectedFeatureArray selectedFeature]; 
     selectedFeatureArray = sort(selectedFeatureArray);
-    numOfSelectedFeatures = size(selectedFeatureArray, 2);
-    selectedFeatureData = {numOfSelectedFeatures};
-    
-    for i = 1:numOfSelectedFeatures
-        selectedFeatureData{i} = featureArray(:, selectedFeatureArray(i), selectedSignal);
-    end
-
-    if verbose == true 
-        disp(selectedFeatureArray);
-    end
 
     selectedFeatureArrayReduced = [selectedFeatureArrayReduced selectedFeature];
     selectedFeatureArrayReduced = sort(selectedFeatureArrayReduced);
@@ -78,10 +68,11 @@ Outputs:
     selectedFeatureDataReduced = {numOfSelectedFeaturesReduced};
 
     for i = 1:numOfSelectedFeaturesReduced
-        selectedFeatureDataReduced{i} = featureArray(:, selectedFeatureArray(i), selectedSignal);
+        selectedFeatureDataReduced{i} = featureArray(:, selectedFeatureArrayReduced(i), selectedSignal);
     end
     
     if verbose == true 
+        disp(selectedFeatureArray);
         disp(selectedFeatureArrayReduced);
     end
 end
