@@ -32,7 +32,8 @@ function [R2] = fnPlotFeatureVsFeature_Array(featureArray, lowerBound, upperBoun
     end
     for featureIndex = 1 : numOfFeatures
         nexttile((featureIndex-1) * numOfFeatures + featureIndex);
-        text(0, 0.5, featureNames(featureIndex));
+        %text(0, 0.5, featureNames(featureIndex));
+        text(0.5, 0.5, int2str(featureIndex), HorizontalAlignment='center',VerticalAlignment='middle');
         xticklabels({});
         yticklabels({});
         R2(featureIndex, featureIndex) = 1;

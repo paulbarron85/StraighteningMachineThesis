@@ -19,7 +19,7 @@
 \graphicspath{{./images/}}
 \allowdisplaybreaks
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
-\date{2023-09-XX}
+\date{September 2023}
 \author{Paul Barron}
 \begin{document}
 \pagenumbering{gobble}
@@ -29,7 +29,16 @@
 \tableofcontents
 \newpage
 \section{Abstract}
-Large large machinery is expensive to run and downtime can be very costly. There is a large area of work dedicated to analyzing the health of a machine, predicting the remaining life and time to failure.
+% Some general comment on the reasons for the project
+Large machinery is expensive to run and downtime can be costly. 
+There is a large area of work dedicated to analyzing the health of a machine, predicting the remaining life and time to failure.
+% What the project is about
+This project is an analysis of a tube straightening machine used in the steel industry with an end goal of implementing some kind of condition monitoring strategy. However, while the end goal of this work is to perform condition monitoring for this particular machine this project is just the first step in that process. This Thesis does not perform any clustering or implementation and at this stage serves purely as an analysis or what existing data may be useful in further studies of condition monitoring implementation.
+% Outling of project steps
+The data comes from a real world example of such machine from a large steel manufacturer. The data was taken from the existing sensors and control system.
+The data is prepossessed to isolate periods where the machine is actually processing a part and separated into pulses. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the R^2 coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature.
+% The conclusions of the project
+The conclusions drawn from this study include suggestions for additional data collection, identification of non-linear relationships.
 \clearpage
 \section{Acknowledgments}
 \clearpage
@@ -201,6 +210,10 @@ $$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
 Normalized residual sum of squares (NRSS).
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC = log $$
+\subsubsection{Linear Regression}
+XXX
+\subsubsection{Multivariate Models}
+XXX
 
 These references haven't been used yet.
 A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}
@@ -220,7 +233,8 @@ PCA-based feature selection scheme for machine defect classification~\cite{malhi
 Physical and Metrological Approach for Feature’s Definition and Selection in Condition Monitoring~\cite{d2019physical}
 
 \clearpage  
-\section{Description of Data/System/Data Processing}
+\section{Description of Data}
+\subsection{Data Collection/System}
 The data for this project comes from a Swedish steel manufacturer of products in advanced stainless steels and special alloys.
 It consists of one hour of data over a 15 day period. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.\\
 The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02s. 
@@ -294,11 +308,51 @@ The list of signals given be the company are given in Table \ref{signalNames}.
 \end{tabular}
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
+\subsection{Matlab}
+Diagnostic Feature Designer, Table \ref{signalNames}.
+\begin{center}
+\begin{tabular}{ |c|l| }
+ \hline
+ 1 & Clearance Factor \\
+ \hline
+ 2 & Crest Factor \\
+ \hline
+ 3 & Impulse Factor \\
+ \hline
+ 4 & Kurtosis \\
+ \hline
+ 5 & Mean \\
+ \hline
+ 6 & Peak Value \\
+ \hline
+ 7 & Root Mean Square (RMS) \\ 
+ \hline              
+ 8 & Signal to Noise Ratio (SNR) \\
+ \hline
+ 9 & Signal-to-noise and Distortion Ratio (SINAD) \\
+ \hline
+ 10 & Shape Factor \\
+ \hline
+ 11 & Skewness \\
+ \hline
+ 12 & Standard Deviation \\
+ \hline
+ 13 & Total Harmonic Distortion (THD) \\
+ \hline
+ 14 & Band Power \\
+ \hline
+ 15 & Peak Amplitude 1 \\
+ \hline
+ 16 & Peak Frequency 1 \\
+ \hline
+\end{tabular}
+\captionof{table}{Feature Names}\label{featureNames}
+\end{center}
 
 \subsection{Pre-processing and State detection}
 The state detection for this application is performed using one signal in particular. 
 Explain why the state detection is done in the this fashion to extract the pulses.
-Explain why this signal is used???/n
+Explain why this signal is used???
 
 "You could standardize the signals, eliminate the dc-offset, etc. before calculating the features."
 
@@ -435,7 +489,14 @@ Figure \ref{fig:FeatureVsFeatureSignal1} shows
     \caption{Feature Vs Feature for Signal 1 21.07}
     \label{fig:FeatureVsFeatureSignal1}
 \end{figure}
-
+FeatureVsFeatureCombinedSignal
+Figure \ref{fig:FeatureVsFeatureCombinedSignal1} shows 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal1.eps}
+    \caption{Feature Vs Feature for Signal 1, 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain.}
+    \label{fig:FeatureVsFeatureCombinedSignal1}
+\end{figure}
 
 Figure \ref{fig:Models_Signal3Feature1} shows 
 \begin{figure}[H]
@@ -543,6 +604,14 @@ Figure \ref{fig:Models_Feature16Signal3} shows
     \label{fig:Models_Feature16Signal3}
 \end{figure}
 
+Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over Rolls vs Actual moment under Rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature16Signal3_Linear1.eps}
+    \caption{Feature 16 Signal 3 Linear 1}
+    \label{fig:Models_Feature16Signal3_Linear1}
+\end{figure}
+
 \subsection{Linear Models}
 
 \subsection{Multivariate models}
@@ -567,7 +636,7 @@ Discuss results and put in context/comparison with references at the beginning. 
 \section{References} 
 \printbibliography[heading=none] 
 \clearpage  
-\section{Appendix A - MATLAB Code}
+\section{Appendix A - Matlab Code}
 \UseRawInputEncoding
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadRawData.m"}
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadFeatures.m"}
