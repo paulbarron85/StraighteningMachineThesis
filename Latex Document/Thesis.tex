@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
+
 %\usepackage{cite}
 \usepackage{titlesec}
 \usepackage{amsmath}
@@ -11,10 +12,11 @@
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
 
+\usepackage{fancyhdr, graphicx, lastpage}
+
 \makeatletter
 \def\input@path{"./MATLAB Software"}
 \makeatother
-
 \graphicspath{{./figures/}}
 \graphicspath{{./images/}}
 \allowdisplaybreaks
@@ -22,15 +24,23 @@
 \date{September 2023}
 \author{Paul Barron}
 \begin{document}
+
 \pagenumbering{gobble}
 \maketitle
 \newpage
 \pagenumbering{arabic}
 \tableofcontents
 \newpage
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[C]{Blah}
+}
+\pagestyle{plain}
+
 \section{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery  is crucial to any company in the manufacturing sector and unplanned downtime can be extremely costly. Mechanical failures can halt production and small mechanical failures can lead to catastrophic failures which exponentially increases downtime and repair costs. A large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and preventing these kind of failures.
+The availability of industrial machinery  is crucial to any company in the manufacturing sector. Unplanned downtime can be extremely costly. Mechanical failures can halt production and small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. A large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and preventing these kind of failures.
 
 % What the project is about
 This thesis is an analysis of a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. While the aim of this work is to implement condition monitoring for this particular machine, the project is just the first step in a larger study. This Thesis does not attempt to perform any implementation or fault identification. It serves purely as an analysis of what existing data and infrastructure may be useful in further studies of condition monitoring implementation.
@@ -41,7 +51,10 @@ The data for this project comes from a real world example of a straightening mac
 % The conclusions of the project
 A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for additional data collection.
 \clearpage
+
 \section{Acknowledgments}
+I would like to thank my supervisors Daniel Ronnow and Oscar B for their guidance and patience.
+I would like to thank the University of Gavle for offering this excellent course.
 \clearpage
 \section{Introduction}
 \subsection{Background}
@@ -628,11 +641,18 @@ Ideally we would have data over the lifespan of a machine. The data we have righ
 One conclusion might be just to discard all the signals with constant values.
 These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
 \newpage
-\section{Discussion} 
+\section{Discussion}
+The work performed in this study has been limited to an analysis of the available data. Future work should include an investigation into machine learning approaches.
+This study gave some suggestions as to what data is of value and what is not.
+
+The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. Perhaps a better selection of data would include a snippet of data every 1-2 weeks and thus one could get a better view of how the machine degrades over a year.
+
+Another suggestion for future studies is to perform an additional pre-processing step to separate data into periods where the machine is producing certain SKUs.
+
 One of the next tasks should be to investigate apply unsupervised learning approaches to the signals highlighted in this project.
 KNN or
 K-means clustering approach.
-Discuss results and put in context/comparison with references at the beginning. Future work.
+Discuss results and put in context/comparison with references at the beginning. 
 \clearpage
 \section{References} 
 \printbibliography[heading=none] 
