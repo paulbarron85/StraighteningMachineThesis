@@ -30,15 +30,16 @@
 \newpage
 \section{Abstract}
 % Some general comment on the reasons for the project
-Large machinery is expensive to run and downtime can be costly. 
-There is a large area of work dedicated to analyzing the health of a machine, predicting the remaining life and time to failure.
+The availability of industrial machinery  is crucial to any company in the manufacturing sector and unplanned downtime can be extremely costly. Mechanical failures can halt production and small mechanical failures can lead to catastrophic failures which exponentially increases downtime and repair costs. A large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and preventing these kind of failures.
+
 % What the project is about
-This project is an analysis of a tube straightening machine used in the steel industry with an end goal of implementing some kind of condition monitoring strategy. However, while the end goal of this work is to perform condition monitoring for this particular machine this project is just the first step in that process. This Thesis does not perform any clustering or implementation and at this stage serves purely as an analysis or what existing data may be useful in further studies of condition monitoring implementation.
+This thesis is an analysis of a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. While the aim of this work is to implement condition monitoring for this particular machine, the project is just the first step in a larger study. This Thesis does not attempt to perform any implementation or fault identification. It serves purely as an analysis of what existing data and infrastructure may be useful in further studies of condition monitoring implementation.
+
 % Outling of project steps
-The data comes from a real world example of such machine from a large steel manufacturer. The data was taken from the existing sensors and control system.
-The data is prepossessed to isolate periods where the machine is actually processing a part and separated into pulses. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the R^2 coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature.
+The data for this project comes from a real world example of a straightening machine at a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The data prepossessed to isolate periods where the machine is operating and separated into pulses. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature. 
+
 % The conclusions of the project
-The conclusions drawn from this study include suggestions for additional data collection, identification of non-linear relationships.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for additional data collection.
 \clearpage
 \section{Acknowledgments}
 \clearpage
