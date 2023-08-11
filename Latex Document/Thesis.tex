@@ -1,7 +1,5 @@
 \documentclass{article}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
-
-%\usepackage{cite}
 \usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{caption}
@@ -32,30 +30,31 @@
 \tableofcontents
 \newpage
 
-\fancypagestyle{plain}{
-	\fancyhf{}
-	\fancyhead[C]{Blah}
-}
-\pagestyle{plain}
-
 \section{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery  is crucial to any company in the manufacturing sector. Unplanned downtime can be extremely costly. Mechanical failures can halt production and small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. A large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and preventing these kind of failures.
+The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures can halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
 
 % What the project is about
-This thesis is an analysis of a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. While the aim of this work is to implement condition monitoring for this particular machine, the project is just the first step in a larger study. This Thesis does not attempt to perform any implementation or fault identification. It serves purely as an analysis of what existing data and infrastructure may be useful in further studies of condition monitoring implementation.
+This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification.
 
 % Outling of project steps
-The data for this project comes from a real world example of a straightening machine at a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The data prepossessed to isolate periods where the machine is operating and separated into pulses. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature. 
+The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
-A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for additional data collection.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potentially clustering of machine states are highlighted based on visual observations of the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection.
 \clearpage
 
 \section{Acknowledgments}
 I would like to thank my supervisors Daniel Ronnow and Oscar B for their guidance and patience.
-I would like to thank the University of Gavle for offering this excellent course.
-\clearpage
+I would like to thank the University of Gavle for offering a Masters program available to take as distance education.
+\newpage
+
+\fancypagestyle{plain}{
+	\fancyhf{}
+	\fancyhead[C]{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
+}
+\pagestyle{plain}
+
 \section{Introduction}
 \subsection{Background}
 %Discuss why condition monitoring is important
@@ -247,83 +246,83 @@ PCA-based feature selection scheme for machine defect classification~\cite{malhi
 Physical and Metrological Approach for Feature’s Definition and Selection in Condition Monitoring~\cite{d2019physical}
 
 \clearpage  
-\section{Description of Data}
-\subsection{Data Collection/System}
-The data for this project comes from a Swedish steel manufacturer of products in advanced stainless steels and special alloys.
-It consists of one hour of data over a 15 day period. I do now know whether it was taken from the same time each day. The assumption is that the file name corresponds with the data that the data was taken.\\
-The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02s. 
-The file names are given in \ref{fileNames}.
+\section{Process}
+\subsection{Description of Data}
+The data for this project comes from a straightening machine at a multinational steel manufacturer. It consists of one hour of data over a 15 day period. It is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. 
+
+%The file names are given in \ref{fileNames}.
+%\begin{center}
+%\begin{tabular}{ |l| } 
+% \hline
+% B\_30\_03.mat \\
+% \hline 
+% B\_31\_03.mat \\
+% \hline 
+% B\_01\_04.mat \\
+% \hline 
+% B\_02\_04.mat \\
+% \hline
+% B\_03\_04.mat \\
+% \hline 
+% B\_04\_04.mat \\
+% \hline 
+% B\_05\_04.mat \\
+% \hline
+% B\_06\_04.mat \\
+% \hline 
+% B\_07\_04.mat \\
+% \hline 
+% B\_08\_04.mat \\
+% \hline 
+% B\_09\_04.mat \\
+% \hline 
+% B\_10\_04.mat \\
+% \hline
+% B\_11\_04.mat \\
+% \hline 
+% B\_12\_04.mat \\
+% \hline
+% B\_13\_04.mat \\
+% \hline
+%\end{tabular}
+%\captionof{table}{File names which indicate the day the data was taken}\label{fileNames}
+%\end{center}
+
+The list of signals given by the company are given in Table \ref{signalNames}.
 \begin{center}
-\begin{tabular}{ |l| } 
+\begin{tabular}{ |c|c|l| }
  \hline
- B\_30\_03.mat \\
- \hline 
- B\_31\_03.mat \\
- \hline 
- B\_01\_04.mat \\
- \hline 
- B\_02\_04.mat \\
+Signal Index & Signal Number & Signal Name \\ 
  \hline
- B\_03\_04.mat \\
- \hline 
- B\_04\_04.mat \\
- \hline 
- B\_05\_04.mat \\
+1 & 21:07 & Angle over Rolls (deg) \\
  \hline
- B\_06\_04.mat \\
- \hline 
- B\_07\_04.mat \\
- \hline 
- B\_08\_04.mat \\
- \hline 
- B\_09\_04.mat \\
- \hline 
- B\_10\_04.mat \\
+2 & 21:10 & Position over Rolls (mm) \\
  \hline
- B\_11\_04.mat \\
- \hline 
- B\_12\_04.mat \\
+3 & 21:12 & Actual moment over Rolls (Nm) \\
  \hline
- B\_13\_04.mat \\
+4 & 21:17 & Angle under roll (deg) \\
  \hline
-\end{tabular}
-\captionof{table}{File names which indicate the day the data was taken}\label{fileNames}
-\end{center}
-The list of signals given be the company are given in Table \ref{signalNames}.
-\begin{center}
-\begin{tabular}{ |c|l| }
+5 & 21:20 & Actual moment under Rolls (Nm) \\
  \hline
- Signal Number & Signal Name \\ 
- \hline
-21:07 & Angle over Rolls (deg) \\
- \hline
-21:10 & Position over Rolls (mm) \\
- \hline
-21:12 & Actual moment over Rolls (Nm) \\
- \hline
-21:17 & Angle under roll (deg) \\
- \hline
-21:20 & Actual moment under Rolls (Nm) \\
- \hline
-21:28 & Vibration measurements (mm/s) \\ 
+6 & 21:28 & Vibration measurements (mm/s) \\ 
  \hline              
-21:31 & Width position (mm) \\
+7 & 21:31 & Width position (mm) \\
  \hline
-21:32 & Height position (mm) \\
+8 & 21:32 & Height position (mm) \\
  \hline
-21:33 & Error position for height (mm) \\
+9 & 21:33 & Error position for height (mm) \\
  \hline
-21:34 & Error position for the width (mm) \\
+10 & 21:34 & Error position for the width (mm) \\
  \hline
-21:35 & Set point force (kN) \\
+11 & 21:35 & Set point force (kN) \\
  \hline
-21:36 & Actual force (kN) \\
+12 & 21:36 & Actual force (kN) \\
  \hline
 \end{tabular}
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
 \subsection{Matlab}
-Diagnostic Feature Designer, Table \ref{signalNames}.
+Matlab's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. For the remainder of the report some figures are labeled with a feature number instead of the full text due to space constraints. Refer to Table \ref{signalNames} to find which feature each index represents.
 \begin{center}
 \begin{tabular}{ |c|l| }
  \hline
@@ -364,9 +363,7 @@ Diagnostic Feature Designer, Table \ref{signalNames}.
 \end{center}
 
 \subsection{Pre-processing and State detection}
-The state detection for this application is performed using one signal in particular. 
-Explain why the state detection is done in the this fashion to extract the pulses.
-Explain why this signal is used???
+State detection for this study is performed using signal 5, 21:20 Actual moment under Rolls. The data is separated into cycles using this signal to isolate just the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
 
 "You could standardize the signals, eliminate the dc-offset, etc. before calculating the features."
 
@@ -631,7 +628,16 @@ Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the
 \subsection{Multivariate models}
 
 \clearpage 
-\section{Conclusions}
+
+\section{Discussion}
+This study gave some suggestions as to what data is of value and what is not.
+
+The work performed in this study has been limited to an analysis of the available data. Future work could include the application of machine learning techniques to the signals highlighted in this project. In particular unsupervised learning approaches such as K nearest neighbors or K-means clustering approach.
+
+The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. Perhaps a better selection of data would include a snippet of data every 1-2 weeks and thus one could get a better view of how the machine degrades over a year.
+
+Another suggestion for future studies is to perform an additional pre-processing step to separate data into periods where the machine is producing certain SKUs.
+
 One conclusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10\%)".\\
 Another conclusion could be that we need to go forward to doing this and that.\\
 Conclusion could be what we say to the company or what we need.\\
@@ -640,20 +646,17 @@ Worth doing an analysis based on different sizes
 Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
 One conclusion might be just to discard all the signals with constant values.
 These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
-\newpage
-\section{Discussion}
-The work performed in this study has been limited to an analysis of the available data. Future work should include an investigation into machine learning approaches.
-This study gave some suggestions as to what data is of value and what is not.
 
-The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. Perhaps a better selection of data would include a snippet of data every 1-2 weeks and thus one could get a better view of how the machine degrades over a year.
-
-Another suggestion for future studies is to perform an additional pre-processing step to separate data into periods where the machine is producing certain SKUs.
-
-One of the next tasks should be to investigate apply unsupervised learning approaches to the signals highlighted in this project.
-KNN or
-K-means clustering approach.
 Discuss results and put in context/comparison with references at the beginning. 
+
+It should also be noted that the result and the methods used in this thesis are in good agreement with target 9.5 of the 2030 Agenda for sustainable development [52].
+
 \clearpage
+
+\section{Conclusion}
+A study of the available data on a steel tube straightening machine was conducted with regards to using the existing infrastructure for condition monitoring.
+\newpage
+
 \section{References} 
 \printbibliography[heading=none] 
 \clearpage  
