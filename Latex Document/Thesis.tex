@@ -1,5 +1,7 @@
 \documentclass{article}
-\usepackage[a4paper, total={6in, 8in}]{geometry}
+%\usepackage[a4paper, total={6.5in, 8in}]{geometry}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{fancyhdr, graphicx, lastpage}
 \usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{caption}
@@ -9,20 +11,18 @@
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
-
-\usepackage{fancyhdr, graphicx, lastpage}
-
 \makeatletter
 \def\input@path{"./MATLAB Software"}
 \makeatother
 \graphicspath{{./figures/}}
 \graphicspath{{./images/}}
 \allowdisplaybreaks
+
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
 \date{September 2023}
 \author{Paul Barron}
-\begin{document}
 
+\begin{document}
 \pagenumbering{gobble}
 \maketitle
 \newpage
@@ -52,6 +52,7 @@ I would like to thank the University of Gavle for offering a Masters program ava
 \fancypagestyle{plain}{
 	\fancyhf{}
 	\fancyhead[C]{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
+	\cfoot{\thepage} 
 }
 \pagestyle{plain}
 
@@ -136,11 +137,10 @@ Aim to reduce high dimensional to low dimensionality.
 
 %Feature Extraction in general
 Feature extraction is the process of computing numerical values from raw data in order to reduce big data sets but preserves the information. Machine learning algorithms suffer from high volumes of data and information redundancy?
-"The main task of feature selection is to select
-a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
+"The main task of feature selection is to select a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
 
 %Feature extraction used in condition monitoring/degradation
-Feature extraction techniques for condition monitoring are used for estimating degradation trends~\cite{caesarendra2017review}~\cite{adams2017comparison}.
+Feature extraction techniques for condition monitoring are used for estimating degradation trends ~\cite{caesarendra2017review} ~\cite{adams2017comparison}.
 
 %Techniques for selecting features
 This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
@@ -649,6 +649,7 @@ These types of analysis can be expanded exponentially but one can only look at s
 
 Discuss results and put in context/comparison with references at the beginning. 
 
+Since 2017 it is mandatory that all technical reports, theses, and similar publications, discuss Environmental Impact and Sustainability of the project. To find a starting point it is suggested to use “the United Nations’ 2030 Agenda for Sustainable Development” and its 17 Sustainable Development Goals (www.un.org/sustainabledevelopment/development-agenda). Under each goal there are some goal targets listed. Identify one or more goals relevant for your thesis, and comment using relevant goal targets.
 It should also be noted that the result and the methods used in this thesis are in good agreement with target 9.5 of the 2030 Agenda for sustainable development [52].
 
 \clearpage
