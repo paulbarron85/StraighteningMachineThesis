@@ -1,6 +1,8 @@
 \documentclass{article}
 %\usepackage[a4paper, total={6.5in, 8in}]{geometry}
-\usepackage[a4paper, margin=2.5cm]{geometry}
+%\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage[a4paper]{geometry}
+
 \usepackage{fancyhdr, graphicx, lastpage}
 \usepackage{titlesec}
 \usepackage{amsmath}
@@ -17,6 +19,7 @@
 \graphicspath{{./figures/}}
 \graphicspath{{./images/}}
 \allowdisplaybreaks
+\usepackage[parfill]{parskip} % Change indents to line breaks between paragraphs
 
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
 \date{September 2023}
@@ -32,7 +35,7 @@
 
 \section{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures can halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
+The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. On the other hand, one does not want to spend time and resources performing maintenance on a machine that does not require it. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
 
 % What the project is about
 This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification.
@@ -41,12 +44,12 @@ This thesis analyses a tube straightening machine used in the steel industry wit
 The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
-A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potentially clustering of machine states are highlighted based on visual observations of the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection.
 \clearpage
 
 \section{Acknowledgments}
-I would like to thank my supervisors Daniel Ronnow and Oscar B for their guidance and patience.
-I would like to thank the University of Gavle for offering a Masters program available to take as distance education.
+I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience.
+I would like to thank the University of Gävle for offering a Masters program available to take as distance education.
 \newpage
 
 \fancypagestyle{plain}{
@@ -129,11 +132,10 @@ The aim of this project is to examine the existing data collection strategy for 
 \section{Theory}
 \subsection{Feature Extraction}
 %Statistical learning?
+Statistical learning 
 
 %Why Feature Extraction?
-Problems: dimensionality and irrelevant features
-"High dimensional data requires vast amounts of storage"
-Aim to reduce high dimensional to low dimensionality.
+One problem with high dimensional data is that it requires vast amounts of storage. By firstly extracting features and secondly deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the data.
 
 %Feature Extraction in general
 Feature extraction is the process of computing numerical values from raw data in order to reduce big data sets but preserves the information. Machine learning algorithms suffer from high volumes of data and information redundancy?
@@ -153,55 +155,58 @@ This paper discusses a life forecasting model~\cite{wang2016multiple}
 This PhD thesis does this..~\cite{martin2017unsupervised}
 
 \subsection{Time Domain Features} 	
-Features in the time domain. Statistical features, Impulsive Metrics, 
+Statistical features, Impulsive Metrics, 
 \subsubsection{Cross correlation}
+???
 \subsubsection{Mean}
-The mean is simply the average value of the signal.
-$$ \bar{x} = \frac{\sum^N_{i=i} x_i}{N} $$
+The mean is the average value of the signal.
+$$ \bar{x} = \frac{\sum^N_{i=1} x_i}{N} $$
 \subsubsection{Standard Deviation}  
-Measures the dispersion of a data set relative to its mean. Square root of variance.
-$$ Var =\frac{\sum^N_{i=1}(x_i-m)^2}{(N-1)\sigma^2} $$
+The standard deviation is the square root of variance measures the dispersion of a data set relative to its mean. 
+$$ \sigma =\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)\sigma^2} $$
 \subsubsection{Root Mean Square (RMS)}
-
-$$ RMS = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
+Square root of the mean squared.
+$$ x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
 \subsubsection{Shape Factor}
-
-$$ \frac{ \sqrt{\frac{1}{N} \sum^N_{i=1}x_i^2} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
+Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the units
+$$ x_{SF} = \frac{ x_{rms} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
 \subsubsection{Kurtosis}
-
-$$ Ku = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
+Kurtosis is a statistical measure of the tailedness of a distribution. It gives us the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault.
+$$ x_{kurt} = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
 \subsubsection{Skewness} 
-A measure of asymmetry of through probability density function.
-$$ Sk = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
+A measure of asymmetry of through probability density function. Faults can sometimes be revealed through asymmetric distribution.
+$$ x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
 \subsubsection{Peak Value}
-Maximum vale of a signal
-$$ PV = max(x_i) $$ 
+Maximum value of a signal
+$$ x_p = max(x_i) $$ 
 \subsubsection{Impulse Factor} 
-Impulse? Divides the maximum absolute value by the mean of absolute value
-$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
+The maximum absolute value divided by the mean of absolute value. Comparison of the height of the peak to the average value.
+$$ x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
 \subsubsection{Crest Factor} 
-Impact. Divide the maximum absolute value of vibration signal and
-RMS value.
-$$ CF = \frac{max|x_i|}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
+Divide the maximum absolute value of a signal by the RMS value.
+Faults can often be detected as a peakiness of signals before they become evident in the energy (RMS).
+$$ x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
 \subsubsection{Clearance Factor} 
-
-$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|)^2}} $$
+Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
+$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2} $$
 \subsubsection{Signal to Noise Ratio}
-
+Ratio of signal power to noise power in decibels.
 \subsubsection{Signal-to-Noise And Distortion}
-
+Ratio of total harmonic component power to fundamental power.
 \subsubsection{Total Harmonic Distortion}
-   
+Ratio of total signal power to total noise-plus-distortion power.
+
 \subsection{Frequency Domain Features}
+In order to computer the frequency features one must first compute a power spectrum.
 \subsubsection{Band Power}
 The band power is the area beneath the graph, within a frequency range, of the power spectral density vs the frequencies.
 the power of a signal in the selected frequency range.
 The area under the spectrum curve within the chosen band limits.
 \subsubsection{Peak Amplitude}
-
+Peak amplitude is the height of the maximum frequency value on the power spectrum.
 \subsubsection{Peak Frequency}
+Peak frequency is the value of the frequency which has the highest peak.
 
-\subsection{Correlations between raw signals}
 \subsection{Coefficient of Determination, R-squared}
 Compute cross correlations between 2 features (this can maybe be a feature as well?)
 Calculate R2, which relates to the variance in linear regression models.
@@ -209,24 +214,27 @@ Calculate R2, which relates to the variance in linear regression models.
  R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
  &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
 \end{align*}
-\subsection{Models}
-We are doing inference and not prediction.
-Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
-Compute a multivariable regression model.
-Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
+An R-squared value of 1 means that the two signals are perfectly linear where as a value of 0 or closed to zero means there is no or next to none linear relationship.
 \subsubsection{Feature Selection}
+Once the features have been calculated one must discover the most useful and relevant features. 
+
 This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. "The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.\\
 This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.\\
 This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
+\subsection{Models}
+As mentioned on earlier, supervised learning involves building a model in order to predict or estimate an output based on one or more inputs. In the case of unsupervised learning, there are one or more inputs but no quantitative outputs. However, one can still learn about relationships between signals and the structure from such data. This is more of an inference task rather than prediction.
+By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too.
+\subsubsection{Linear Regression}
+Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
+\subsubsection{Multivariate Models}
+Compute a multivariable regression model.
+Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 $$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
 \subsubsection{Metrics}
+$$ FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y))) $$
 Normalized residual sum of squares (NRSS).
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC = log $$
-\subsubsection{Linear Regression}
-XXX
-\subsubsection{Multivariate Models}
-XXX
 
 These references haven't been used yet.
 A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}
@@ -248,8 +256,7 @@ Physical and Metrological Approach for Feature’s Definition and Selection in C
 \clearpage  
 \section{Process}
 \subsection{Description of Data}
-The data for this project comes from a straightening machine at a multinational steel manufacturer. It consists of one hour of data over a 15 day period. It is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. 
-
+The data for this project comes from a straightening machine at a large steel manufacturer. It consists of one hour of data over a 15 day period and it is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. 
 %The file names are given in \ref{fileNames}.
 %\begin{center}
 %\begin{tabular}{ |l| } 
@@ -288,7 +295,7 @@ The data for this project comes from a straightening machine at a multinational 
 %\captionof{table}{File names which indicate the day the data was taken}\label{fileNames}
 %\end{center}
 
-The list of signals given by the company are given in Table \ref{signalNames}.
+The list of signals made available by the company are shown in Table \ref{signalNames}.
 \begin{center}
 \begin{tabular}{ |c|c|l| }
  \hline
@@ -321,8 +328,8 @@ Signal Index & Signal Number & Signal Name \\
 \end{tabular}
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
-\subsection{Matlab}
-Matlab's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. For the remainder of the report some figures are labeled with a feature number instead of the full text due to space constraints. Refer to Table \ref{signalNames} to find which feature each index represents.
+\subsection{MATLAB}
+MATLAB's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. Throughout the remainder of the report some figures are labeled with a feature number instead of the full text due to readability and space constraints. Use Table \ref{signalNames} to refer to which feature the indexes represents.
 \begin{center}
 \begin{tabular}{ |c|l| }
  \hline
@@ -358,18 +365,22 @@ Matlab's Diagnostic Feature Designer was used calculate the features from the si
  \hline
  16 & Peak Frequency 1 \\
  \hline
+ \captionof{table}{Feature Names}\label{featureNames}
 \end{tabular}
-\captionof{table}{Feature Names}\label{featureNames}
+
 \end{center}
 
-\subsection{Pre-processing and State detection}
-State detection for this study is performed using signal 5, 21:20 Actual moment under Rolls. The data is separated into cycles using this signal to isolate just the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
+\subsection{State detection}
+State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is no or minimal torque on this sensor and when processing it experiences a much larger moment.
+The data is separated into cycles using this signal to isolate the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
+\subsection{Feature Selection}
+Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R-squared value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R-squared value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R-squared value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
 
-"You could standardize the signals, eliminate the dc-offset, etc. before calculating the features."
+A range of two threshold values are used for this method to select feature pairs. An upper and and a lower R-squared threshold value reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
 
-However if we remove the mean from some of the signals we are left with nothing, since some of the signals are straight lines.
+A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R-squared values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
 
-The straightening machine in this study processes tubes of different diameters. One of the signals can be used to indicate this diameter. This can be used to classify the data further into different pipe widths.
+Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
 \section{Results}
 \subsection{R-squared Correlation}
 An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals with the lower triangle being a replica of the upper triangle. 
@@ -630,13 +641,13 @@ Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the
 \clearpage 
 
 \section{Discussion}
-This study gave some suggestions as to what data is of value and what is not.
+This study aimed to give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not.
 
 The work performed in this study has been limited to an analysis of the available data. Future work could include the application of machine learning techniques to the signals highlighted in this project. In particular unsupervised learning approaches such as K nearest neighbors or K-means clustering approach.
 
 The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. Perhaps a better selection of data would include a snippet of data every 1-2 weeks and thus one could get a better view of how the machine degrades over a year.
 
-Another suggestion for future studies is to perform an additional pre-processing step to separate data into periods where the machine is producing certain SKUs.
+The straightening machine in this study produces products of of different diameters. At least one of the signals can be used to indicate this diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data and focusing on only one tube width would removed any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
 
 One conclusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10\%)".\\
 Another conclusion could be that we need to go forward to doing this and that.\\
