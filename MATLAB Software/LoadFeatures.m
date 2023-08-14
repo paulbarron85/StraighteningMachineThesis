@@ -94,5 +94,22 @@ for signalIndex = 1 : numOfSignals
         featureArray(:, featureIndex + numOfTimeFeatures, signalIndex) = DFD_FeatureTable_FreqDomain.(signalNames_Freq(signalIndex) + featureNames_Freq(featureIndex));
     end   
 end
-FeatureNames_Combined = [featureNames_Time featureNames_Freq];
+%FeatureNames_Combined = [featureNames_Time featureNames_Freq];
+FeatureNames_Combined = [ "1 Clearance Factor"... %1
+                "2 Crest Factor"... %2
+                "3 Impulse Factor"... %3
+                "4 Kurtosis"... %4
+                "5 Mean"... %5
+                "6 PeakValue"... %6
+                "7 RMS"... %7
+                "8 SNR"... %8
+                "9 SINAD"... %9
+                "10 ShapeFactor"... %10
+                "11 Skewness"... %11
+                "12 Std"... %12
+                "13 THD"... %13
+                "14 BandPower"... %14
+                "15 PeakAmp1"... %15
+                "16 PeakFreq1" %16
+               ];
 numOfFeatures_Combined = size(FeatureNames_Combined,2);

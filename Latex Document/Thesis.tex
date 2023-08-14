@@ -1,8 +1,5 @@
 \documentclass{article}
-%\usepackage[a4paper, total={6.5in, 8in}]{geometry}
-%\usepackage[a4paper, margin=2.5cm]{geometry}
 \usepackage[a4paper]{geometry}
-
 \usepackage{fancyhdr, graphicx, lastpage}
 \usepackage{titlesec}
 \usepackage{amsmath}
@@ -20,6 +17,7 @@
 \graphicspath{{./images/}}
 \allowdisplaybreaks
 \usepackage[parfill]{parskip} % Change indents to line breaks between paragraphs
+\emergencystretch=1em % Used to make badness error for bibliography go away
 
 \title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
 \date{September 2023}
@@ -35,21 +33,22 @@
 
 \section{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. On the other hand, one does not want to spend time and resources performing maintenance on a machine that does not require it. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
+The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. On the other hand, one does not want to waste resources performing maintenance where it is not required. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
 
 % What the project is about
-This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification.
+This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification.
 
 % Outling of project steps
-The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated. The same process is performed between signals for each feature. 
+The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated and a semi manual method is used to select a combination of features. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
-A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection going forward.
 \clearpage
 
 \section{Acknowledgments}
 I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience.
 I would like to thank the University of Gävle for offering a Masters program available to take as distance education.
+Finally I would like to thank my partner, Alex Hamelin, for her support.
 \newpage
 
 \fancypagestyle{plain}{
@@ -125,14 +124,11 @@ The aim of this project is to examine the existing data collection strategy for 
 \item Understand the signals from a statistical point of view.
 \item Identify which features are of significance and which are not useful for condition monitoring i.e. which features may represent degradation condition.
 \end{itemize}
-%\subsection{Tools}
-%MATLAB Diagnostic Feature Designer.
-%\subsection{Structure of the Report}
 \clearpage  
 \section{Theory}
 \subsection{Feature Extraction}
 %Statistical learning?
-Statistical learning 
+ 
 
 %Why Feature Extraction?
 One problem with high dimensional data is that it requires vast amounts of storage. By firstly extracting features and secondly deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the data.
@@ -236,66 +232,26 @@ Normalized residual sum of squares (NRSS).
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC = log $$
 
-These references haven't been used yet.
-A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}
+These references haven't been used yet.\\
+A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}\\
 A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent~\cite{zhang2019new}
-A review on vibration-based condition monitoring of rotating machinery~\cite{tiboni2022review}
-Automatic feature extraction and selection for condition monitoring and related datasets~\cite{schneider2018automatic}
+A review on vibration-based condition monitoring of rotating machinery~\cite{tiboni2022review}\\
+Automatic feature extraction and selection for condition monitoring and related datasets~\cite{schneider2018automatic}\\
 Comparison of automated feature selection and reduction methods on the condition monitoring issue~\cite{de2018comparison}
-Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method~\cite{hong2014condition}
-Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network~\cite{saucedo2021condition}
-Degradation trend estimation of slewing bearing based on LSSVM model~\cite{lu2016degradation}
+Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method~\cite{hong2014condition}\\
+Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network~\cite{saucedo2021condition}\\
+Degradation trend estimation of slewing bearing based on LSSVM model~\cite{lu2016degradation}\\
 Features selection procedure for prognostics: An approach based on predictability~\cite{javed2012features}
-Heterogeneous feature models and feature selection applied to bearing fault diagnosis~\cite{rauber2014heterogeneous}
+Heterogeneous feature models and feature selection applied to bearing fault diagnosis~\cite{rauber2014heterogeneous}\\
 Multifeatures fusion and nonlinear dimension reduction for intelligent bearing condition monitoring~\cite{guo2016multifeatures}
-On the Stability and Homogeneous Ensemble of Feature Selection for Predictive Maintenance: A Classification Application for Tool Condition Monitoring in Milling~\cite{assafo2023stability}
+On the Stability and Homogeneous Ensemble of Feature Selection for Predictive Maintenance: A Classification Application for Tool Condition Monitoring in Milling~\cite{assafo2023stability}\\
 Optimal symbolic entropy: An adaptive feature extraction algorithm for condition monitoring of bearings~\cite{li2023optimal}
-PCA-based feature selection scheme for machine defect classification~\cite{malhi2004pca}
+PCA-based feature selection scheme for machine defect classification~\cite{malhi2004pca}\\
 Physical and Metrological Approach for Feature’s Definition and Selection in Condition Monitoring~\cite{d2019physical}
-
 \clearpage  
-\section{Process}
+\section{Process and Results}
 \subsection{Description of Data}
-The data for this project comes from a straightening machine at a large steel manufacturer. It consists of one hour of data over a 15 day period and it is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. 
-%The file names are given in \ref{fileNames}.
-%\begin{center}
-%\begin{tabular}{ |l| } 
-% \hline
-% B\_30\_03.mat \\
-% \hline 
-% B\_31\_03.mat \\
-% \hline 
-% B\_01\_04.mat \\
-% \hline 
-% B\_02\_04.mat \\
-% \hline
-% B\_03\_04.mat \\
-% \hline 
-% B\_04\_04.mat \\
-% \hline 
-% B\_05\_04.mat \\
-% \hline
-% B\_06\_04.mat \\
-% \hline 
-% B\_07\_04.mat \\
-% \hline 
-% B\_08\_04.mat \\
-% \hline 
-% B\_09\_04.mat \\
-% \hline 
-% B\_10\_04.mat \\
-% \hline
-% B\_11\_04.mat \\
-% \hline 
-% B\_12\_04.mat \\
-% \hline
-% B\_13\_04.mat \\
-% \hline
-%\end{tabular}
-%\captionof{table}{File names which indicate the day the data was taken}\label{fileNames}
-%\end{center}
-
-The list of signals made available by the company are shown in Table \ref{signalNames}.
+The data for this project consists of one hour of data over a 15 day period and it is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. The list of signals made available by the company are shown in Table \ref{signalNames}.
 \begin{center}
 \begin{tabular}{ |c|c|l| }
  \hline
@@ -328,7 +284,113 @@ Signal Index & Signal Number & Signal Name \\
 \end{tabular}
 \captionof{table}{Signal Names}\label{signalNames}
 \end{center}
-\subsection{MATLAB}
+
+\subsection{Signal Correlations}
+An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle. Figure \ref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R-squared values in the range of 0.2 to 0.9 printed on the plots. 
+\begin{center}
+\input{tables/correlationTable.tex}    
+\captionof{table}{R2 values for each signal vs. each other signal}
+\label{correlationTable}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
+    \caption{Plots of each signal vs every other signal R-square values between 0.2 and 0.9 printed on the plot}
+    \label{fig:RawSignalCorrelationsFile1}
+\end{figure}
+
+\subsection{Pre-processing}
+State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is no or minimal torque on this sensor and when processing it experiences a much larger moment.
+The data is separated into cycles using this signal to isolate the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
+
+Figure \ref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Some of these identified pulses were too short and thus believed to be false positives. Any pulse under 500 samples (10 seconds) was removed from the data for the next stage leaving 224 pulses to extract features from.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig.eps}
+    \caption{State detection signal vs 21:20 Actual moment under Rollers}
+    \label{fig:StateDetection}
+\end{figure}
+
+Figure \ref{fig:StateDetectionFig_B_02_04} shows one of the plots from Figure \ref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.75]{figures/StateDetectionFig_B_02_04.eps}
+    \caption{State detection for signal 21:20 performed on file B\_02\_04}
+    \label{fig:StateDetectionFig_B_02_04}
+\end{figure}
+
+Figure \ref{fig:IdentifiedPulses} shows pulses or cycles for the signal 21:20 in each of the fifteen files. As mentioned earlier B\_30\_03 and B\_04\_04 show no pulses as all. All the pulses are around 40 seconds in duration with similar shapes but varying profiles.
+ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/IdentifiedPulsesFig.eps}
+    \caption{Identified pulses in each files for file}
+    \label{fig:IdentifiedPulses}
+\end{figure}
+
+Figure \ref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor channel is plotted a different tile. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}
+    \caption{Signal pulses for 224 pulses on each of the 12 signal channels}
+    \label{fig:SignalPulses}
+\end{figure}
+
+Using the identified pulses, we can look at all the other signals during the same periods. Signal 1: 21.07 Angle over Rolls and 2: 21.10 Position over Rolls are fairly constant though contain some small deviations. Signal 7: 21:31 Width position and  8: 21:32 Height position are also fairly constant but contain some information when zoomed in. Signal 21.35 is a fully constant signal and contains nothing but a single value. The label for this signal is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
+
+Figure \ref{fig:SignalPulse3}, \ref{fig:SignalPulse5} and \ref{fig:SignalPulse6} show the signals with the most information/deviation.
+
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse1.eps}
+%    \caption{Signal 1 Pulses 21:07 Angle over Rolls (deg)}
+%    \label{fig:SignalPulse1}
+%\end{figure}
+ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse3.eps}
+    \caption{Signal 3 Pulses 21:12 Actual moment over Rolls (Nm)}
+    \label{fig:SignalPulse3}
+\end{figure}
+
+
+Figure \ref{fig:SignalPulse5} shows 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse5.eps}
+    \caption{Signal 5 Pulses 21:20 Actual moment under Rolls (Nm)}
+    \label{fig:SignalPulse5}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse6.eps}
+    \caption{Signal 6 Pulses 6 21:28 Vibration measurements (mm/s)}
+    \label{fig:SignalPulse6}
+\end{figure}
+
+ 
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[scale = 0.75, keepaspectratio, keepaspectratio]{figures/SignalPulse11.eps}
+%    \caption{Signal 11 Pulses 21:35 Set point force (kN)}
+%    \label{fig:SignalPulse11}
+%\end{figure}
+
+\subsection{Feature Selection}
+Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R-squared value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R-squared value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R-squared value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
+
+A range of two threshold values are used for this method to select feature pairs. An upper and and a lower R-squared threshold value reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
+
+A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R-squared values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
+
+Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
+
 MATLAB's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. Throughout the remainder of the report some figures are labeled with a feature number instead of the full text due to readability and space constraints. Use Table \ref{signalNames} to refer to which feature the indexes represents.
 \begin{center}
 \begin{tabular}{ |c|l| }
@@ -365,186 +427,54 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
  \hline
  16 & Peak Frequency 1 \\
  \hline
- \captionof{table}{Feature Names}\label{featureNames}
 \end{tabular}
-
+ \captionof{table}{Feature Names}\label{featureNames}
 \end{center}
-
-\subsection{State detection}
-State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is no or minimal torque on this sensor and when processing it experiences a much larger moment.
-The data is separated into cycles using this signal to isolate the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
-\subsection{Feature Selection}
-Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R-squared value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R-squared value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R-squared value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
-
-A range of two threshold values are used for this method to select feature pairs. An upper and and a lower R-squared threshold value reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
-
-A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R-squared values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
-
-Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
-\section{Results}
-\subsection{R-squared Correlation}
-An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals with the lower triangle being a replica of the upper triangle. 
-Figure \ref{fig:RawSignalCorrelationsFile1}
-\begin{center}
-\input{tables/correlationTable.tex}    
-\captionof{table}{R2 values for each signal vs. each other signal}
-\label{correlationTable}
-\end{center}
-Figure \ref{fig:RawSignalCorrelationsFile1} is highly linear and from Table \ref{correlationTable} has an R2 correlation value of 0.99. This means that there is not much value to be gained by including both of these signals and likely one can be excluded from analysis.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
-    \caption{Plots of each signal vs every other signal R-square values between 0.2 and 0.9 printed on the plot}
-    \label{fig:RawSignalCorrelationsFile1}
-\end{figure}
-
-Figure \ref{fig:RawSignalCorrelationsFile1} is somewhat linear and from Table \ref{correlationTable} has an R2 correlation value of 0.88.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_12vSignal21_20.eps}
-    \caption{Signal 21.12 vs Signal 21.20}
-    \label{fig:Signal21_12vSignal21_20}
-\end{figure}	
-
-Figure \ref{fig:Signal21_20vSignal21_28} could be a non-linear relationship
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_20vSignal21_28.eps}
-    \caption{Signal 21.20 vs 21.28}
-    \label{fig:Signal21_20vSignal21_28}
-\end{figure}	
-	
-\subsection{Pre-processing}
-Figure \ref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Some of these identified pulses were too short and thus believed to be false positives. Any pulse under 500 samples (10 seconds) was removed from the data for the next stage leaving 224 pulses to extract features from.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig.eps}
-    \caption{State detection signal vs 21:20 Actual moment under Rollers}
-    \label{fig:StateDetection}
-\end{figure}
-
-Figure \ref{fig:StateDetectionFig_B_02_04} shows one of the plots from Figure \ref{fig:StateDetection} in greater detail. This particular file is the one with the highest number of pulses.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig_B_02_04.eps}
-    \caption{State detection for signal 21:20 performed on file B\_02\_04}
-    \label{fig:StateDetectionFig_B_02_04}
-\end{figure}
-
-Figure \ref{fig:IdentifiedPulses} shows pulses or windows for the signal 21:20 in each of the fifteen files. As mentioned earlier B\_30\_03 and B\_04\_04 show no pulses as all. All the pulses are around 40 seconds in duration with similar shapes but varying profiles.
- 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/IdentifiedPulsesFig.eps}
-    \caption{Identified pulses in each files for file}
-    \label{fig:IdentifiedPulses}
-\end{figure}
-
-\subsection{Visual Observations}
-Figure \ref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor channel is plotted a different tile. 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}
-    \caption{Signal pulses for 224 pulses on each of the 12 signal channels}
-    \label{fig:SignalPulses}
-\end{figure}
-
-Signal 21.07 Angle over Rolls and 21.10 Position over Rolls are fairly constant. They are just straight lines almost looking like a two level discrete signal.
-Signal 21:31 and 21:32 are also fairly constant but contain some information when zoomed in.
-Signal 21.35 is a perfect constant signal. The label is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback.
-
-Figure \ref{fig:SignalPulse1} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulse1.eps}
-    \caption{Signal 1 Pulses}
-    \label{fig:SignalPulse1}
-\end{figure}
-
-
-Figure \ref{fig:SignalPulse3} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulse3.eps}
-    \caption{Signal 3 Pulses}
-    \label{fig:SignalPulse3}
-\end{figure}
-
-
-Figure \ref{fig:SignalPulse5} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulse5.eps}
-    \caption{Signal 5 Pulses}
-    \label{fig:SignalPulse5}
-\end{figure}
-
-
-Figure \ref{fig:SignalPulse6} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulse6.eps}
-    \caption{Signal 6 Pulses}
-    \label{fig:SignalPulse6}
-\end{figure}
-
-
-Figure \ref{fig:SignalPulse11} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulse11.eps}
-    \caption{Signal 11 Pulses}
-    \label{fig:SignalPulse11}
-\end{figure}
 
 \subsection{Feature Extraction}
 
 \subsubsection{Feature vs Feature}
-Figure \ref{fig:FeatureVsFeatureSignal1} shows 
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureSignal1.eps}
+%    \caption{Feature Vs Feature for Signal 1 21.07}
+%    \label{fig:FeatureVsFeatureSignal1}
+%\end{figure}
+Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Only the R-squared values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
+The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureSignal1.eps}
-    \caption{Feature Vs Feature for Signal 1 21.07}
-    \label{fig:FeatureVsFeatureSignal1}
-\end{figure}
-FeatureVsFeatureCombinedSignal
-Figure \ref{fig:FeatureVsFeatureCombinedSignal1} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal1.eps}
-    \caption{Feature Vs Feature for Signal 1, 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain.}
-    \label{fig:FeatureVsFeatureCombinedSignal1}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal3.eps}
+    \caption{Feature Vs Feature for Signal 3, Actual moment over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain.}
+    \label{fig:FeatureVsFeatureCombinedSignal3}
 \end{figure}
 
-Figure \ref{fig:Models_Signal3Feature1} shows 
+Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness. Figure \ref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal3Feature1.eps}
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature1.eps}
     \caption{Signal 3 Feature 1}
     \label{fig:Models_Signal3Feature1}
 \end{figure}
+Likewise in this example is may also be of interest to look at combinations including Features 10, 11 and 14.
 Figure \ref{fig:Models_Signal3Feature10} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal3Feature10.eps}
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature10.eps}
     \caption{Signal 3 Feature 10}
     \label{fig:Models_Signal3Feature10}
 \end{figure}
 Figure \ref{fig:Models_Signal3Feature11} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal3Feature11.eps}
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature11.eps}
     \caption{Signal 3 Feature 11}
     \label{fig:Models_Signal3Feature11}
 \end{figure}
 Figure \ref{fig:Models_Signal3Feature14} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal3Feature14.eps}
+    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature14.eps}
     \caption{Signal 3 Feature 14}
     \label{fig:Models_Signal3Feature14}
 \end{figure}
@@ -592,12 +522,12 @@ Figure \ref{fig:Models_Signal9Feature11} shows
 \end{figure}
 
 \subsubsection{Signal vs Signal}
-Figure \ref{fig:FeatureVsFeatureSignal1} shows 
+Figure \ref{fig:SignalVsSignalFeatureTime1} shows 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeatureTime1.eps}
-    \caption{Signal Vs Signal for Feature 1}
-    \label{fig:SignalVsSignalFeature1}
+    \caption{Signal Vs Signal for Time Feature 1}
+    \label{fig:SignalVsSignalFeatureTime1}
 \end{figure}
 
 
@@ -636,11 +566,12 @@ Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the
 
 \subsection{Linear Models}
 
-\subsection{Multivariate models}
+\subsection{Multivariate Models}
 
 \clearpage 
 
 \section{Discussion}
+%Discuss results and put in context/comparison with references at the beginning. 
 This study aimed to give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not.
 
 The work performed in this study has been limited to an analysis of the available data. Future work could include the application of machine learning techniques to the signals highlighted in this project. In particular unsupervised learning approaches such as K nearest neighbors or K-means clustering approach.
@@ -658,11 +589,8 @@ Ideally we would have data over the lifespan of a machine. The data we have righ
 One conclusion might be just to discard all the signals with constant values.
 These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
 
-Discuss results and put in context/comparison with references at the beginning. 
-
 Since 2017 it is mandatory that all technical reports, theses, and similar publications, discuss Environmental Impact and Sustainability of the project. To find a starting point it is suggested to use “the United Nations’ 2030 Agenda for Sustainable Development” and its 17 Sustainable Development Goals (www.un.org/sustainabledevelopment/development-agenda). Under each goal there are some goal targets listed. Identify one or more goals relevant for your thesis, and comment using relevant goal targets.
 It should also be noted that the result and the methods used in this thesis are in good agreement with target 9.5 of the 2030 Agenda for sustainable development [52].
-
 \clearpage
 
 \section{Conclusion}
