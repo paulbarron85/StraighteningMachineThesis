@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage[a4paper]{geometry}
+\usepackage[a4paper, margin=2.5cm]{geometry}
 \usepackage{fancyhdr, graphicx, lastpage}
 \usepackage{titlesec}
 \usepackage{amsmath}
@@ -76,8 +76,9 @@ Not only machines but other engineering structures like bridges and also in biol
 %Discuss more specifically bearing vibration analysis
 A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. ~\cite{soualhi2021novel}.
 [A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
+
 %Even more specifically a tube straightening machine
-One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used in the steel industry for the manufacturing of steel tubes. They are crucial for straightening the tube in the longitudinal direction and improving roundness of the product~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics}. 
+One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used in the steel industry for the manufacturing of steel tubes. They are crucial for straightening the tube in the longitudinal direction and improving roundness of the product~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
 
 %Explain why condition monitoring would be useful for a straightening machine
 Such machines expensive to build and/or acquire and down time can be costly. Performance may also be impacted by the machine being in poor condition requiring maintenance. Thus it is in the interest of the operators to be able to assess the machine condition, predict the remaining useful life and prevent unplanned downtime and catastrophic failures.
@@ -89,34 +90,6 @@ environment, it is difficult to obtain failure data of slewing bearing under act
 %Supervised vs Unsupervised learning
 Supervised classification uses labeled data to perform the task. However, in real applications this is often not the case. More common is to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised or semi-supervised learning.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=90mm, keepaspectratio]{straightening2.png}
-	\caption{A straightening machine~\cite{ma2020effect}}
-	\label{straighteningImage2}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[]{straightening1.jpg}
-	\caption{A straightening machine~\cite{kato2014straightening}}
-	\label{straighteningImage1}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[]{straightening3.jpg}
-	\caption{A straightening machine~\cite{ma2021analysis}}
-	\label{straighteningImage3}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=90mm, keepaspectratio]{Straightening5.png}
-	\caption{A straightening machine~\cite{zhang2019modeling}}
-	\label{straighteningImage5}
-\end{figure}
-
 \subsection{Project Aim}
 The aim of this project is to examine the existing data collection strategy for a tube straightening machine and make some suggestions as to whether it is possible to perform condition monitoring and/or remaining life analysis for this machine. The first step analyze the available data that can be be attained using the existing sensors and data acquisition system. The end foal is to begin developing a strategy that will assist the company to know when the machine requires maintenance. The specific goals of this project are summarized as follows:
 \begin{itemize}
@@ -126,9 +99,51 @@ The aim of this project is to examine the existing data collection strategy for 
 \end{itemize}
 \clearpage  
 \section{Theory}
+\subsection{System}
+Rotary straightening machines, Figures \ref{straighteningImage2}, \ref{straighteningImage3} and \ref{straighteningImage6}, are industrial machinery to straighten and improve circularity of a steel tube. A tube is fed through a series of roller pairs undergoing a series of bending moments. A number of different configurations for this type of machine exist with six and 10 rolls being common. At least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine.
+
+The rollers' profile is not the same as the tube radius but are hyperbolic/parabolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. "By adjusting from a right angle with respect to the pipe up to approximately 45 degrees with the upper rollers being adjusted in opposite angular relation to the lower rollers."
+
+"While passing through the machine, the tube is subjected to two specific straightening forces: pressure straightening and bend (or offset) straightening."
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[keepaspectratio]{straightening2.png}
+	\caption{An image of the roller profile of a straightening machine~\cite{ma2020effect}}
+	\label{straighteningImage2}
+\end{figure}
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[]{straightening1.jpg}
+%	\caption{A straightening machine~\cite{kato2014straightening}}
+%	\label{straighteningImage1}
+%\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[]{straightening3.jpg}
+	\caption{An image of a straightening machine layout~\cite{ma2021analysis}}
+	\label{straighteningImage3}
+\end{figure}
+
+%\begin{figure}[H]
+%	\centering
+%	\includegraphics[width=90mm, keepaspectratio]{Straightening5.png}
+%	\caption{A straightening machine~\cite{zhang2019modeling}}
+%	\label{straighteningImage5}
+%\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, keepaspectratio]{Straightening6.png}
+	\caption{A 10 roller straightening machine~\cite{zhang2019modeling}}
+	\label{straighteningImage6}
+\end{figure}
+
+
 \subsection{Feature Extraction}
-%Statistical learning?
- 
+%Statistical learning? 
 
 %Why Feature Extraction?
 One problem with high dimensional data is that it requires vast amounts of storage. By firstly extracting features and secondly deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the data.
@@ -300,6 +315,13 @@ An analysis of the raw signals was performed using R-squared value. Table \ref{c
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_12vSignal21_28.eps}
+    \caption{Signal 21.12 v Signal 21 .28}
+    \label{fig:Signal21_12vSignal21_28}
+\end{figure}
+
 \subsection{Pre-processing}
 State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is no or minimal torque on this sensor and when processing it experiences a much larger moment.
 The data is separated into cycles using this signal to isolate the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
@@ -341,7 +363,7 @@ Figure \ref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor chan
 
 Using the identified pulses, we can look at all the other signals during the same periods. Signal 1: 21.07 Angle over Rolls and 2: 21.10 Position over Rolls are fairly constant though contain some small deviations. Signal 7: 21:31 Width position and  8: 21:32 Height position are also fairly constant but contain some information when zoomed in. Signal 21.35 is a fully constant signal and contains nothing but a single value. The label for this signal is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
 
-Figure \ref{fig:SignalPulse3}, \ref{fig:SignalPulse5} and \ref{fig:SignalPulse6} show the signals with the most information/deviation.
+Figure \ref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under rolls, signal in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Channel 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
 
 %\begin{figure}[H]
 %    \centering
@@ -350,12 +372,13 @@ Figure \ref{fig:SignalPulse3}, \ref{fig:SignalPulse5} and \ref{fig:SignalPulse6}
 %    \label{fig:SignalPulse1}
 %\end{figure}
  
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse3.eps}
-    \caption{Signal 3 Pulses 21:12 Actual moment over Rolls (Nm)}
-    \label{fig:SignalPulse3}
-\end{figure}
+ 
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse3.eps}
+%    \caption{Signal 3 Pulses 21:12 Actual moment over Rolls (Nm)}
+%    \label{fig:SignalPulse3}
+%\end{figure}
 
 
 Figure \ref{fig:SignalPulse5} shows 
@@ -367,12 +390,12 @@ Figure \ref{fig:SignalPulse5} shows
 \end{figure}
 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse6.eps}
-    \caption{Signal 6 Pulses 6 21:28 Vibration measurements (mm/s)}
-    \label{fig:SignalPulse6}
-\end{figure}
+%\begin{figure}[H]
+%    \centering
+%    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse6.eps}
+%    \caption{Signal 6 Pulses 6 21:28 Vibration measurements (mm/s)}
+%    \label{fig:SignalPulse6}
+%\end{figure}
 
  
 %\begin{figure}[H]
@@ -440,12 +463,12 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 %    \caption{Feature Vs Feature for Signal 1 21.07}
 %    \label{fig:FeatureVsFeatureSignal1}
 %\end{figure}
-Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Only the R-squared values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
+Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R-squared values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
 The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal3.eps}
-    \caption{Feature Vs Feature for Signal 3, Actual moment over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain.}
+    \caption{Feature Vs Feature for Signal 3, Actual moment over Rolls}
     \label{fig:FeatureVsFeatureCombinedSignal3}
 \end{figure}
 
@@ -456,22 +479,21 @@ Looking at Feature 1 for this channel, it can be seen that the R-square value is
     \caption{Signal 3 Feature 1}
     \label{fig:Models_Signal3Feature1}
 \end{figure}
-Likewise in this example is may also be of interest to look at combinations including Features 10, 11 and 14.
-Figure \ref{fig:Models_Signal3Feature10} shows 
+Likewise in this example is may also be of interest to look at combinations including Features 10 (Figure \ref{fig:Models_Signal3Feature10}), 11 (Figure \ref{fig:Models_Signal3Feature11}) and 14 (Figure \ref{fig:Models_Signal3Feature14}).
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature10.eps}
     \caption{Signal 3 Feature 10}
     \label{fig:Models_Signal3Feature10}
 \end{figure}
-Figure \ref{fig:Models_Signal3Feature11} shows 
+ 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature11.eps}
     \caption{Signal 3 Feature 11}
     \label{fig:Models_Signal3Feature11}
 \end{figure}
-Figure \ref{fig:Models_Signal3Feature14} shows 
+ 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature14.eps}
