@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[]{article}
 \usepackage[a4paper, margin=2.5cm]{geometry}
 \usepackage{fancyhdr, graphicx, lastpage}
 \usepackage{titlesec}
@@ -24,14 +24,17 @@
 \author{Paul Barron}
 
 \begin{document}
-\pagenumbering{gobble}
+\pagenumbering{roman}
 \maketitle
 \newpage
-\pagenumbering{arabic}
-\tableofcontents
+
+\section*{Acknowledgments}
+I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience.
+I would like to thank the University of Gävle for offering a Masters program available to take as distance education.
+Finally I would like to thank my partner, Alex Hamelin, for her support.
 \newpage
 
-\section{Abstract}
+\section*{Abstract}
 % Some general comment on the reasons for the project
 The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. On the other hand, one does not want to waste resources performing maintenance where it is not required. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
 
@@ -45,10 +48,10 @@ The data consists of an hour per day taken from a two week duration. It is prepo
 A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection going forward.
 \clearpage
 
-\section{Acknowledgments}
-I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience.
-I would like to thank the University of Gävle for offering a Masters program available to take as distance education.
-Finally I would like to thank my partner, Alex Hamelin, for her support.
+\tableofcontents
+\newpage
+\listoffigures
+\listoftables
 \newpage
 
 \fancypagestyle{plain}{
@@ -58,37 +61,32 @@ Finally I would like to thank my partner, Alex Hamelin, for her support.
 }
 \pagestyle{plain}
 
+\pagenumbering{arabic}
 \section{Introduction}
 \subsection{Background}
-%Discuss why condition monitoring is important
-The subject of condition monitoring and predictive maintenance is a large area of research in the machine and manufacturing world. Extracting condition indicators in order to monitor equipment health and predict remaining lifetime can have valuable benefits to any company. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from resources already in place and thus financial benefits.
+% What is condition monitoring
+Condition monitoring (CM) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources.
 
-%What is condition monitoring
-Condition monitoring describes of a set of sensors that measure physical conditions of a machine such vibration, temperature, acoustics etc. in addition to an algorithm that takes the sensor data as input and outputs a health metric.
-
-Advanced monitoring of machining operations~\cite{teti2010advanced}
-
-Not only machines but other engineering structures like bridges and also in biological systems.
-
-%Condition Monitoring with Vibration Signals: Compressive Sampling and Learning Algorithms for Rotating Machines - Textbook
-"Machine condition monitoring techniques can be grouped into the following: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring."
-
-%Discuss more specifically bearing vibration analysis
-A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. ~\cite{soualhi2021novel}.
-[A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
-
+% Discuss why CM is important
+The application of CM and predictive maintenance is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges and also biological systems. 
+% Discuss more specifically bearing vibration analysis
+A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
 %Even more specifically a tube straightening machine
-One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used in the steel industry for the manufacturing of steel tubes. They are crucial for straightening the tube in the longitudinal direction and improving roundness of the product~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
+One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
 
-%Explain why condition monitoring would be useful for a straightening machine
-Such machines expensive to build and/or acquire and down time can be costly. Performance may also be impacted by the machine being in poor condition requiring maintenance. Thus it is in the interest of the operators to be able to assess the machine condition, predict the remaining useful life and prevent unplanned downtime and catastrophic failures.
+% Explain why condition monitoring would be useful for a straightening machine
+Straightening machines, like many other industrial machines, are expensive to acquire and down time is costly. Performance may also be impacted by the machine being in poor condition and in need of maintenance. Thus it is in the interest of the operators to be able to schedule planned maintenance instead of having unplanned downtime and catastrophic failures.
 
-%Difficult to obtain failure data
-"Because slewing bearing is a large low-speed heavy-load bearing, vibration signal is insufficient. On the other hand, because of the influence of the
-environment, it is difficult to obtain failure data of slewing bearing under actual working conditions, and tests also will entails high costs, so that the failure data is limit."This paper discusses a life forcasting model~\cite{wang2016multiple}
+% Challenges for CM
+%Advantage of having access to this data
+While there is a large array of research around bearing vibration and condition monitoring, all machines have their nuances so one CM strategy is not necessarily suitable for all. No research specifically involving CM on a straightening machine could be found. Unlike a simulation study, CM requires real-world data and it is not readily available unless working inside of a company. This study has access to real world data from such a machine and serves as a great opportunity to do an analysis.
 
-%Supervised vs Unsupervised learning
-Supervised classification uses labeled data to perform the task. However, in real applications this is often not the case. More common is to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised or semi-supervised learning.
+% Big Data -> What is Feature Extraction
+One of the challenges implementing CM is that there are often huge amounts of data to process and sift through. Thus Feature extraction can be used to reduce the amount of data whilst preserving the information from the raw data. By analyzing the features one can then select the most relevant channels and reduce the data even further. How to select the best features is another area of research for exists many automated and non-automated methods. This study uses a semi-automated method using the R-squared correlation coefficient to select the most appropriate features.
+
+% Supervised vs Unsupervised learning
+Another difficulty with condition monitoring research is the limited access to failure data meaning one is often forces to perform unsupervised learning
+Supervised classification uses labeled data to perform the task. However, in real applications this is often not the case. More common is to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised or semi-supervised learning. Here the data analysis is geared towards pattern recognition and clustering since no failure data is available to go with the data.
 
 \subsection{Project Aim}
 The aim of this project is to examine the existing data collection strategy for a tube straightening machine and make some suggestions as to whether it is possible to perform condition monitoring and/or remaining life analysis for this machine. The first step analyze the available data that can be be attained using the existing sensors and data acquisition system. The end foal is to begin developing a strategy that will assist the company to know when the machine requires maintenance. The specific goals of this project are summarized as follows:
@@ -100,11 +98,17 @@ The aim of this project is to examine the existing data collection strategy for 
 \clearpage  
 \section{Theory}
 \subsection{System}
-Rotary straightening machines, Figures \ref{straighteningImage2}, \ref{straighteningImage3} and \ref{straighteningImage6}, are industrial machinery to straighten and improve circularity of a steel tube. A tube is fed through a series of roller pairs undergoing a series of bending moments. A number of different configurations for this type of machine exist with six and 10 rolls being common. At least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine.
+Rotary straightening machines, Figures \ref{straighteningImage2}, \ref{straighteningImage3} and \ref{straighteningImage6}, are industrial machinery developed to straighten and improve ovality of a metal pipes. A tube is fed through a series of roller pairs undergoing a series of bending moments to straighten the tubes. A number of different configurations for this type of machine exist with six and 10 rolls being common. At least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine.
 
-The rollers' profile is not the same as the tube radius but are hyperbolic/parabolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. "By adjusting from a right angle with respect to the pipe up to approximately 45 degrees with the upper rollers being adjusted in opposite angular relation to the lower rollers."
+"Hydraulic or mechanical systems gradually and precisely apply force to specific points on the bent tube. The machine is designed to use controlled bending and flexing forces to counteract the existing deformities in the tube. By applying force at the correct locations, the machine can induce controlled plastic deformation, gradually bringing the tube back to its intended straight form."
+
+The rollers' profile is not the same as the tube radius but are hyperbolic/parabolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. The rollers can be adjusted from parallel to the pipe up to approximately 45 degrees with the upper rollers being adjusted in opposite angle to lower rollers.
 
 "While passing through the machine, the tube is subjected to two specific straightening forces: pressure straightening and bend (or offset) straightening."
+
+Modern machines are equipped with sensors monitor the amount of force being applied, the deformation of the tube, and other relevant parameters. This feedback allows the machine to make real-time adjustments to the straightening process for optimal results. These sensors, while controlling the process itself can also be used for condition monitoring purposes.
+
+While many papers describe theoretical analysis of the mechanical mechanisms of such machine there are none that cover condition monitoring of such machine nor provide real life data from such machine.
 
 \begin{figure}[H]
 	\centering
@@ -141,12 +145,22 @@ The rollers' profile is not the same as the tube radius but are hyperbolic/parab
 	\label{straighteningImage6}
 \end{figure}
 
+%Condition Monitoring with Vibration Signals: Compressive Sampling and Learning Algorithms for Rotating Machines - Textbook
+"Machine condition monitoring techniques can be grouped into the following: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring."
+
+~\cite{soualhi2021novel}.
+[A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
+
+~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
 
 \subsection{Feature Extraction}
 %Statistical learning? 
 
 %Why Feature Extraction?
 One problem with high dimensional data is that it requires vast amounts of storage. By firstly extracting features and secondly deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the data.
+
+"Because slewing bearing is a large low-speed heavy-load bearing, vibration signal is insufficient. On the other hand, because of the influence of the
+environment, it is difficult to obtain failure data of slewing bearing under actual working conditions, and tests also will entails high costs, so that the failure data is limit."This paper discusses a life forcasting model~\cite{wang2016multiple}
 
 %Feature Extraction in general
 Feature extraction is the process of computing numerical values from raw data in order to reduce big data sets but preserves the information. Machine learning algorithms suffer from high volumes of data and information redundancy?
@@ -161,6 +175,9 @@ This paper talks about defines feature goodness metrics of correlation (Corr), m
 
 %Automatic feature extraction? Manual Feature extraction?
 Acoustic emission signals. Ant colony optimization-based feature selection methods?~\cite{liao2010feature}.
+
+Advanced monitoring of machining operations~\cite{teti2010advanced}
+
 
 This paper discusses a life forecasting model~\cite{wang2016multiple}
 This PhD thesis does this..~\cite{martin2017unsupervised}
@@ -311,7 +328,7 @@ An analysis of the raw signals was performed using R-squared value. Table \ref{c
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
-    \caption{Plots of each signal vs every other signal R-square values between 0.2 and 0.9 printed on the plot}
+    \caption{Plot of each signal vs every other signal with R-square values between 0.2 and 0.9}
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
 
@@ -457,6 +474,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \subsection{Feature Extraction}
 
 \subsubsection{Feature vs Feature}
+
 %\begin{figure}[H]
 %    \centering
 %    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureSignal1.eps}
@@ -617,6 +635,16 @@ It should also be noted that the result and the methods used in this thesis are 
 
 \section{Conclusion}
 A study of the available data on a steel tube straightening machine was conducted with regards to using the existing infrastructure for condition monitoring.
+\begin{itemize}
+\item Correlation was performed on the raw signal data to identify relationships between the sensor channels.
+\item The data was prepossessed using an amplitude threshold for the state detection and then a time threshold to eliminate false cycles.
+\item Time and frequency domain features were extracted from the cycles.
+\item For every sensor channel, each feature was plotted against every other feature and the R-squared correlation coefficient was calculated.
+\item An upper and lower threshold, was used to selected a combination of features that are somewhat correlated but not well perfectly correlated.
+
+\end{itemize}
+
+
 \newpage
 
 \section{References} 
