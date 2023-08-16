@@ -6,6 +6,7 @@
 \usepackage[a4paper, tmargin=0.79in, left=1.38in, right=1.38in,bmargin=1.18in]{geometry}
 \usepackage{fancyhdr, graphicx, lastpage}
 \usepackage{amsmath}
+\usepackage{bm}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{float}
@@ -24,7 +25,8 @@
 \graphicspath{{./images/}}
 \allowdisplaybreaks
 \usepackage[parfill]{parskip} %Change indents to line breaks between paragraphs
-\usepackage[acronym, style=superborder, nonumberlist]{glossaries}
+\usepackage[acronym, style=super, nonumberlist]{glossaries}
+
 \emergencystretch=1em % Used to make badness error for bibliography go away
 \newacronym{CM}{CM}{Condition Monitoring}
 \newacronym{PM}{PM}{Predictive Maintenance}
@@ -70,7 +72,8 @@ A number of linear regression models are created based on the results from the c
 \listoffigures
 \listoftables
 \newpage
-\printnoidxglossary[type=\acronymtype]
+
+\printnoidxglossary[type=\acronymtype, style=list, nogroupskip=true]
 \newpage
 
 %\fancypagestyle{plain}{
@@ -276,9 +279,9 @@ Plot some of the regression models between 2 features which are highly correlate
 \subsection{Multivariate Models}
 Compute a multivariable regression model.
 Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
-$$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
+$$ \mathbf{\hat{Y} = (X^T \cdot X) \cdot X^T \cdot Y } $$
 \subsection{Metrics}
-$$ FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y))) $$
+$$ FitValue = 100 * \frac{ 1 - \textrm{norm}(\mathbf{Y} - \mathbf{Y_{est}}) } { \textrm{norm}(\mathbf{Y}-\textrm{mean}(\mathbf{Y})) } $$
 Normalized residual sum of squares (NRSS).
 $$ AIC = 2k - 2Ln(L) $$  
 $$ nAIC $$
@@ -308,29 +311,29 @@ The data for this project consists of one hour of data over a 15 day period and 
  \hline
 Signal Index & Signal Number & Signal Name \\ 
  \hline
-1 & 21:07 & Angle over Rolls (deg) \\
+1 & 21:07 & Angle over Rolls [deg] \\
  \hline
-2 & 21:10 & Position over Rolls (mm) \\
+2 & 21:10 & Position over Rolls [mm] \\
  \hline
-3 & 21:12 & Actual moment over Rolls (Nm) \\
+3 & 21:12 & Actual moment over Rolls [Nm] \\
  \hline
-4 & 21:17 & Angle under roll (deg) \\
+4 & 21:17 & Angle under roll [deg] \\
  \hline
-5 & 21:20 & Actual moment under Rolls (Nm) \\
+5 & 21:20 & Actual moment under Rolls [Nm] \\
  \hline
-6 & 21:28 & Vibration measurements (mm/s) \\ 
+6 & 21:28 & Vibration measurements [mm/s] \\ 
  \hline              
-7 & 21:31 & Width position (mm) \\
+7 & 21:31 & Width position [mm] \\
  \hline
-8 & 21:32 & Height position (mm) \\
+8 & 21:32 & Height position [mm] \\
  \hline
-9 & 21:33 & Error position for height (mm) \\
+9 & 21:33 & Error position for height [mm] \\
  \hline
-10 & 21:34 & Error position for the width (mm) \\
+10 & 21:34 & Error position for the width [mm] \\
  \hline
-11 & 21:35 & Set point force (kN) \\
+11 & 21:35 & Set point force [kN] \\
  \hline
-12 & 21:36 & Actual force (kN) \\
+12 & 21:36 & Actual force [kN] \\
  \hline
 \end{tabular}
 \end{center}
@@ -470,11 +473,11 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
  \hline
  6 & Peak Value \\
  \hline
- 7 & Root Mean Square (\gls{RMS}) \\ 
+ 7 & \gls{RMS} \\ 
  \hline              
- 8 & Signal to Noise Ratio  \\
+ 8 & \gls{SNR}  \\
  \hline
- 9 & Signal-to-noise and Distortion Ratio  \\
+ 9 & \gls{SINAD}  \\
  \hline
  10 & Shape Factor \\
  \hline
@@ -482,7 +485,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
  \hline
  12 & Standard Deviation \\
  \hline
- 13 & Total Harmonic Distortion (THD) \\
+ 13 & \gls{THD} \\
  \hline
  14 & Band Power \\
  \hline
