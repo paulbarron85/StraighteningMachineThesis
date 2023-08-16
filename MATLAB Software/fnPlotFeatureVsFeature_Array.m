@@ -3,7 +3,8 @@ function [R2] = fnPlotFeatureVsFeature_Array(featureArray, lowerBound, upperBoun
     numpoints = size(featureArray, 1); 
     numOfFeatures = size(featureArray, 2);
     t = tiledlayout(numOfFeatures, numOfFeatures, 'TileSpacing','None', 'Padding','tight');
-    title(t, "Signal " + signalIndex + ": " + sensorNames(signalIndex));
+    %title(t, "Signal " + signalIndex + ": " + sensorNames(signalIndex));
+    "Signal " + signalIndex + ": " + sensorNames(signalIndex)
     R2 = zeros(numOfFeatures, numOfFeatures);
     pointidx = 1 : numpoints;
     % Loop through features #1

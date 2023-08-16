@@ -1,7 +1,8 @@
 function [R2] = fnPlotSignalVsSignal(FeatureTable, lowerBound, upperBound, featureIndex, featureNames, signalName, sensorNames)
     figure();
     t = tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');
-    title(t, "Feature " + featureIndex + ": " + featureNames(featureIndex) );
+    %title(t, "Feature " + featureIndex + ": " + featureNames(featureIndex) );
+    "Feature " + featureIndex + ": " + featureNames(featureIndex);
     numpoints = size(FeatureTable.(signalName(1) + featureNames(1)), 1);
     pointidx = 1 : numpoints; 
     numOfSignals = size(signalName, 2);

@@ -24,7 +24,8 @@ function [Y_est] = fnModelPlot3D(Y, X1, X2, txtTitle, labelY, labelX1, labelX2)
     xlabel(labelX1, 'Interpreter', 'none');
     ylabel(labelX2, 'Interpreter', 'none');
     zlabel(labelY, 'Interpreter', 'none');
-    title(txtTitle, 'Interpreter', 'none');
+    %title(txtTitle, 'Interpreter', 'none');
+    txtTitle
 
     % Fit equation from compare function
     FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));

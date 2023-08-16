@@ -16,7 +16,8 @@ function [beta] = fnPlotModel(Y, X1, txtTitle, labelY, labelX1)
     plot(x1fit, yfit);
     xlabel(labelX1, 'Interpreter', 'none');
     ylabel(labelY, 'Interpreter', 'none');
-    title(txtTitle, 'Interpreter', 'none');
+    %title(txtTitle, 'Interpreter', 'none');
+    txtTitle
 
     % Fit equation from compare function
     FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));

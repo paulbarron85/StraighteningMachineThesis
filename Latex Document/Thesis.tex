@@ -1,37 +1,52 @@
 \documentclass[]{article}
-\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{fontspec} % compile w/XeLaTeX
+\usepackage{lmodern}
+\usepackage{setspace} % ability to set the line spacing
+\usepackage[fontsize=13]{scrextend}
+\usepackage[a4paper, tmargin=0.79in, left=1.38in, right=1.38in,bmargin=1.18in]{geometry}
 \usepackage{fancyhdr, graphicx, lastpage}
-\usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{matlab-prettifier}
+\usepackage{pdfpages}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
+\usepackage[labelsep=period]{caption}
+\captionsetup[table]{name=Table}
+\renewcommand{\thetable}{\Roman{table}}
 \makeatletter
 \def\input@path{"./MATLAB Software"}
 \makeatother
 \graphicspath{{./figures/}}
 \graphicspath{{./images/}}
 \allowdisplaybreaks
-\usepackage[parfill]{parskip} % Change indents to line breaks between paragraphs
+\usepackage[parfill]{parskip} %Change indents to line breaks between paragraphs
+\usepackage[acronym, style=superborder, nonumberlist]{glossaries}
 \emergencystretch=1em % Used to make badness error for bibliography go away
-
-\title{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
-\date{September 2023}
-\author{Paul Barron}
+\newacronym{CM}{CM}{Condition Monitoring}
+\newacronym{PM}{PM}{Predictive Maintenance}
+\newacronym{RMS}{RMS}{Root Mean Square}
+\newacronym{SNR}{SNR}{Signal to Noise Ratio}
+\newacronym{THD}{THD}{Total Harmonic Distortion}
+\newacronym{SINAD}{SINAD}{Signal-to-noise and Distortion Ratio}
+\makenoidxglossaries
 
 \begin{document}
-\pagenumbering{roman}
-\maketitle
+\setmainfont{Perpetua}
+\setstretch{1.15}
+\includepdf[]{Coverpage_Barron.pdf}
+\setglossarystyle{index}
 \newpage
+\thispagestyle{empty}
+\mbox{}
+\newpage
+\pagenumbering{roman}
 
 \section*{Acknowledgments}
-I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience.
-I would like to thank the University of Gävle for offering a Masters program available to take as distance education.
-Finally I would like to thank my partner, Alex Hamelin, for her support.
+I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience. I would like to thank the University of Gävle for offering a Masters program available to take as distance education. I would like to thank my partner, Alex Hamelin, for her support.
 \newpage
 
 \section*{Abstract}
@@ -42,33 +57,40 @@ The availability of industrial machinery  is crucial to any business operating i
 This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification.
 
 % Outling of project steps
-The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the $R^{2}$ coefficient of determination to find signals that are correlated and a semi manual method is used to select a combination of features. The same process is performed between signals for each feature. 
+The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the R\textsuperscript{2} coefficient of determination to find signals that are correlated and a semi manual method is used to select a combination of features. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
 A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection going forward.
 \clearpage
 
+\setcounter{tocdepth}{3}
 \tableofcontents
 \newpage
+
 \listoffigures
 \listoftables
 \newpage
+\printnoidxglossary[type=\acronymtype]
+\newpage
 
-\fancypagestyle{plain}{
-	\fancyhf{}
-	\fancyhead[C]{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
-	\cfoot{\thepage} 
-}
-\pagestyle{plain}
+%\fancypagestyle{plain}{
+%	\fancyhf{}
+%	%\addtolength{\headwidth}{.5cm}
+%	%\addtolength{\headwidth}{.5cm}
+%	\fancyhead[C]{Data Analysis for Predictive Maintenance of a Straightening Machine in the Steel Industry}
+%	\cfoot{\thepage}
+%}
+%\pagestyle{plain}
+%\setlength{\headheight}{29pt}
 
 \pagenumbering{arabic}
 \section{Introduction}
 \subsection{Background}
 % What is condition monitoring
-Condition monitoring (CM) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources.
+Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources.
 
 % Discuss why CM is important
-The application of CM and predictive maintenance is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges and also biological systems. 
+The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges and also biological systems. 
 % Discuss more specifically bearing vibration analysis
 A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
 %Even more specifically a tube straightening machine
@@ -82,7 +104,7 @@ Straightening machines, like many other industrial machines, are expensive to ac
 While there is a large array of research around bearing vibration and condition monitoring, all machines have their nuances so one CM strategy is not necessarily suitable for all. No research specifically involving CM on a straightening machine could be found. Unlike a simulation study, CM requires real-world data and it is not readily available unless working inside of a company. This study has access to real world data from such a machine and serves as a great opportunity to do an analysis.
 
 % Big Data -> What is Feature Extraction
-One of the challenges implementing CM is that there are often huge amounts of data to process and sift through. Thus Feature extraction can be used to reduce the amount of data whilst preserving the information from the raw data. By analyzing the features one can then select the most relevant channels and reduce the data even further. How to select the best features is another area of research for exists many automated and non-automated methods. This study uses a semi-automated method using the R-squared correlation coefficient to select the most appropriate features.
+One of the challenges implementing CM is that there are often huge amounts of data to process and sift through. Thus Feature extraction can be used to reduce the amount of data whilst preserving the information from the raw data. By analyzing the features one can then select the most relevant channels and reduce the data even further. How to select the best features is another area of research for exists many automated and non-automated methods. This study uses a semi-automated method using the R\textsuperscript{2} correlation coefficient to select the most appropriate features.
 
 % Supervised vs Unsupervised learning
 Another difficulty with condition monitoring research is the limited access to failure data meaning one is often forces to perform unsupervised learning
@@ -112,8 +134,8 @@ While many papers describe theoretical analysis of the mechanical mechanisms of 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[keepaspectratio]{straightening2.png}
-	\caption{An image of the roller profile of a straightening machine~\cite{ma2020effect}}
+	\includegraphics[width=\textwidth]{straightening2.png}
+	\caption{Roller profile of a straightening machine~\cite{ma2020effect}}
 	\label{straighteningImage2}
 \end{figure}
 
@@ -126,8 +148,8 @@ While many papers describe theoretical analysis of the mechanical mechanisms of 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[]{straightening3.jpg}
-	\caption{An image of a straightening machine layout~\cite{ma2021analysis}}
+	\includegraphics[width=\textwidth]{straightening3.jpg}
+	\caption{Straightening machine layout~\cite{ma2021analysis}}
 	\label{straighteningImage3}
 \end{figure}
 
@@ -141,7 +163,7 @@ While many papers describe theoretical analysis of the mechanical mechanisms of 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth, keepaspectratio]{Straightening6.png}
-	\caption{A 10 roller straightening machine~\cite{zhang2019modeling}}
+	\caption{10 roller straightening machine~\cite{zhang2019modeling}}
 	\label{straighteningImage6}
 \end{figure}
 
@@ -150,8 +172,8 @@ While many papers describe theoretical analysis of the mechanical mechanisms of 
 
 ~\cite{soualhi2021novel}.
 [A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
-
-~\cite{yoshimura2009effect}. Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening}~\cite{ma2020effect}~\cite{ma2021analysis}~\cite{yu2018theoretical}~\cite{das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
+~\cite{yoshimura2009effect}. 
+Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
 
 \subsection{Feature Extraction}
 %Statistical learning? 
@@ -174,7 +196,7 @@ This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
 This paper talks about defines feature goodness metrics of correlation (Corr), monotonicity (Mon) and robustness (Rob) ~\cite{zhang2016degradation}.
 
 %Automatic feature extraction? Manual Feature extraction?
-Acoustic emission signals. Ant colony optimization-based feature selection methods?~\cite{liao2010feature}.
+Acoustic emission signals. Ant colony optimization-based feature selection methods ? ~\cite{liao2010feature}.
 
 Advanced monitoring of machining operations~\cite{teti2010advanced}
 
@@ -184,94 +206,90 @@ This PhD thesis does this..~\cite{martin2017unsupervised}
 
 \subsection{Time Domain Features} 	
 Statistical features, Impulsive Metrics, 
-\subsubsection{Cross correlation}
-???
-\subsubsection{Mean}
-The mean is the average value of the signal.
-$$ \bar{x} = \frac{\sum^N_{i=1} x_i}{N} $$
-\subsubsection{Standard Deviation}  
-The standard deviation is the square root of variance measures the dispersion of a data set relative to its mean. 
-$$ \sigma =\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)\sigma^2} $$
-\subsubsection{Root Mean Square (RMS)}
-Square root of the mean squared.
-$$ x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
-\subsubsection{Shape Factor}
-Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the units
-$$ x_{SF} = \frac{ x_{rms} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
-\subsubsection{Kurtosis}
-Kurtosis is a statistical measure of the tailedness of a distribution. It gives us the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault.
-$$ x_{kurt} = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
-\subsubsection{Skewness} 
-A measure of asymmetry of through probability density function. Faults can sometimes be revealed through asymmetric distribution.
-$$ x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
-\subsubsection{Peak Value}
-Maximum value of a signal
-$$ x_p = max(x_i) $$ 
-\subsubsection{Impulse Factor} 
-The maximum absolute value divided by the mean of absolute value. Comparison of the height of the peak to the average value.
-$$ x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
-\subsubsection{Crest Factor} 
-Divide the maximum absolute value of a signal by the RMS value.
-Faults can often be detected as a peakiness of signals before they become evident in the energy (RMS).
-$$ x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
-\subsubsection{Clearance Factor} 
-Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
-$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2} $$
-\subsubsection{Signal to Noise Ratio}
-Ratio of signal power to noise power in decibels.
-\subsubsection{Signal-to-Noise And Distortion}
-Ratio of total harmonic component power to fundamental power.
-\subsubsection{Total Harmonic Distortion}
-Ratio of total signal power to total noise-plus-distortion power.
-
-\subsection{Frequency Domain Features}
-In order to computer the frequency features one must first compute a power spectrum.
-\subsubsection{Band Power}
-The band power is the area beneath the graph, within a frequency range, of the power spectral density vs the frequencies.
-the power of a signal in the selected frequency range.
-The area under the spectrum curve within the chosen band limits.
-\subsubsection{Peak Amplitude}
-Peak amplitude is the height of the maximum frequency value on the power spectrum.
-\subsubsection{Peak Frequency}
-Peak frequency is the value of the frequency which has the highest peak.
-
-\subsection{Coefficient of Determination, R-squared}
+\subsubsection*{Cross correlation}
 Compute cross correlations between 2 features (this can maybe be a feature as well?)
 Calculate R2, which relates to the variance in linear regression models.
 \begin{align*}
  R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
  &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
 \end{align*}
-An R-squared value of 1 means that the two signals are perfectly linear where as a value of 0 or closed to zero means there is no or next to none linear relationship.
-\subsubsection{Feature Selection}
+An R\textsuperscript{2} value of 1 means that the two signals are perfectly linear where as a value of 0 or closed to zero means there is no or next to none linear relationship.
+\subsubsection*{Mean}
+The mean is the average value of the signal.
+$$ \bar{x} = \frac{\sum^N_{i=1} x_i}{N} $$
+\subsubsection*{Standard Deviation}  
+The standard deviation is the square root of variance measures the dispersion of a data set relative to its mean. 
+$$ \sigma =\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)\sigma^2} $$
+\subsubsection*{Root Mean Square (\gls{RMS})}
+Square root of the mean squared.
+$$ x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
+\subsubsection*{Shape Factor}
+Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the units
+$$ x_{SF} = \frac{ x_{rms} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
+\subsubsection*{Kurtosis}
+Kurtosis is a statistical measure of the tailedness of a distribution. It gives us the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault.
+$$ x_{kurt} = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
+\subsubsection*{Skewness} 
+A measure of asymmetry of through probability density function. Faults can sometimes be revealed through asymmetric distribution.
+$$ x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
+\subsubsection*{Peak Value}
+Maximum value of a signal
+$$ x_p = max(x_i) $$ 
+\subsubsection*{Impulse Factor} 
+The maximum absolute value divided by the mean of absolute value. Comparison of the height of the peak to the average value.
+$$ x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
+\subsubsection*{Crest Factor} 
+Divide the maximum absolute value of a signal by the \gls{RMS} value.
+Faults can often be detected as a peakiness of signals before they become evident in the energy (\gls{RMS}).
+$$ x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
+\subsubsection*{Clearance Factor} 
+Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
+$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2} $$
+\subsubsection*{Signal to Noise Ratio (\gls{SNR})}
+Ratio of signal power to noise power in decibels.
+\subsubsection*{Signal-to-Noise And Distortion (\gls{SINAD})}
+Ratio of total harmonic component power to fundamental power.
+\subsubsection*{Total Harmonic Distortion (\gls{THD})}
+Ratio of total signal power to total noise-plus-distortion power.
+
+\subsection{Frequency Domain Features}
+In order to computer the frequency features one must first compute a power spectrum.
+\subsubsection*{Band Power}
+The band power is the area beneath the graph, within a frequency range, of the power spectral density vs the frequencies.
+the power of a signal in the selected frequency range.
+The area under the spectrum curve within the chosen band limits.
+\subsubsection*{Peak Amplitude}
+Peak amplitude is the height of the maximum frequency value on the power spectrum.
+\subsubsection*{Peak Frequency}
+Peak frequency is the value of the frequency which has the highest peak.
+
+\subsection{Feature Selection}
 Once the features have been calculated one must discover the most useful and relevant features. 
 
 This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. "The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.\\
 This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.\\
 This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
-\subsection{Models}
+\subsection{Linear Regression}
 As mentioned on earlier, supervised learning involves building a model in order to predict or estimate an output based on one or more inputs. In the case of unsupervised learning, there are one or more inputs but no quantitative outputs. However, one can still learn about relationships between signals and the structure from such data. This is more of an inference task rather than prediction.
 By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too.
-\subsubsection{Linear Regression}
 Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
-\subsubsection{Multivariate Models}
+\subsection{Multivariate Models}
 Compute a multivariable regression model.
 Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 $$ \hat{Y} = (X^T \cdot X) \cdot X^T \cdot y $$
-\subsubsection{Metrics}
+\subsection{Metrics}
 $$ FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y))) $$
 Normalized residual sum of squares (NRSS).
 $$ AIC = 2k - 2Ln(L) $$  
-$$ nAIC = log $$
-
+$$ nAIC $$
 These references haven't been used yet.\\
 A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}\\
-A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent~\cite{zhang2019new}
-A review on vibration-based condition monitoring of rotating machinery~\cite{tiboni2022review}\\
-Automatic feature extraction and selection for condition monitoring and related datasets~\cite{schneider2018automatic}\\
-Comparison of automated feature selection and reduction methods on the condition monitoring issue~\cite{de2018comparison}
-Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method~\cite{hong2014condition}\\
-Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network~\cite{saucedo2021condition}\\
+A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}\\
+A review on vibration-based condition monitoring of rotating machinery ~\cite{tiboni2022review}\\
+Automatic feature extraction and selection for condition monitoring and related datasets ~\cite{schneider2018automatic}\\
+Comparison of automated feature selection and reduction methods on the condition monitoring issue ~\cite{de2018comparison}
+Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method ~\cite{hong2014condition}\\
+Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network ~\cite{saucedo2021condition}\\
 Degradation trend estimation of slewing bearing based on LSSVM model~\cite{lu2016degradation}\\
 Features selection procedure for prognostics: An approach based on predictability~\cite{javed2012features}
 Heterogeneous feature models and feature selection applied to bearing fault diagnosis~\cite{rauber2014heterogeneous}\\
@@ -281,10 +299,11 @@ Optimal symbolic entropy: An adaptive feature extraction algorithm for condition
 PCA-based feature selection scheme for machine defect classification~\cite{malhi2004pca}\\
 Physical and Metrological Approach for Feature’s Definition and Selection in Condition Monitoring~\cite{d2019physical}
 \clearpage  
-\section{Process and Results}
+\section{Data Processing}
 \subsection{Description of Data}
 The data for this project consists of one hour of data over a 15 day period and it is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. The list of signals made available by the company are shown in Table \ref{signalNames}.
 \begin{center}
+\captionof{table}{Signal Names}\label{signalNames}
 \begin{tabular}{ |c|c|l| }
  \hline
 Signal Index & Signal Number & Signal Name \\ 
@@ -314,14 +333,16 @@ Signal Index & Signal Number & Signal Name \\
 12 & 21:36 & Actual force (kN) \\
  \hline
 \end{tabular}
-\captionof{table}{Signal Names}\label{signalNames}
 \end{center}
 
 \subsection{Signal Correlations}
-An analysis of the raw signals was performed using R-squared value. Table \ref{correlationTable} shows the R-squared value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle. Figure \ref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R-squared values in the range of 0.2 to 0.9 printed on the plots. 
+An analysis of the raw signals was performed using R\textsuperscript{2} value. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle. Figure \ref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. 
+
 \begin{center}
-\input{tables/correlationTable.tex}    
-\captionof{table}{R2 values for each signal vs. each other signal}
+\captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
+\begin{scriptsize}
+\input{tables/correlationTable.tex} 
+\end{scriptsize}
 \label{correlationTable}
 \end{center}
 
@@ -402,7 +423,7 @@ Figure \ref{fig:SignalPulse5} shows
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse5.eps}
-    \caption{Signal 5 Pulses 21:20 Actual moment under Rolls (Nm)}
+    \caption{Signal 5 Pulses 21:20 Actual moment under Rolls}
     \label{fig:SignalPulse5}
 \end{figure}
 
@@ -422,17 +443,19 @@ Figure \ref{fig:SignalPulse5} shows
 %    \label{fig:SignalPulse11}
 %\end{figure}
 
+\section{Results}
 \subsection{Feature Selection}
-Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R-squared value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R-squared value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R-squared value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
+Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R\textsuperscript{2} value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R\textsuperscript{2} value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R\textsuperscript{2} value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
 
-A range of two threshold values are used for this method to select feature pairs. An upper and and a lower R-squared threshold value reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
+A range of two threshold values are used for this method to select feature pairs. An upper and and a lower R\textsuperscript{2} threshold value reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
 
-A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R-squared values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
+A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R\textsuperscript{2} values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
 
 Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
 
 MATLAB's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. Throughout the remainder of the report some figures are labeled with a feature number instead of the full text due to readability and space constraints. Use Table \ref{signalNames} to refer to which feature the indexes represents.
 \begin{center}
+\captionof{table}{Feature Names}\label{featureNames}
 \begin{tabular}{ |c|l| }
  \hline
  1 & Clearance Factor \\
@@ -447,11 +470,11 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
  \hline
  6 & Peak Value \\
  \hline
- 7 & Root Mean Square (RMS) \\ 
+ 7 & Root Mean Square (\gls{RMS}) \\ 
  \hline              
- 8 & Signal to Noise Ratio (SNR) \\
+ 8 & Signal to Noise Ratio  \\
  \hline
- 9 & Signal-to-noise and Distortion Ratio (SINAD) \\
+ 9 & Signal-to-noise and Distortion Ratio  \\
  \hline
  10 & Shape Factor \\
  \hline
@@ -468,12 +491,10 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
  16 & Peak Frequency 1 \\
  \hline
 \end{tabular}
- \captionof{table}{Feature Names}\label{featureNames}
 \end{center}
 
 \subsection{Feature Extraction}
-
-\subsubsection{Feature vs Feature}
+\subsubsection*{Feature vs Feature}
 
 %\begin{figure}[H]
 %    \centering
@@ -481,7 +502,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 %    \caption{Feature Vs Feature for Signal 1 21.07}
 %    \label{fig:FeatureVsFeatureSignal1}
 %\end{figure}
-Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R-squared values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
+Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
 The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.
 \begin{figure}[H]
     \centering
@@ -494,28 +515,28 @@ Looking at Feature 1 for this channel, it can be seen that the R-square value is
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature1.eps}
-    \caption{Signal 3 Feature 1}
+    \caption{Signal 3 21:12 Actual moment over Rolls Feature 1}
     \label{fig:Models_Signal3Feature1}
 \end{figure}
 Likewise in this example is may also be of interest to look at combinations including Features 10 (Figure \ref{fig:Models_Signal3Feature10}), 11 (Figure \ref{fig:Models_Signal3Feature11}) and 14 (Figure \ref{fig:Models_Signal3Feature14}).
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature10.eps}
-    \caption{Signal 3 Feature 10}
+    \caption{Signal 3 21:12 Actual moment over Rolls Feature 10}
     \label{fig:Models_Signal3Feature10}
 \end{figure}
  
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature11.eps}
-    \caption{Signal 3 Feature 11}
+    \caption{Signal 3 21:12 Actual moment over Rolls Feature 11}
     \label{fig:Models_Signal3Feature11}
 \end{figure}
  
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature14.eps}
-    \caption{Signal 3 Feature 14}
+    \caption{Signal 3 21:12 Actual moment over Rolls Feature 14}
     \label{fig:Models_Signal3Feature14}
 \end{figure}
 
@@ -523,8 +544,8 @@ Likewise in this example is may also be of interest to look at combinations incl
 Figure \ref{fig:Models_Signal5Feature1} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal5Feature1.eps}
-    \caption{Signal 5 Feature 1}
+    \includegraphics[scale = 0.75]{figures/Models_Signal5Feature1.eps}
+    \caption{Signal 5 21:20 Actual moment under Rolls Feature 1}
     \label{fig:Models_Signal5Feature1}
 \end{figure}
 
@@ -533,8 +554,8 @@ Figure \ref{fig:Models_Signal5Feature1} shows
 Figure \ref{fig:Models_Signal6Feature1} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal6Feature1.eps}
-    \caption{Signal 6 Feature 1}
+    \includegraphics[scale = 0.75]{figures/Models_Signal6Feature1.eps}
+    \caption{Signal 6 21:28 Vibration measurements Feature 1}
     \label{fig:Models_Signal6Feature1}
 \end{figure}
 
@@ -542,26 +563,34 @@ Figure \ref{fig:Models_Signal6Feature1} shows
 Figure \ref{fig:Models_Signal9Feature3} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal9Feature3.eps}
-    \caption{Signal 9 Feature 3}
+    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature3.eps}
+    \caption{Signal 9 21:33 Error position for height Feature 3}
     \label{fig:Models_Signal9Feature3}
-\end{figure}
+\end{figure}\
 Figure \ref{fig:Models_Signal9Feature4} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal9Feature4.eps}
-    \caption{Signal 9 Feature 4}
+    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature4.eps}
+    \caption{Signal 9 21:33 Error position for height Feature 4}
     \label{fig:Models_Signal9Feature4}
 \end{figure}
 Figure \ref{fig:Models_Signal9Feature11} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Signal9Feature11.eps}
-    \caption{Signal 9 Feature 11}
+    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature11.eps}
+    \caption{Signal 9 21:33 Error position for height Feature 11}
     \label{fig:Models_Signal9Feature11}
 \end{figure}
+Figure \ref{fig:Models_Signal9Feature12} shows 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature12.eps}
+    \caption{Signal 9 21:33 Error position for height Feature 12}
+    \label{fig:Models_Signal9Feature12}
+\end{figure}
 
-\subsubsection{Signal vs Signal}
+
+\subsubsection*{Signal vs Signal}
 Figure \ref{fig:SignalVsSignalFeatureTime1} shows 
 \begin{figure}[H]
     \centering
@@ -575,7 +604,7 @@ Figure \ref{fig:Models_Feature5Signal1} shows
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature5Signal1.eps}
-    \caption{Feature 5 Signal 1}
+    \caption{Feature 5 Mean Signal 1}
     \label{fig:Models_Feature5Signal1}
 \end{figure}
 
@@ -584,7 +613,7 @@ Figure \ref{fig:Models_Feature14Signal1} shows
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature14Signal1.eps}
-    \caption{Feature 14 Signal 1}
+    \caption{Feature 14 Band Power Signal 1}
     \label{fig:Models_Feature14Signal1}
 \end{figure}
 
@@ -592,7 +621,7 @@ Figure \ref{fig:Models_Feature16Signal3} shows
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature16Signal3.eps}
-    \caption{Feature 16 Signal 3}
+    \caption{Feature 16 Peak Frequency 1 Signal 3}
     \label{fig:Models_Feature16Signal3}
 \end{figure}
 
@@ -600,7 +629,7 @@ Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature16Signal3_Linear1.eps}
-    \caption{Feature 16 Signal 3 Linear 1}
+    \caption{Feature 16 Peak Frequency 1 Signal 3 Linear 1}
     \label{fig:Models_Feature16Signal3_Linear1}
 \end{figure}
 
@@ -629,7 +658,7 @@ Ideally we would have data over the lifespan of a machine. The data we have righ
 One conclusion might be just to discard all the signals with constant values.
 These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
 
-Since 2017 it is mandatory that all technical reports, theses, and similar publications, discuss Environmental Impact and Sustainability of the project. To find a starting point it is suggested to use “the United Nations’ 2030 Agenda for Sustainable Development” and its 17 Sustainable Development Goals (www.un.org/sustainabledevelopment/development-agenda). Under each goal there are some goal targets listed. Identify one or more goals relevant for your thesis, and comment using relevant goal targets.
+Since 2017 it is mandatory that all technical reports, theses, and similar publications, discuss Environmental Impact and Sustainability of the project. To find a starting point it is suggested to use “the United Nations’ 2030 Agenda for Sustainable Development” and its 17 Sustainable Development Goals. Under each goal there are some goal targets listed. Identify one or more goals relevant for your thesis, and comment using relevant goal targets.
 It should also be noted that the result and the methods used in this thesis are in good agreement with target 9.5 of the 2030 Agenda for sustainable development [52].
 \clearpage
 
@@ -639,12 +668,9 @@ A study of the available data on a steel tube straightening machine was conducte
 \item Correlation was performed on the raw signal data to identify relationships between the sensor channels.
 \item The data was prepossessed using an amplitude threshold for the state detection and then a time threshold to eliminate false cycles.
 \item Time and frequency domain features were extracted from the cycles.
-\item For every sensor channel, each feature was plotted against every other feature and the R-squared correlation coefficient was calculated.
+\item For every sensor channel, each feature was plotted against every other feature and the R\textsuperscript{2} correlation coefficient was calculated.
 \item An upper and lower threshold, was used to selected a combination of features that are somewhat correlated but not well perfectly correlated.
-
 \end{itemize}
-
-
 \newpage
 
 \section{References} 
@@ -652,7 +678,7 @@ A study of the available data on a steel tube straightening machine was conducte
 \clearpage  
 \section{Appendix A - Matlab Code}
 \UseRawInputEncoding
-\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadRawData.m"}
-\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/LoadFeatures.m"}
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadRawData.m"}
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadFeatures.m"}
 %\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.mlx"}
 \end{document}
