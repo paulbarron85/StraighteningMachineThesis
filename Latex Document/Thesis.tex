@@ -53,16 +53,16 @@ I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez 
 
 \section*{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery  is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to increasing and maintaining machine availability. On the other hand, one does not want to waste resources performing maintenance where it is not required. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing these kind of failures.
+The availability of industrial machinery is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime is disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to maintaining machine availability. On the other hand, one does not want to waste resources performing maintenance when not required. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing failures.
 
 % What the project is about
-This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification.
+This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification. In a broad sense the aim of the project is to find relationships and patterns in the data that could be varying with time as the machine degrades.
 
 % Outling of project steps
-The data consists of an hour per day taken from a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these pulses is then further processed to extract time and frequency domain features. The features of each signal are compared with each other using the R\textsuperscript{2} coefficient of determination to find signals that are correlated and a semi manual method is used to select a combination of features. The same process is performed between signals for each feature. 
+The data consists of twelve channels taken over a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these is then further processed to extract time and frequency domain features. The features within each channel are compared with each other using the R\textsuperscript{2} coefficient of determination to find combinations that are correlated. A semi automated process is used to select the feature combinations. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
-A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection going forward.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a FIT metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection and analysis going forward.
 \clearpage
 
 \setcounter{tocdepth}{3}
@@ -208,6 +208,7 @@ This paper discusses a life forecasting model~\cite{wang2016multiple}
 This PhD thesis does this..~\cite{martin2017unsupervised}
 
 \subsection{Time Domain Features} 	
+The list of features calculated for this project are as follows:
 Statistical features, Impulsive Metrics, 
 \subsubsection*{Cross correlation}
 Compute cross correlations between 2 features (this can maybe be a feature as well?)
@@ -237,7 +238,7 @@ A measure of asymmetry of through probability density function. Faults can somet
 $$ x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
 \subsubsection*{Peak Value}
 Maximum value of a signal
-$$ x_p = max(x_i) $$ 
+$$ x_p = \textrm{max}(x_i) $$ 
 \subsubsection*{Impulse Factor} 
 The maximum absolute value divided by the mean of absolute value. Comparison of the height of the peak to the average value.
 $$ x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
