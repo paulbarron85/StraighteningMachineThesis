@@ -8,6 +8,7 @@
 \usepackage{amsmath}
 \usepackage{bm}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{matlab-prettifier}
@@ -90,12 +91,12 @@ A number of linear regression models are created based on the results from the c
 \section{Introduction}
 \subsection{Background}
 % What is condition monitoring
-Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources.
+Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
-The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges and also biological systems. 
+The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges, large process plants such as waster water and also biological systems. 
 % Discuss more specifically bearing vibration analysis
-A common application of condition monitoring is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
+In the manufacturing sector, a common application of (\gls{CM}) is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
 
@@ -224,7 +225,7 @@ $$ \bar{x} = \frac{\sum^N_{i=1} x_i}{N} $$
 \subsubsection*{Standard Deviation}  
 The standard deviation is the square root of variance measures the dispersion of a data set relative to its mean. 
 $$ \sigma =\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)\sigma^2} $$
-\subsubsection*{Root Mean Square (\gls{RMS})}
+\subsubsection*{\gls{RMS}}
 Square root of the mean squared.
 $$ x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
 \subsubsection*{Shape Factor}
@@ -249,13 +250,12 @@ $$ x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
 \subsubsection*{Clearance Factor} 
 Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
 $$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2} $$
-\subsubsection*{Signal to Noise Ratio (\gls{SNR})}
+\subsubsection*{\gls{SNR}}
 Ratio of signal power to noise power in decibels.
-\subsubsection*{Signal-to-Noise And Distortion (\gls{SINAD})}
+\subsubsection*{\gls{SINAD}}
 Ratio of total harmonic component power to fundamental power.
-\subsubsection*{Total Harmonic Distortion (\gls{THD})}
+\subsubsection*{\gls{THD}}
 Ratio of total signal power to total noise-plus-distortion power.
-
 \subsection{Frequency Domain Features}
 In order to computer the frequency features one must first compute a power spectrum.
 \subsubsection*{Band Power}
@@ -266,7 +266,6 @@ The area under the spectrum curve within the chosen band limits.
 Peak amplitude is the height of the maximum frequency value on the power spectrum.
 \subsubsection*{Peak Frequency}
 Peak frequency is the value of the frequency which has the highest peak.
-
 \subsection{Feature Selection}
 Once the features have been calculated one must discover the most useful and relevant features. 
 
@@ -282,10 +281,8 @@ Compute a multivariable regression model.
 Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 $$ \mathbf{\hat{Y} = (X^T \cdot X) \cdot X^T \cdot Y } $$
 \subsection{Metrics}
+% Fit equation from compare function
 $$ FitValue = 100 * \frac{ 1 - \textrm{norm}(\mathbf{Y} - \mathbf{Y_{est}}) } { \textrm{norm}(\mathbf{Y}-\textrm{mean}(\mathbf{Y})) } $$
-Normalized residual sum of squares (NRSS).
-$$ AIC = 2k - 2Ln(L) $$  
-$$ nAIC $$
 These references haven't been used yet.\\
 A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}\\
 A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}\\
@@ -305,7 +302,7 @@ Physical and Metrological Approach for Feature’s Definition and Selection in C
 \clearpage  
 \section{Data Processing}
 \subsection{Description of Data}
-The data for this project consists of one hour of data over a 15 day period and it is assumed that it was taken from the same period of time each day. The data acquisition system used to obtain this data is a Iba-DAQ acquisition system with a sampling time 0.02 seconds. The list of signals made available by the company are shown in Table \ref{signalNames}.
+The data provided by the company consists of approximately one hour periods of data over a 15 day duration and it is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of signals made available by the company are shown in Table \ref{signalNames}.
 \begin{center}
 \captionof{table}{Signal Names}\label{signalNames}
 \begin{tabular}{ |c|c|l| }
@@ -585,10 +582,22 @@ Figure \ref{fig:Models_Signal9Feature11} shows
     \caption{Signal 9 21:33 Error position for height Feature 11}
     \label{fig:Models_Signal9Feature11}
 \end{figure}
+
 Figure \ref{fig:Models_Signal9Feature12} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature12.eps}
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature12.eps}
+		  	\caption{A subfigure}
+		  	\label{fig:sub1}
+		\end{subfigure}%
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature12_Linear1.eps}
+		  	\caption{A subfigure}
+		  	\label{fig:sub2}
+		\end{subfigure}
     \caption{Signal 9 21:33 Error position for height Feature 12}
     \label{fig:Models_Signal9Feature12}
 \end{figure}
@@ -644,6 +653,8 @@ Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the
 \clearpage 
 
 \section{Discussion}
+%In this chapter the results and the chosen method are discussed, as well as the strengths and weaknesses of the work.
+
 %Discuss results and put in context/comparison with references at the beginning. 
 This study aimed to give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not.
 
@@ -667,6 +678,7 @@ It should also be noted that the result and the methods used in this thesis are 
 \clearpage
 
 \section{Conclusion}
+%Here the work should be concluded and the major results presented. Suggestions of continuation and spin-off projects may be brought forward, usually under a separate subsection called “Future Work”.
 A study of the available data on a steel tube straightening machine was conducted with regards to using the existing infrastructure for condition monitoring.
 \begin{itemize}
 \item Correlation was performed on the raw signal data to identify relationships between the sensor channels.
