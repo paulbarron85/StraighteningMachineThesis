@@ -14,6 +14,7 @@
 \usepackage{float}
 \usepackage{matlab-prettifier}
 \usepackage{pdfpages}
+\usepackage{cleveref}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
@@ -97,11 +98,11 @@ A number of linear regression models are created based on the results from the c
 Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
-The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges, large process plants such as waster water and also biological systems. 
+The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants such as waster water and also biological systems. 
 % Discuss more specifically bearing vibration analysis
 In the manufacturing sector, a common application of (\gls{CM}) is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
 %Even more specifically a tube straightening machine
-One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
+Breakdowns in rotating machinery are most commonly caused by failures in bearing subsystems. One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
 
 % Explain why condition monitoring would be useful for a straightening machine
 Straightening machines, like many other industrial machines, are expensive to acquire and down time is costly. Performance may also be impacted by the machine being in poor condition and in need of maintenance. Thus it is in the interest of the operators to be able to schedule planned maintenance instead of having unplanned downtime and catastrophic failures.
@@ -127,7 +128,7 @@ The aim of this project is to examine the existing data collection strategy for 
 \clearpage  
 \section{Theory}
 \subsection{System}
-Rotary straightening machines, Figures \ref{straighteningImage2}, \ref{straighteningImage3} and \ref{straighteningImage6}, are industrial machinery developed to straighten and improve ovality of a metal pipes. A tube is fed through a series of roller pairs undergoing a series of bending moments to straighten the tubes. A number of different configurations for this type of machine exist with six and 10 rolls being common. At least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine.
+Rotary straightening machines, \cref{straighteningImage2,straighteningImage3,straighteningImage6}, are industrial machinery developed to straighten and improve ovality of a metal pipes. A tube is fed through a series of roller pairs undergoing a series of bending moments to straighten the tubes. A number of different configurations for this type of machine exist with six and 10 rolls being common. At least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine.
 
 "Hydraulic or mechanical systems gradually and precisely apply force to specific points on the bent tube. The machine is designed to use controlled bending and flexing forces to counteract the existing deformities in the tube. By applying force at the correct locations, the machine can induce controlled plastic deformation, gradually bringing the tube back to its intended straight form."
 
@@ -196,7 +197,7 @@ Feature extraction is the process of computing numerical values from raw data in
 "The main task of feature selection is to select a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
 
 %Feature extraction used in condition monitoring/degradation
-Feature extraction techniques for condition monitoring are used for estimating degradation trends ~\cite{caesarendra2017review} ~\cite{adams2017comparison}.
+Feature extraction techniques for condition monitoring are used for estimating degradation trends ~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
 
 %Techniques for selecting features
 This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
@@ -287,12 +288,25 @@ Peak amplitude is the height of the maximum frequency value on the power spectru
 \subsubsection*{Peak Frequency}
 Peak frequency is the value of the frequency which has the highest peak.
 \subsection{Feature Selection}
-Once the features have been calculated one must next challenge is to isolate the most useful and relevant features. 
-Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
+Once the features have been calculated the challenge is to isolate the most useful and relevant features. There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. "Most datasets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. For high-dimensional datasets, it is ideal remove non-informative and redundant features to reduce the complexity of the dataset, making models easier to interpret."
 
-This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. "The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.\\
-This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.\\
+% PCA
+"A PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings was developed." "These features were then used as inputs for an unsupervised competitive learning scheme to classify defective bearings according to their defect sizes." ~\cite{malhi2004pca}
+
+% Best subset selection (forward/backward step-wise selection)
+
+% Automatic Feature Selection methods
+Uses ANOVA F-Test to rank features and do multiclass classification. 
+This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. 
+Feature Correlation Clustering involves using thresholds and removing highly correlation features.
+"The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.
+
+This paper builds a feature set on the basis of experimental data from sensors and of results supplied by a simplified kinematic and dynamic model~\cite{d2019physical}.
+
+This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.
+
 This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
+
 \subsection{Linear Regression Models}
 Once a subset of
 As mentioned on earlier, supervised learning involves building a model in order to predict or estimate an output based on one or more inputs. In the case of unsupervised learning, there are one or more inputs but no quantitative outputs. However, one can still learn about relationships between signals and the structure from such data. This is more of an inference task rather than prediction.
@@ -302,30 +316,48 @@ Calculating a linear regression model is done using linear least squares,
 	\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \cdot \mathbf{X})^{-1} \cdot \mathbf{X}^T \cdot \mathbf{Y},
 \end{equation}
 where $ \hat{\boldsymbol{\theta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
-$ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$.
-Equation \ref{eq:reqression} is used for multivariate models as well.
-
+$ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$.\\
+Equation \ref{eq:reqression} is used for multivariate models as well a two variable models.
 \subsection{Metrics}
 % Fit equation from compare function
 \begin{equation}
-	FitValue = 100 * \frac{ 1 - \textrm{norm}(\mathbf{Y} - \mathbf{Y_{est}}) } { \textrm{norm}(\mathbf{Y}-\textrm{mean}(\mathbf{Y})) }
+	\textrm{Fit Value} = 100 * \frac{ 1 - \lVert(\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }
 \end{equation}
-These references haven't been used yet.\\
-A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}\\
-A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}\\
-A review on vibration-based condition monitoring of rotating machinery ~\cite{tiboni2022review}\\
-Automatic feature extraction and selection for condition monitoring and related datasets ~\cite{schneider2018automatic}\\
+
+%Classficiation???
+"This paper addresses this issue with an application to tool condition monitoring in
+milling, where classifiers based on support vector machines and random forest were employed."~\cite{assafo2023stability}
+
+
+
+
+
+These references haven't been used yet.
+
+A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}
+
+A review on vibration-based condition monitoring of rotating machinery ~\cite{tiboni2022review}
+
+Automatic feature extraction and selection for condition monitoring and related datasets ~\cite{schneider2018automatic}
+
 Comparison of automated feature selection and reduction methods on the condition monitoring issue ~\cite{de2018comparison}
-Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method ~\cite{hong2014condition}\\
-Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network ~\cite{saucedo2021condition}\\
-Degradation trend estimation of slewing bearing based on LSSVM model~\cite{lu2016degradation}\\
+
+Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network ~\cite{saucedo2021condition}
+
+Degradation trend estimation of slewing bearing based on LSSVM model~\cite{lu2016degradation}
+
 Features selection procedure for prognostics: An approach based on predictability~\cite{javed2012features}
-Heterogeneous feature models and feature selection applied to bearing fault diagnosis~\cite{rauber2014heterogeneous}\\
+
+Heterogeneous feature models and feature selection applied to bearing fault diagnosis~\cite{rauber2014heterogeneous}
+
 Multifeatures fusion and nonlinear dimension reduction for intelligent bearing condition monitoring~\cite{guo2016multifeatures}
-On the Stability and Homogeneous Ensemble of Feature Selection for Predictive Maintenance: A Classification Application for Tool Condition Monitoring in Milling~\cite{assafo2023stability}\\
+
+On the Stability and Homogeneous Ensemble of Feature Selection for Predictive Maintenance: 
 Optimal symbolic entropy: An adaptive feature extraction algorithm for condition monitoring of bearings~\cite{li2023optimal}
-PCA-based feature selection scheme for machine defect classification~\cite{malhi2004pca}\\
-Physical and Metrological Approach for Feature’s Definition and Selection in Condition Monitoring~\cite{d2019physical}
+
+
+
+
 \clearpage  
 \section{Data Processing}
 \subsection{Description of Data}
@@ -482,6 +514,7 @@ A semi-automated method can be used to narrow down on feature pairs of interest.
 Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
 
 MATLAB's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. Throughout the remainder of the report some figures are labeled with a feature number instead of the full text due to readability and space constraints. Use Table \ref{signalNames} to refer to which feature the indexes represents.
+
 \begin{center}
 \captionof{table}{Feature Names}\label{featureNames}
 \begin{tabular}{ |c|l| }
@@ -523,7 +556,6 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 
 \subsection{Feature Extraction}
 \subsubsection*{Feature vs Feature}
-
 %Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
 %The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.\\
 %Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness. Figure \ref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
@@ -556,7 +588,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 
 
 
-Figure \ref{fig:FeatureVsFeatureCombinedSignal9} shows the features of signal 9 plotted against each other.
+\Cref{fig:FeatureVsFeatureCombinedSignal9} shows the features of signal 9 plotted against each other.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal9.eps}
@@ -619,7 +651,7 @@ Figure \ref{fig:FeatureVsFeatureCombinedSignal9} shows the features of signal 9 
 
 
 \subsubsection*{Signal vs Signal}
-Figure \ref{fig:SignalVsSignalFeatureFreq3} shows 
+\Cref{fig:SignalVsSignalFeatureFreq3} shows 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeatureFreq3.eps}
