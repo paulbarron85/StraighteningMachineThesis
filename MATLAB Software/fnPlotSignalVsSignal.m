@@ -33,7 +33,7 @@ function [R2] = fnPlotSignalVsSignal(FeatureTable, lowerBound, upperBound, featu
     for i = 1:size(sensorNames, 2)
         nexttile((i-1) * numOfSignals + i);
         str = char(sensorNames(i));
-        text(0, 0.5, str(1:5));
+        text(0.5, 0.5, str(1:5), HorizontalAlignment='center',VerticalAlignment='middle');
         xticklabels({});
         yticklabels({});
         R2(signalIndex1, signalIndex1) = 1;

@@ -9,6 +9,7 @@
 \usepackage{bm}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{ragged2e}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{matlab-prettifier}
@@ -27,14 +28,16 @@
 \allowdisplaybreaks
 \usepackage[parfill]{parskip} %Change indents to line breaks between paragraphs
 \usepackage[acronym, style=super, nonumberlist]{glossaries}
-
 \emergencystretch=1em % Used to make badness error for bibliography go away
+
 \newacronym{CM}{CM}{Condition Monitoring}
 \newacronym{PM}{PM}{Predictive Maintenance}
 \newacronym{RMS}{RMS}{Root Mean Square}
 \newacronym{SNR}{SNR}{Signal to Noise Ratio}
 \newacronym{THD}{THD}{Total Harmonic Distortion}
 \newacronym{SINAD}{SINAD}{Signal-to-noise and Distortion Ratio}
+\newacronym{TSS}{TSS}{Total Sum of Squares}
+\newacronym{SSR}{SSR}{Sum of Squared Regression}
 \makenoidxglossaries
 
 \begin{document}
@@ -204,52 +207,69 @@ Acoustic emission signals. Ant colony optimization-based feature selection metho
 
 Advanced monitoring of machining operations~\cite{teti2010advanced}
 
-
 This paper discusses a life forecasting model~\cite{wang2016multiple}
 This PhD thesis does this..~\cite{martin2017unsupervised}
 
 \subsection{Time Domain Features} 	
-The list of features calculated for this project are as follows:
-Statistical features, Impulsive Metrics, 
-\subsubsection*{Cross correlation}
-Compute cross correlations between 2 features (this can maybe be a feature as well?)
-Calculate R2, which relates to the variance in linear regression models.
-\begin{align*}
- R^2 &= 1 - \frac{\textrm{sum squared regression (SSR)}}{\textrm{total sum of squares (SSR)}} \\ 
- &= 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2} 
-\end{align*}
-An R\textsuperscript{2} value of 1 means that the two signals are perfectly linear where as a value of 0 or closed to zero means there is no or next to none linear relationship.
+The list of features used for this project are as follows:
+\subsubsection*{Coefficient of Determination}
+The coefficient of determination, or $R^{2}$ correlation, is a measure of how well a model predicts the actual output values. It is calculated as the one minus the \gls{SSR} divided by \gls{TSS},
+\begin{equation}
+R^{2} = 1 - \frac{\textrm{SSR}}{\textrm{TSS}} = 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2}. 
+\end{equation}
+An $R^{2}$ value of 1 means that the two signals are perfectly linear and a value of zero means there is no linear relationship. A value between 0 and 1 indicates some degree of linear relationship exists with the degree of linearity increasing with the value.
 \subsubsection*{Mean}
-The mean is the average value of the signal.
-$$ \bar{x} = \frac{\sum^N_{i=1} x_i}{N} $$
+The mean, $ \bar{x} $, is the average value of the signal,
+\begin{equation}
+\bar{x} = \frac{\sum^N_{i=1} x_i}{N},
+\end{equation}
+where $ x_i $ is the $ i $:th element of the signal and $ N $ is the number of samples in the signal.
 \subsubsection*{Standard Deviation}  
-The standard deviation is the square root of variance measures the dispersion of a data set relative to its mean. 
-$$ \sigma =\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)\sigma^2} $$
+The standard deviation, $\sigma$, is the square root of variance, and measures the dispersion of a data set relative to its mean,
+\begin{equation}
+	\sigma =\sqrt{\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)}}.
+\end{equation}
 \subsubsection*{\gls{RMS}}
-Square root of the mean squared.
-$$ x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i} $$
+\gls{RMS} is the square root of the mean squared,
+\begin{equation}
+x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i}.
+\end{equation}
 \subsubsection*{Shape Factor}
-Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the units
-$$ x_{SF} = \frac{ x_{rms} }  {\frac{1}{N}\sum^N_{i=1}|x_i|} $$
+Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the 
+\begin{equation}
+x_{SF} = \frac{ x_{RMS} }  {\frac{1}{N}\sum^N_{i=1}|x_i|}
+\end{equation}
 \subsubsection*{Kurtosis}
 Kurtosis is a statistical measure of the tailedness of a distribution. It gives us the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault.
-$$ x_{kurt} = \frac{\sum^N_{i=1}(x_i-m)^4)}{(N-1)\sigma^4} $$ 
+\begin{equation}
+x_{kurt} = \frac{\sum^N_{i=1}(x_i-\bar{x})^4}{(N-1)\sigma^4}
+\end{equation}
 \subsubsection*{Skewness} 
 A measure of asymmetry of through probability density function. Faults can sometimes be revealed through asymmetric distribution.
-$$ x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3} $$
+\begin{equation}
+x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3}
+\end{equation}
 \subsubsection*{Peak Value}
 Maximum value of a signal
-$$ x_p = \textrm{max}(x_i) $$ 
+\begin{equation}
+x_p = \textrm{max}(x_i)
+\end{equation}
 \subsubsection*{Impulse Factor} 
 The maximum absolute value divided by the mean of absolute value. Comparison of the height of the peak to the average value.
-$$ x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)} $$  
+\begin{equation}
+x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)}
+\end{equation}
 \subsubsection*{Crest Factor} 
 Divide the maximum absolute value of a signal by the \gls{RMS} value.
 Faults can often be detected as a peakiness of signals before they become evident in the energy (\gls{RMS}).
-$$ x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i} $$
+\begin{equation}
+x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i}
+\end{equation}
 \subsubsection*{Clearance Factor} 
 Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
-$$ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2} $$
+\begin{equation}
+x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2}
+\end{equation}
 \subsubsection*{\gls{SNR}}
 Ratio of signal power to noise power in decibels.
 \subsubsection*{\gls{SINAD}}
@@ -267,22 +287,29 @@ Peak amplitude is the height of the maximum frequency value on the power spectru
 \subsubsection*{Peak Frequency}
 Peak frequency is the value of the frequency which has the highest peak.
 \subsection{Feature Selection}
-Once the features have been calculated one must discover the most useful and relevant features. 
+Once the features have been calculated one must next challenge is to isolate the most useful and relevant features. 
+Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
 
 This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. "The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.\\
 This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.\\
 This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
-\subsection{Linear Regression}
+\subsection{Linear Regression Models}
+Once a subset of
 As mentioned on earlier, supervised learning involves building a model in order to predict or estimate an output based on one or more inputs. In the case of unsupervised learning, there are one or more inputs but no quantitative outputs. However, one can still learn about relationships between signals and the structure from such data. This is more of an inference task rather than prediction.
 By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too.
-Plot some of the regression models between 2 features which are highly correlated where X1 is one axis, and X2 is the other axis. Do not plot all of them.
-\subsection{Multivariate Models}
-Compute a multivariable regression model.
-Eliminate features which are highly correlated between each other by using the info you got in the previous part where you compute correlations between 2 features.
-$$ \mathbf{\hat{Y} = (X^T \cdot X) \cdot X^T \cdot Y } $$
+Calculating a linear regression model is done using linear least squares, 
+\begin{equation} \label{eq:reqression}
+	\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \cdot \mathbf{X})^{-1} \cdot \mathbf{X}^T \cdot \mathbf{Y},
+\end{equation}
+where $ \hat{\boldsymbol{\theta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
+$ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$.
+Equation \ref{eq:reqression} is used for multivariate models as well.
+
 \subsection{Metrics}
 % Fit equation from compare function
-$$ FitValue = 100 * \frac{ 1 - \textrm{norm}(\mathbf{Y} - \mathbf{Y_{est}}) } { \textrm{norm}(\mathbf{Y}-\textrm{mean}(\mathbf{Y})) } $$
+\begin{equation}
+	FitValue = 100 * \frac{ 1 - \textrm{norm}(\mathbf{Y} - \mathbf{Y_{est}}) } { \textrm{norm}(\mathbf{Y}-\textrm{mean}(\mathbf{Y})) }
+\end{equation}
 These references haven't been used yet.\\
 A feature extraction \& selection benchmark for structural health monitoring ~\cite{buckley2023feature}\\
 A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}\\
@@ -497,156 +524,126 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \subsection{Feature Extraction}
 \subsubsection*{Feature vs Feature}
 
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureSignal1.eps}
-%    \caption{Feature Vs Feature for Signal 1 21.07}
-%    \label{fig:FeatureVsFeatureSignal1}
-%\end{figure}
-Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
-The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal3.eps}
-    \caption{Feature Vs Feature for Signal 3, Actual moment over Rolls}
-    \label{fig:FeatureVsFeatureCombinedSignal3}
-\end{figure}
-
-Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness. Figure \ref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature1.eps}
-    \caption{Signal 3 21:12 Actual moment over Rolls Feature 1}
-    \label{fig:Models_Signal3Feature1}
-\end{figure}
-Likewise in this example is may also be of interest to look at combinations including Features 10 (Figure \ref{fig:Models_Signal3Feature10}), 11 (Figure \ref{fig:Models_Signal3Feature11}) and 14 (Figure \ref{fig:Models_Signal3Feature14}).
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature10.eps}
-    \caption{Signal 3 21:12 Actual moment over Rolls Feature 10}
-    \label{fig:Models_Signal3Feature10}
-\end{figure}
- 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature11.eps}
-    \caption{Signal 3 21:12 Actual moment over Rolls Feature 11}
-    \label{fig:Models_Signal3Feature11}
-\end{figure}
- 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75, keepaspectratio]{figures/Models_Signal3Feature14.eps}
-    \caption{Signal 3 21:12 Actual moment over Rolls Feature 14}
-    \label{fig:Models_Signal3Feature14}
-\end{figure}
+%Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
+%The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.\\
+%Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness. Figure \ref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
 
 
-Figure \ref{fig:Models_Signal5Feature1} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale = 0.75]{figures/Models_Signal5Feature1.eps}
-    \caption{Signal 5 21:20 Actual moment under Rolls Feature 1}
-    \label{fig:Models_Signal5Feature1}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal6.eps}
+    \caption{Feature Vs Feature for Signal 6, 21:20 Actual moment under Rolls}
+    \label{fig:FeatureVsFeatureCombinedSignal6}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal6Feature1.eps}
+		  	\caption{Feature values}
+		  	\label{fig:Models_Signal6Feature1}
+		\end{subfigure}%
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature12_Linear1.eps}
+		  	\caption{Linear Model}
+		  	\label{fig:Models_Signal6Feature1_Linear1}
+		\end{subfigure}
+    \caption{Signal 6, 21:28 Vibration measurements Feature 1}
+    \label{fig:Models_Signal6Feature1_Caption}
 \end{figure}
 
 
 
-Figure \ref{fig:Models_Signal6Feature1} shows 
+Figure \ref{fig:FeatureVsFeatureCombinedSignal9} shows the features of signal 9 plotted against each other.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale = 0.75]{figures/Models_Signal6Feature1.eps}
-    \caption{Signal 6 21:28 Vibration measurements Feature 1}
-    \label{fig:Models_Signal6Feature1}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal9.eps}
+    \caption{Feature Vs Feature for Signal 9, 21:33 Error position for height}
+    \label{fig:FeatureVsFeatureCombinedSignal9}
 \end{figure}
 
-
-Figure \ref{fig:Models_Signal9Feature3} shows 
 \begin{figure}[H]
+	\captionsetup[subfigure]{justification=Centering}
     \centering
-    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature3.eps}
-    \caption{Signal 9 21:33 Error position for height Feature 3}
-    \label{fig:Models_Signal9Feature3}
-\end{figure}\
-Figure \ref{fig:Models_Signal9Feature4} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature4.eps}
-    \caption{Signal 9 21:33 Error position for height Feature 4}
-    \label{fig:Models_Signal9Feature4}
-\end{figure}
-Figure \ref{fig:Models_Signal9Feature11} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale = 0.75]{figures/Models_Signal9Feature11.eps}
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11.eps}
+		  	\caption{Feature values}
+		  	\label{fig:Models_Signal9Feature11}
+		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11_Linear1.eps}
+		  	\caption{Linear model}
+		  	\label{fig:Models_Signal9Feature11_Linear1}
+		\end{subfigure}
+		\bigskip
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11_Linear2.eps}
+		  	\caption{Linear model}
+		  	\label{fig:Models_Signal9Feature11_Linear2}
+		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11_Linear3.eps}
+		  	\caption{Linear model}
+		  	\label{fig:Models_Signal9Feature11_Linear3}
+		\end{subfigure}
     \caption{Signal 9 21:33 Error position for height Feature 11}
-    \label{fig:Models_Signal9Feature11}
+    \label{fig:Models_Signal9Feature11_Caption}
 \end{figure}
 
-Figure \ref{fig:Models_Signal9Feature12} shows 
+
+
 \begin{figure}[H]
     \centering
 		\begin{subfigure}{.5\textwidth}
 		  \centering
     			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature12.eps}
-		  	\caption{A subfigure}
-		  	\label{fig:sub1}
+		  	\caption{Feature values}
+		  	\label{fig:Models_Signal9Feature12}
 		\end{subfigure}%
 		\begin{subfigure}{.5\textwidth}
 		  \centering
  		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature12_Linear1.eps}
-		  	\caption{A subfigure}
-		  	\label{fig:sub2}
+		  	\caption{Linear model}
+		  	\label{fig:Models_Signal9Feature12_Linear1}
 		\end{subfigure}
     \caption{Signal 9 21:33 Error position for height Feature 12}
-    \label{fig:Models_Signal9Feature12}
+    \label{fig:Models_Signal9Feature12_Caption}
 \end{figure}
+
 
 
 \subsubsection*{Signal vs Signal}
-Figure \ref{fig:SignalVsSignalFeatureTime1} shows 
+Figure \ref{fig:SignalVsSignalFeatureFreq3} shows 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeatureTime1.eps}
-    \caption{Signal Vs Signal for Time Feature 1}
-    \label{fig:SignalVsSignalFeatureTime1}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalVsSignalFeatureFreq3.eps}
+    \caption{Signal Vs Signal for Frequency Domain Feature 3 Peak Frequency 1}
+    \label{fig:SignalVsSignalFeatureFreq3}
 \end{figure}
-
-
-Figure \ref{fig:Models_Feature5Signal1} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature5Signal1.eps}
-    \caption{Feature 5 Mean Signal 1}
-    \label{fig:Models_Feature5Signal1}
-\end{figure}
-
-
-Figure \ref{fig:Models_Feature14Signal1} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature14Signal1.eps}
-    \caption{Feature 14 Band Power Signal 1}
-    \label{fig:Models_Feature14Signal1}
-\end{figure}
-
-Figure \ref{fig:Models_Feature16Signal3} shows 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature16Signal3.eps}
-    \caption{Feature 16 Peak Frequency 1 Signal 3}
-    \label{fig:Models_Feature16Signal3}
-\end{figure}
-
 Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over Rolls vs Actual moment under Rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Models_Feature16Signal3_Linear1.eps}
-    \caption{Feature 16 Peak Frequency 1 Signal 3 Linear 1}
-    \label{fig:Models_Feature16Signal3_Linear1}
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+    		\includegraphics[width=.9\linewidth]{figures/Models_Feature16Signal3.eps}
+	 	\caption{Feature values}
+	  	\label{fig:Models_Feature16Signal3}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+ 	   	\includegraphics[width=.9\linewidth]{figures/Models_Feature16Signal3_Linear1.eps}
+	  	\caption{Linear Model}
+	  	\label{fig:Models_Feature16Signal3_Linear1}
+	\end{subfigure}
+   	\caption{Feature 16 Peak Frequency 1 Signal 3 Combination 1}
+    \label{fig:Models_Feature16Signal3_Caption}
 \end{figure}
-
-\subsection{Linear Models}
 
 \subsection{Multivariate Models}
 
