@@ -98,9 +98,9 @@ A number of linear regression models are created based on the results from the c
 Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters like vibration, temperature and acoustic emissions that provide input data to an algorithm which outputs health metrics. This allows operators to gain some understanding of when a machine might fail and perform some preventative intervention. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime and catastrophic failure allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
-The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants such as waster water and also biological systems. 
+The application of CM and predictive maintenance (\gls{PM}) is a large area of research in the machine and manufacturing industry. Of course it is not only limited to machines being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants such as waster water and also biological systems ~\cite{tolocsi2011classification}. 
 % Discuss more specifically bearing vibration analysis
-In the manufacturing sector, a common application of (\gls{CM}) is the vibration analysis of rotating machines. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
+In the manufacturing sector, a common application of (\gls{CM}) is the vibration analysis of rotating machines ~\cite{tiboni2022review}. The degradation of a bearing results changes in the vibration signal which can be a indicator of bearing health. 
 %Even more specifically a tube straightening machine
 Breakdowns in rotating machinery are most commonly caused by failures in bearing subsystems. One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
 
@@ -176,11 +176,8 @@ While many papers describe theoretical analysis of the mechanical mechanisms of 
 \end{figure}
 
 %Condition Monitoring with Vibration Signals: Compressive Sampling and Learning Algorithms for Rotating Machines - Textbook
-"Machine condition monitoring techniques can be grouped into the following: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring."
-
-~\cite{soualhi2021novel}.
-[A Review on Vibration-Based Condition Monitoring of Rotating Machinery]
-~\cite{yoshimura2009effect}. 
+"Machine condition monitoring techniques can be grouped into the following: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring." ~\cite{soualhi2021novel}.
+[A Review on Vibration-Based Condition Monitoring of Rotating Machinery] ~\cite{yoshimura2009effect}. 
 Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
 
 \subsection{Feature Extraction}
@@ -289,6 +286,8 @@ Peak amplitude is the height of the maximum frequency value on the power spectru
 Peak frequency is the value of the frequency which has the highest peak.
 \subsection{Feature Selection}
 Once the features have been calculated the challenge is to isolate the most useful and relevant features. There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. "Most datasets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. For high-dimensional datasets, it is ideal remove non-informative and redundant features to reduce the complexity of the dataset, making models easier to interpret."
+~\cite{tolocsi2011classification} argues "that several widely used classification algorithms
+can generate misleading feature rankings when the training datasets contain large groups of correlated features."
 
 % PCA
 "A PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings was developed." "These features were then used as inputs for an unsupervised competitive learning scheme to classify defective bearings according to their defect sizes." ~\cite{malhi2004pca}
@@ -324,6 +323,8 @@ Equation \ref{eq:reqression} is used for multivariate models as well a two varia
 	\textrm{Fit Value} = 100 * \frac{ 1 - \lVert(\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }
 \end{equation}
 
+"The multi-feature fusion technique PCA is used to fuse the multi-features to obtain the indicator which can reflect the degradation of slewing bearing effectively in this paper."~\cite{lu2016degradation}
+
 %Classficiation???
 "This paper addresses this issue with an application to tool condition monitoring in
 milling, where classifiers based on support vector machines and random forest were employed."~\cite{assafo2023stability}
@@ -336,15 +337,11 @@ These references haven't been used yet.
 
 A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}
 
-A review on vibration-based condition monitoring of rotating machinery ~\cite{tiboni2022review}
-
 Automatic feature extraction and selection for condition monitoring and related datasets ~\cite{schneider2018automatic}
 
 Comparison of automated feature selection and reduction methods on the condition monitoring issue ~\cite{de2018comparison}
 
 Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network ~\cite{saucedo2021condition}
-
-Degradation trend estimation of slewing bearing based on LSSVM model~\cite{lu2016degradation}
 
 Features selection procedure for prognostics: An approach based on predictability~\cite{javed2012features}
 
@@ -352,9 +349,7 @@ Heterogeneous feature models and feature selection applied to bearing fault diag
 
 Multifeatures fusion and nonlinear dimension reduction for intelligent bearing condition monitoring~\cite{guo2016multifeatures}
 
-On the Stability and Homogeneous Ensemble of Feature Selection for Predictive Maintenance: 
 Optimal symbolic entropy: An adaptive feature extraction algorithm for condition monitoring of bearings~\cite{li2023optimal}
-
 
 
 
