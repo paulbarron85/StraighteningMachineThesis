@@ -100,7 +100,7 @@ Condition monitoring (\gls{CM}) is the process of predicting machine health thro
 % Discuss why CM is important
 The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants and also biological systems ~\cite{tolocsi2011classification}. 
 % Discuss more specifically bearing vibration analysis
-A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health. 
+A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review, yoshimura2009effect}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health. 
 
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
@@ -118,26 +118,23 @@ One of the challenges in implementing \gls{CM} is that there are often huge amou
 Supervised learning uses labeled data to perform classification, i.e. data is labeled as normal or fault condition. Another difficulty with \gls{CM} research is the limited access to failure data meaning one is often forced to implement unsupervised learning methods. Often one only have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised learning. Here the data analysis is geared towards pattern recognition and clustering since no failure data is available to go with the data. This study has no access to fault or maintenance data and has the goal of trying to find patterns in the data, identify potential clustering opportunities and look at potential trends over time.
 
 \subsection{Project Aim}
-The aim of this project is to examine the existing data collection strategy for a tube straightening machine and make some suggestions as to whether it is possible to perform condition monitoring and/or remaining life analysis for this machine. The first step analyze the available data that can be be attained using the existing sensors and data acquisition system. The end foal is to begin developing a strategy that will assist the company to know when the machine requires maintenance. The specific goals of this project are summarized as follows:
+The aim of this project is to examine the existing data available for a tube straightening machine and make some observations as to whether it is possible to perform \gls{CM} and/or remaining life analysis for this machine. The first step is to analyze the available data that can be be attained using the existing sensors and data acquisition system. The end goal is to begin developing a strategy that will assist the company to know when the machine requires maintenance. The specific goals of this project are summarized as follows:
 \begin{itemize}
 \item Understand what signals are related to each other.
 \item Understand the signals from a statistical point of view.
-\item Identify which features are of significance and which are not useful for condition monitoring i.e. which features may represent degradation condition.
+\item Calculate signal features and identify which are of significance and which are not useful for condition monitoring i.e. which features may represent degradation condition.
+\item Combine appropriate features to create data models and identify trends.
 \end{itemize}
 \clearpage  
 \section{Theory}
 \subsection{System}
-Rotary straightening machines, \cref{straighteningImage2,straighteningImage3,straighteningImage6}, are industrial machinery developed to straighten and improve ovality of a metal pipes. A tube is fed through a series of roller pairs undergoing a series of bending moments to straighten the tubes. A number of different configurations for this type of machine exist with six and 10 rolls being common. At least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine.
+Rotary straightening machines, \cref{straighteningImage2,straighteningImage3,straighteningImage6}, are a finishing machine developed to straighten and improve ovality of a metal pipes. A tube is fed through a series of roller pairs undergoing a series of bending moments inducing controlled plastic deformation to straighten the tubes. Tubes subjected to two straightening forces, pressure straightening and bend (or offset) straightening. Hydraulic actuators are used to precisely position the height of the rollers and at least some are driven by motors which grip and rotate the tube while feeding it through the machine. A number of different configurations for this type of machine exist with six and 10 rolls being common. 
 
-"Hydraulic or mechanical systems gradually and precisely apply force to specific points on the bent tube. The machine is designed to use controlled bending and flexing forces to counteract the existing deformities in the tube. By applying force at the correct locations, the machine can induce controlled plastic deformation, gradually bringing the tube back to its intended straight form."
+The rollers' profile is not the same as the tube radius but are hyperbolic/parabolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. The rollers can be adjusted from parallel to the pipe up to approximately 45 degrees, with the upper rollers being adjusted in opposite angle to lower rollers.
 
-The rollers' profile is not the same as the tube radius but are hyperbolic/parabolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. The rollers can be adjusted from parallel to the pipe up to approximately 45 degrees with the upper rollers being adjusted in opposite angle to lower rollers.
+Modern machines are equipped with sensors monitor the amount of force being applied, the deformation of the tube, and other relevant parameters ~\cite{zhang2010study}. This feedback allows the machine to make real-time adjustments to the straightening process for optimal results. These sensors, while controlling the process itself can also be used for condition monitoring purposes.
 
-"While passing through the machine, the tube is subjected to two specific straightening forces: pressure straightening and bend (or offset) straightening."
-
-Modern machines are equipped with sensors monitor the amount of force being applied, the deformation of the tube, and other relevant parameters. This feedback allows the machine to make real-time adjustments to the straightening process for optimal results. These sensors, while controlling the process itself can also be used for condition monitoring purposes.
-
-While many papers describe theoretical analysis of the mechanical mechanisms of such machine there are none that cover condition monitoring of such machine nor provide real life data from such machine.
+Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics} however there are no studies on the monitoring of such systems using real life data.
 
 \begin{figure}[H]
 	\centering
@@ -174,38 +171,18 @@ While many papers describe theoretical analysis of the mechanical mechanisms of 
 	\label{straighteningImage6}
 \end{figure}
 
-%Condition Monitoring with Vibration Signals: Compressive Sampling and Learning Algorithms for Rotating Machines - Textbook
-"Machine condition monitoring techniques can be grouped into the following: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring." ~\cite{soualhi2021novel}.
-[A Review on Vibration-Based Condition Monitoring of Rotating Machinery] ~\cite{yoshimura2009effect}. 
-Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics} however there are no studies on the monitoring of such system or non-theoretical studies using real life data.
-
 \subsection{Feature Extraction}
-%Statistical learning? 
-
 %Why Feature Extraction?
-One problem with high dimensional data is that it requires vast amounts of storage. By firstly extracting features and secondly deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the data.
+Machine learning algorithms suffer from high amounts of data and information redundancy.
+Another problem with high dimensional data is that it requires vast amounts of storage. By  extracting signal features and deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the signals.
 
-"Because slewing bearing is a large low-speed heavy-load bearing, vibration signal is insufficient. On the other hand, because of the influence of the
-environment, it is difficult to obtain failure data of slewing bearing under actual working conditions, and tests also will entails high costs, so that the failure data is limit."This paper discusses a life forcasting model~\cite{wang2016multiple}
-
-%Feature Extraction in general
-Feature extraction is the process of computing numerical values from raw data in order to reduce big data sets but preserves the information. Machine learning algorithms suffer from high volumes of data and information redundancy?
-"The main task of feature selection is to select a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
+%What is Feature Extraction
+Feature extraction is the process of computing several numerical values from raw signals in order. Features can include statistical, spectral and temporal calculations. 
 
 %Feature extraction used in condition monitoring/degradation
-Feature extraction techniques for condition monitoring are used for estimating degradation trends ~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
+Feature extraction techniques are used for estimating degradation trends ~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
 
-%Techniques for selecting features
-This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
-This paper talks about defines feature goodness metrics of correlation (Corr), monotonicity (Mon) and robustness (Rob) ~\cite{zhang2016degradation}.
-
-%Automatic feature extraction? Manual Feature extraction?
-Acoustic emission signals. Ant colony optimization-based feature selection methods ? ~\cite{liao2010feature}.
-
-Advanced monitoring of machining operations~\cite{teti2010advanced}
-
-This paper discusses a life forecasting model~\cite{wang2016multiple}
-This PhD thesis does this..~\cite{martin2017unsupervised}
+Machine condition monitoring can take many forms: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring ~\cite{ahmed2020condition}. There is no one size fits all when it comes to condition monitoring. For example a for a slewing bearing, a large low-speed heavy-load bearing, vibration signal is insufficient ~\cite{wang2016multiple}.
 
 \subsection{Time Domain Features} 	
 The list of features used for this project are as follows:
@@ -284,14 +261,35 @@ Peak amplitude is the height of the maximum frequency value on the power spectru
 \subsubsection*{Peak Frequency}
 Peak frequency is the value of the frequency which has the highest peak.
 \subsection{Feature Selection}
-Once the features have been calculated the challenge is to isolate the most useful and relevant features. There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. "Most datasets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. For high-dimensional datasets, it is ideal remove non-informative and redundant features to reduce the complexity of the dataset, making models easier to interpret."
-~\cite{tolocsi2011classification} argues "that several widely used classification algorithms
-can generate misleading feature rankings when the training datasets contain large groups of correlated features."
+Once the features have been calculated the challenge is to isolate the most useful and relevant features. "Most datasets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. It is ideal remove non-informative and redundant features to reduce complexity, making models easier to interpret."
+
+There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
+
+"The main task of feature selection is to select a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
+
+~\cite{tolocsi2011classification} argues "that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features."
+
+%Techniques for selecting features
+This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
+
+This paper talks about defines feature goodness metrics of correlation (Corr), monotonicity (Mon) and robustness (Rob) ~\cite{zhang2016degradation}.
+
+"This paper presents an innovative approach to the extraction of an indicator for the monitoring of bearing degradation. This approach is based on the principles of the empirical mode decomposition (EMD) and the Hilbert transform (HT)."~\cite{soualhi2021novel}. 
+
+%Automatic feature extraction? Manual Feature extraction?
+Acoustic emission signals. Ant colony optimization-based feature selection methods ? ~\cite{liao2010feature}.
+
+Advanced monitoring of machining operations ~\cite{teti2010advanced}
+
+This paper discusses a life forecasting model ~\cite{wang2016multiple}
+
+This PhD thesis does this.. ~\cite{martin2017unsupervised}
 
 % PCA
 "A PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings was developed." "These features were then used as inputs for an unsupervised competitive learning scheme to classify defective bearings according to their defect sizes." ~\cite{malhi2004pca}
 
 % Best subset selection (forward/backward step-wise selection)
+Forward/backward step wise selection.~\cite{james2013introduction}
 
 % Automatic Feature Selection methods
 Uses ANOVA F-Test to rank features and do multiclass classification. 
@@ -301,12 +299,12 @@ Feature Correlation Clustering involves using thresholds and removing highly cor
 
 This paper builds a feature set on the basis of experimental data from sensors and of results supplied by a simplified kinematic and dynamic model~\cite{d2019physical}.
 
-This article needs to be read but looks promising. "It has been shown that combined use of kurtosis and the line integral of the acceleration signal is a promising approach in detecting the position of bearing faults"~\cite{kateris2014machine}.
+This paper "~\cite{kateris2014machine} uses several features combined through fusion of different sensors. For example it uses a combination of kurtosis and the line integral of the acceleration signal to detect bearing faults.
 
 This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
 
 \subsection{Linear Regression Models}
-Once a subset of
+Once a subset of has been selected....
 As mentioned on earlier, supervised learning involves building a model in order to predict or estimate an output based on one or more inputs. In the case of unsupervised learning, there are one or more inputs but no quantitative outputs. However, one can still learn about relationships between signals and the structure from such data. This is more of an inference task rather than prediction.
 By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too.
 Calculating a linear regression model is done using linear least squares, 
@@ -322,12 +320,11 @@ Equation \ref{eq:reqression} is used for multivariate models as well a two varia
 	\textrm{Fit Value} = 100 * \frac{ 1 - \lVert(\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }
 \end{equation}
 
+%Some comments on classification?
 "The multi-feature fusion technique PCA is used to fuse the multi-features to obtain the indicator which can reflect the degradation of slewing bearing effectively in this paper."~\cite{lu2016degradation}
 
-%Classficiation???
 "This paper addresses this issue with an application to tool condition monitoring in
 milling, where classifiers based on support vector machines and random forest were employed."~\cite{assafo2023stability}
-
 
 
 
@@ -350,9 +347,11 @@ Multifeatures fusion and nonlinear dimension reduction for intelligent bearing c
 
 Optimal symbolic entropy: An adaptive feature extraction algorithm for condition monitoring of bearings~\cite{li2023optimal}
 
+\clearpage
 
 
-\clearpage  
+
+  
 \section{Data Processing}
 \subsection{Description of Data}
 The data provided by the company consists of approximately one hour periods of data over a 15 day duration and it is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of signals made available by the company are shown in Table \ref{signalNames}.
@@ -390,7 +389,7 @@ Signal Index & Signal Number & Signal Name \\
 \end{center}
 
 \subsection{Signal Correlations}
-An analysis of the raw signals was performed using R\textsuperscript{2} value. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle. Figure \ref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. 
+An analysis of the raw signals was performed using R\textsuperscript{2} value. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle. \Cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. 
 
 \begin{center}
 \captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
@@ -418,7 +417,7 @@ An analysis of the raw signals was performed using R\textsuperscript{2} value. T
 State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is no or minimal torque on this sensor and when processing it experiences a much larger moment.
 The data is separated into cycles using this signal to isolate the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
 
-Figure \ref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Some of these identified pulses were too short and thus believed to be false positives. Any pulse under 500 samples (10 seconds) was removed from the data for the next stage leaving 224 pulses to extract features from.
+\Cref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Some of these identified pulses were too short and thus believed to be false positives. Any pulse under 500 samples (10 seconds) was removed from the data for the next stage leaving 224 pulses to extract features from.
 
 \begin{figure}[H]
     \centering
@@ -427,7 +426,7 @@ Figure \ref{fig:StateDetection} shows the windows that were identified from each
     \label{fig:StateDetection}
 \end{figure}
 
-Figure \ref{fig:StateDetectionFig_B_02_04} shows one of the plots from Figure \ref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
+\Cref{fig:StateDetectionFig_B_02_04} shows one of the plots from \cref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
 
 \begin{figure}[H]
     \centering
@@ -436,7 +435,7 @@ Figure \ref{fig:StateDetectionFig_B_02_04} shows one of the plots from Figure \r
     \label{fig:StateDetectionFig_B_02_04}
 \end{figure}
 
-Figure \ref{fig:IdentifiedPulses} shows pulses or cycles for the signal 21:20 in each of the fifteen files. As mentioned earlier B\_30\_03 and B\_04\_04 show no pulses as all. All the pulses are around 40 seconds in duration with similar shapes but varying profiles.
+\Cref{fig:IdentifiedPulses} shows pulses or cycles for the signal 21:20 in each of the fifteen files. As mentioned earlier B\_30\_03 and B\_04\_04 show no pulses as all. All the pulses are around 40 seconds in duration with similar shapes but varying profiles.
  
 \begin{figure}[H]
     \centering
@@ -445,7 +444,7 @@ Figure \ref{fig:IdentifiedPulses} shows pulses or cycles for the signal 21:20 in
     \label{fig:IdentifiedPulses}
 \end{figure}
 
-Figure \ref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor channel is plotted a different tile. 
+\Cref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor channel is plotted a different tile. 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}
@@ -455,7 +454,7 @@ Figure \ref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor chan
 
 Using the identified pulses, we can look at all the other signals during the same periods. Signal 1: 21.07 Angle over Rolls and 2: 21.10 Position over Rolls are fairly constant though contain some small deviations. Signal 7: 21:31 Width position and  8: 21:32 Height position are also fairly constant but contain some information when zoomed in. Signal 21.35 is a fully constant signal and contains nothing but a single value. The label for this signal is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
 
-Figure \ref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under rolls, signal in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Channel 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
+\Cref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under rolls, signal in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Channel 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
 
 %\begin{figure}[H]
 %    \centering
@@ -473,7 +472,7 @@ Figure \ref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under 
 %\end{figure}
 
 
-Figure \ref{fig:SignalPulse5} shows 
+\Cref{fig:SignalPulse5} shows 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse5.eps}
@@ -550,9 +549,9 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 
 \subsection{Feature Extraction}
 \subsubsection*{Feature vs Feature}
-%Figure \ref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
+%\Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
 %The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.\\
-%Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness. Figure \ref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
+%Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness.  \Cref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
 
 
 \begin{figure}[H]
@@ -652,7 +651,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
     \caption{Signal Vs Signal for Frequency Domain Feature 3 Peak Frequency 1}
     \label{fig:SignalVsSignalFeatureFreq3}
 \end{figure}
-Figure \ref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over Rolls vs Actual moment under Rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
+\Cref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over Rolls vs Actual moment under Rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{.5\textwidth}
