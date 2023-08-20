@@ -98,9 +98,9 @@ A number of linear regression models are created based on the results from the c
 Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters (vibration, temperature, acoustic emissions etc.) which provide inputs to an algorithm that outputs health metrics. This allows operators to gain an understanding of when a machine is likely to fail and instead perform some preventative interventions. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime, especially catastrophic failures, allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
-The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants and also biological systems ~\cite{tolocsi2011classification}. 
+The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants like in the oil and gas industry ~\cite{telford2011condition} and also biological systems ~\cite{tolocsi2011classification}. 
 % Discuss more specifically bearing vibration analysis
-A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review, yoshimura2009effect}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health. 
+A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review, kateris2014machine}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health. 
 
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
@@ -134,7 +134,7 @@ The rollers' profile is not the same as the tube radius but are hyperbolic/parab
 
 Modern machines are equipped with sensors monitor the amount of force being applied, the deformation of the tube, and other relevant parameters ~\cite{zhang2010study}. This feedback allows the machine to make real-time adjustments to the straightening process for optimal results. These sensors, while controlling the process itself can also be used for condition monitoring purposes.
 
-Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics} however there are no studies on the monitoring of such systems using real life data.
+Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics, yoshimura2009effect, zhang2019modeling} however there are no studies on the monitoring of such systems using real life data.
 
 \begin{figure}[H]
 	\centering
@@ -173,16 +173,14 @@ Significant research exists on the mechanical analysis of such machines ~\cite{k
 
 \subsection{Feature Extraction}
 %Why Feature Extraction?
-Machine learning algorithms suffer from high amounts of data and information redundancy.
-Another problem with high dimensional data is that it requires vast amounts of storage. By  extracting signal features and deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the signals.
-
-%What is Feature Extraction
-Feature extraction is the process of computing several numerical values from raw signals in order. Features can include statistical, spectral and temporal calculations. 
+Feature extraction is the process of computing several numerical values from raw signals. Machine learning algorithms suffer from high amounts of data and information redundancy while requiring vast amounts of storage. By  extracting signal features and deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the signals.
 
 %Feature extraction used in condition monitoring/degradation
-Feature extraction techniques are used for estimating degradation trends ~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
+Feature extraction techniques are commonly used to estimate degradation trends ~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
+%Types of features
+Features can include time domain, frequency domain, time-frequency domain (temporal) and even model based methods ~\cite{teti2010advanced}. Time-frequency features are examples of three dimensional which include wavelet analysis, spectrograms, scalograms, Wigner-Ville distribution, and kurtograms ~\cite{soualhi2021novel}. Some of the most widely used or effective Time domain indicators are mainly based on  rms value, the crest factor, and kurtosis ~\cite{soualhi2021novel}. ~\cite{d2019physical} even proposes a feature set built on experimental data from sensors plus results from building a simplified kinematic and dynamic model.
 
-Machine condition monitoring can take many forms: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography, visual inspection, performance monitoring, and trend monitoring ~\cite{ahmed2020condition}. There is no one size fits all when it comes to condition monitoring. For example a for a slewing bearing, a large low-speed heavy-load bearing, vibration signal is insufficient ~\cite{wang2016multiple}.
+Machine \gls{CM} can use various types of sensors including: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography ~\cite{ahmed2020condition}. There is no one size fits all when it comes to condition monitoring. For example a for a slewing bearing, a large low-speed heavy-load bearing, vibration signal is insufficient ~\cite{wang2016multiple} and thus fusion models based on torque, temperature and vibration are needed.
 
 \subsection{Time Domain Features} 	
 The list of features used for this project are as follows:
@@ -208,16 +206,17 @@ The standard deviation, $\sigma$, is the square root of variance, and measures t
 \begin{equation}
 x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i}.
 \end{equation}
+Excessive variation in the rms level usually means a change in health status and possible failure. 
 \subsubsection*{Shape Factor}
 Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the 
 \begin{equation}
 x_{SF} = \frac{ x_{RMS} }  {\frac{1}{N}\sum^N_{i=1}|x_i|}
 \end{equation}
 \subsubsection*{Kurtosis}
-Kurtosis is a statistical measure of the tailedness of a distribution. It gives us the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault.
-\begin{equation}
-x_{kurt} = \frac{\sum^N_{i=1}(x_i-\bar{x})^4}{(N-1)\sigma^4}
+Kurtosis is derived from the statistical moment of order 4 and is defined as the ratio between the mean value of the signal raised to the power of 4 and the square of its variance, \begin{equation}
+x_{kurt} = \frac{\sum^N_{i=1}(x_i-\bar{x})^4}{(N-1)\sigma^4}.
 \end{equation}
+It is a statistical quantity used to analyze the flattening of a distribution and therefore to observe the shape of the signal. It is a astatistical measure of the tailedness of a distribution and indicates the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault. For normal bearing operation, kurtosis is close to 3 and increases rapidly with faults.
 \subsubsection*{Skewness} 
 A measure of asymmetry of through probability density function. Faults can sometimes be revealed through asymmetric distribution.
 \begin{equation}
@@ -234,11 +233,11 @@ The maximum absolute value divided by the mean of absolute value. Comparison of 
 x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)}
 \end{equation}
 \subsubsection*{Crest Factor} 
-Divide the maximum absolute value of a signal by the \gls{RMS} value.
-Faults can often be detected as a peakiness of signals before they become evident in the energy (\gls{RMS}).
+Crest Factor is found by dividing the maximum absolute value of a signal by the \gls{RMS} value,
 \begin{equation}
-x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i}
+x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i}.
 \end{equation}
+Faults can often be detected as a peakiness of signals before they become evident in the energy (\gls{RMS}). Other indicators have been developed based on the crest factor, such as the K-factor, by multiplying the peak value by the rms value or the peak-to-peak value, measuring the difference between the amplitudes of the upper and lower peaks ~\cite{soualhi2021novel}.
 \subsubsection*{Clearance Factor} 
 Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
 \begin{equation}
@@ -261,32 +260,18 @@ Peak amplitude is the height of the maximum frequency value on the power spectru
 \subsubsection*{Peak Frequency}
 Peak frequency is the value of the frequency which has the highest peak.
 \subsection{Feature Selection}
-Once the features have been calculated the challenge is to isolate the most useful and relevant features. "Most datasets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. It is ideal remove non-informative and redundant features to reduce complexity, making models easier to interpret."
+Once the features have been calculated the challenge is to isolate the most useful and relevant features. Often data sets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. It is ideal remove non-informative and redundant features to reduce complexity, making models easier to interpret. To this point ~\cite{tolocsi2011classification} argues "that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features."
 
-There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
+The main task of feature selection is to select a subset of features that are the most relevant to the classification problem. There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
 
-"The main task of feature selection is to select a subset of features that are the most relevant to the classification problem." ~\cite{ahmed2020condition}
-
-~\cite{tolocsi2011classification} argues "that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features."
 
 %Techniques for selecting features
-This paper talks about "top sensitive features"~\cite{bleakie2013feature}.
-
 This paper talks about defines feature goodness metrics of correlation (Corr), monotonicity (Mon) and robustness (Rob) ~\cite{zhang2016degradation}.
-
-"This paper presents an innovative approach to the extraction of an indicator for the monitoring of bearing degradation. This approach is based on the principles of the empirical mode decomposition (EMD) and the Hilbert transform (HT)."~\cite{soualhi2021novel}. 
 
 %Automatic feature extraction? Manual Feature extraction?
 Acoustic emission signals. Ant colony optimization-based feature selection methods ? ~\cite{liao2010feature}.
 
-Advanced monitoring of machining operations ~\cite{teti2010advanced}
-
-This paper discusses a life forecasting model ~\cite{wang2016multiple}
-
 This PhD thesis does this.. ~\cite{martin2017unsupervised}
-
-% PCA
-"A PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings was developed." "These features were then used as inputs for an unsupervised competitive learning scheme to classify defective bearings according to their defect sizes." ~\cite{malhi2004pca}
 
 % Best subset selection (forward/backward step-wise selection)
 Forward/backward step wise selection.~\cite{james2013introduction}
@@ -297,11 +282,11 @@ This paper mentions feature selection techniques like ANOVA F-Test, Recursive Fe
 Feature Correlation Clustering involves using thresholds and removing highly correlation features.
 "The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.
 
-This paper builds a feature set on the basis of experimental data from sensors and of results supplied by a simplified kinematic and dynamic model~\cite{d2019physical}.
+% PCA
+"A PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings was developed." "These features were then used as inputs for an unsupervised competitive learning scheme to classify defective bearings according to their defect sizes." ~\cite{malhi2004pca}
 
-This paper "~\cite{kateris2014machine} uses several features combined through fusion of different sensors. For example it uses a combination of kurtosis and the line integral of the acceleration signal to detect bearing faults.
 
-This article is called "Condition assessment for the performance degradation of bearing based on a combinatorial feature extraction method"~\cite{hong2014condition}.
+
 
 \subsection{Linear Regression Models}
 Once a subset of has been selected....
@@ -321,10 +306,9 @@ Equation \ref{eq:reqression} is used for multivariate models as well a two varia
 \end{equation}
 
 %Some comments on classification?
-"The multi-feature fusion technique PCA is used to fuse the multi-features to obtain the indicator which can reflect the degradation of slewing bearing effectively in this paper."~\cite{lu2016degradation}
+As alluded to earlier, one challenge in analyzing a real operating machine is the lack of fault data. Many studies are performed in the lab on specially constructed test rigs which are built to run until destruction ~\cite{soualhi2021novel, wang2016multiple, d2019physical}. This is not possible on an operational asset since one cannot afford to run the machine until it fails.
 
-"This paper addresses this issue with an application to tool condition monitoring in
-milling, where classifiers based on support vector machines and random forest were employed."~\cite{assafo2023stability}
+"The multi-feature fusion technique PCA is used to fuse the multi-features to obtain the indicator which can reflect the degradation of slewing bearing effectively in this paper."~\cite{lu2016degradation}
 
 
 
@@ -339,13 +323,18 @@ Comparison of automated feature selection and reduction methods on the condition
 
 Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network ~\cite{saucedo2021condition}
 
-Features selection procedure for prognostics: An approach based on predictability~\cite{javed2012features}
+This paper talks about "top sensitive features" [Feature extraction, condition monitoring, and fault modeling in semiconductor manufacturing systems]~\cite{bleakie2013feature}.
+
+Features selection procedure for prognostics: An approach based on predictability [Features selection procedure for prognostics, an approach based on predictability]~\cite{javed2012features}
 
 Heterogeneous feature models and feature selection applied to bearing fault diagnosis~\cite{rauber2014heterogeneous}
 
 Multifeatures fusion and nonlinear dimension reduction for intelligent bearing condition monitoring~\cite{guo2016multifeatures}
 
 Optimal symbolic entropy: An adaptive feature extraction algorithm for condition monitoring of bearings~\cite{li2023optimal}
+
+"This paper addresses this issue with an application to tool condition monitoring in
+milling, where classifiers based on support vector machines and random forest were employed."~\cite{assafo2023stability}
 
 \clearpage
 
