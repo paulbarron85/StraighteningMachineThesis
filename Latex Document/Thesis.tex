@@ -53,7 +53,7 @@
 \pagenumbering{roman}
 
 \section*{Acknowledgments}
-I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience. I would like to thank the University of Gävle for offering a Masters Program in Electronics and Automation available to take as distance education. I would like to thank my partner, Alex Hamelin, for her support.
+I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience. I would like to thank the University of Gävle for offering a Masters Program in Electronics and Automation available to take as distance education. I would like to thank Alleima for providing the data to analyses for this Thesis. I would like to thank my partner, Alex Hamelin, for her support.
 \newpage
 
 \section*{Abstract}
@@ -100,7 +100,7 @@ Condition monitoring (\gls{CM}) is the process of predicting machine health thro
 % Discuss why CM is important
 The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants like in the oil and gas industry ~\cite{telford2011condition} and also biological systems ~\cite{tolocsi2011classification}. 
 % Discuss more specifically bearing vibration analysis
-A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review, kateris2014machine}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health. 
+A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review, kateris2014machine}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health and remaining life ~\cite{zhang2016degradation}. 
 
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
@@ -264,51 +264,42 @@ Once the features have been calculated the challenge is to isolate the most usef
 
 The main task of feature selection is to select a subset of features that are the most relevant to the classification problem. There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
 
-
 %Techniques for selecting features
-This paper talks about defines feature goodness metrics of correlation (Corr), monotonicity (Mon) and robustness (Rob) ~\cite{zhang2016degradation}.
-
-%Automatic feature extraction? Manual Feature extraction?
-Acoustic emission signals. Ant colony optimization-based feature selection methods ? ~\cite{liao2010feature}.
-
-This PhD thesis does this.. ~\cite{martin2017unsupervised}
+% PCA
+~\cite{lu2016degradation} uses a multi-feature fusion technique where PCA is used to fuse the multi-features to obtain the indicator. ~\cite{malhi2004pca} also implements a PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings. 
 
 % Best subset selection (forward/backward step-wise selection)
-Forward/backward step wise selection.~\cite{james2013introduction}
+A common method for selecting the most suitable features is forward or backward step wise selection ~\cite{james2013introduction}. Forward selection begins with a null model and creates a simple linear regressions for each variable added one at a time and the model with the lowest RSS is selected. Using that model as a starting point for the next stage another variable is added to create a number of 2 variable models with the lowest RSS being selected to more forward. This process is continued until some stopping rule is satisfied.
 
-% Automatic Feature Selection methods
-Uses ANOVA F-Test to rank features and do multiclass classification. 
-This paper mentions feature selection techniques like ANOVA F-Test, Recursive Feature Elimination, Model Importance, Feature Correlation Clustering. 
-Feature Correlation Clustering involves using thresholds and removing highly correlation features.
-"The work outlines an approach to determining which is the minimum set features that best distinguishes between Healthy and damaged states in bridges"~\cite{buckley2023feature}.
+Among other techniques ~\cite{buckley2023feature} uses recursive feature elimination and feature correlation clustering, the latter involves using thresholds and removing highly correlation features.
 
-% PCA
-"A PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings was developed." "These features were then used as inputs for an unsupervised competitive learning scheme to classify defective bearings according to their defect sizes." ~\cite{malhi2004pca}
+This paper, ~\cite{zhang2016degradation}, proposes a goodness metrics of fit which is a combination of correlation, monotonicity and robustness for feature selection.
 
-
-
+%Automatic feature extraction?
+Acoustic emission signals were extracted both by discrete wavelet decomposition and autoregressive modeling. The three feature selection methods include the sequential forward floating selection, and two ant colony optimization-based feature selection methods~\cite{liao2010feature}.
 
 \subsection{Linear Regression Models}
-Once a subset of has been selected....
-As mentioned on earlier, supervised learning involves building a model in order to predict or estimate an output based on one or more inputs. In the case of unsupervised learning, there are one or more inputs but no quantitative outputs. However, one can still learn about relationships between signals and the structure from such data. This is more of an inference task rather than prediction.
-By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too.
-Calculating a linear regression model is done using linear least squares, 
+Once a subset of features has been settled upon one can create a linear model. By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too. Calculating a linear regression model is done using linear least squares, 
 \begin{equation} \label{eq:reqression}
 	\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \cdot \mathbf{X})^{-1} \cdot \mathbf{X}^T \cdot \mathbf{Y},
 \end{equation}
 where $ \hat{\boldsymbol{\theta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
 $ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$.\\
-Equation \ref{eq:reqression} is used for multivariate models as well a two variable models.
-\subsection{Metrics}
+Equation \ref{eq:reqression} is used for multivariate models as well a two variable models. Once a model has been calculated a normalized goodness of fit function can be used to asses the accuracy of the model,
 % Fit equation from compare function
 \begin{equation}
-	\textrm{Fit Value} = 100 * \frac{ 1 - \lVert(\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }
+	\textrm{Fit Value} = 100 * \frac{ 1 - \lVert\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }.
 \end{equation}
+\subsection{Classification and Clustering}
+In a perfect world, data would be available for every kind fault mode possible for a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could building a model that predicts or estimates an health metric based on one or more inputs. This is obviously often not the case and more likely we have a situation where we have one or more inputs but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get ~\cite{martin2017unsupervised}.
 
-%Some comments on classification?
-As alluded to earlier, one challenge in analyzing a real operating machine is the lack of fault data. Many studies are performed in the lab on specially constructed test rigs which are built to run until destruction ~\cite{soualhi2021novel, wang2016multiple, d2019physical}. This is not possible on an operational asset since one cannot afford to run the machine until it fails.
+Unsupervised learning is more of an inference task rather than prediction. Techniques such as auto-encoders, K-means clustering and sparse coding are used to find clusters and patters. Once feature models have been created, one can often find different clustering of data when a machine is in a degraded condition compared to a healthy state.
 
-"The multi-feature fusion technique PCA is used to fuse the multi-features to obtain the indicator which can reflect the degradation of slewing bearing effectively in this paper."~\cite{lu2016degradation}
+%Often we are forced to do unsupervised learning since we don't have failure data
+Many studies are performed in the lab on specially constructed test rigs which are built to run until destruction ~\cite{soualhi2021novel, wang2016multiple, d2019physical, malhi2004pca}. This is not possible on an operational asset since a company cannot afford to run the machine until it fails which. For this reason studies into \gls{CM} of real life machines are often forced to implement unsupervised learning as opposed to supervised.
+
+
+
 
 
 
