@@ -487,9 +487,9 @@ An analysis of the raw signals was performed using R\textsuperscript{2} value. T
 \end{figure}
 
 \subsection{Feature Selection}
-Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R\textsuperscript{2} value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R\textsuperscript{2} value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R\textsuperscript{2} value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
+Once the data has been pre-processed the feature values are calculated for each identified production cycle. For each channel, the R\textsuperscript{2} value for each pair of signal features is computed and the pairs of data points for each cycle are against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R\textsuperscript{2} value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R\textsuperscript{2} value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
 
-A range of two threshold values are used for this method to select feature pairs. An upper and and a lower R\textsuperscript{2} threshold value reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
+Two threshold values are used to select a range of R\textsuperscript{2} correlated features with this method. An upper and and a lower R\textsuperscript{2} threshold value are specified which reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
 
 A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R\textsuperscript{2} values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
 
@@ -516,6 +516,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
  7 & \gls{RMS} & 15 & Peak Amplitude 1\\ 
  \hline              
  8 & \gls{SNR} & 16 & Peak Frequency 1 \\
+ \hline        
 \end{tabular}
 \end{center}
 
