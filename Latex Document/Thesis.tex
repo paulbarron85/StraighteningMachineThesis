@@ -15,6 +15,8 @@
 \usepackage{matlab-prettifier}
 \usepackage{pdfpages}
 \usepackage{cleveref}
+\usepackage{verbatim}
+\usepackage[numbers]{natbib}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
@@ -39,6 +41,7 @@
 \newacronym{SINAD}{SINAD}{Signal-to-noise and Distortion Ratio}
 \newacronym{TSS}{TSS}{Total Sum of Squares}
 \newacronym{SSR}{SSR}{Sum of Squared Regression}
+\newacronym{PCR}{PCR}{Principal Component Analysis}
 \makenoidxglossaries
 
 \begin{document}
@@ -98,9 +101,9 @@ A number of linear regression models are created based on the results from the c
 Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters (vibration, temperature, acoustic emissions etc.) which provide inputs to an algorithm that outputs health metrics. This allows operators to gain an understanding of when a machine is likely to fail and instead perform some preventative interventions. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime, especially catastrophic failures, allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
-The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges ~\cite{buckley2023feature}, large process plants like in the oil and gas industry ~\cite{telford2011condition} and also biological systems ~\cite{tolocsi2011classification}. 
+The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges~\cite{buckley2023feature}, large process plants like in the oil and gas industry~\cite{telford2011condition} and also biological systems~\cite{tolocsi2011classification}. 
 % Discuss more specifically bearing vibration analysis
-A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines ~\cite{tiboni2022review, kateris2014machine}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health and remaining life ~\cite{zhang2016degradation}. 
+A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines~\cite{tiboni2022review, kateris2014machine}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health and remaining life~\cite{zhang2016degradation}. 
 
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
@@ -128,68 +131,50 @@ The aim of this project is to examine the existing data available for a tube str
 \clearpage  
 \section{Theory}
 \subsection{System}
-Rotary straightening machines, \cref{straighteningImage2,straighteningImage3,straighteningImage6}, are a finishing machine developed to straighten and improve ovality of a metal pipes. A tube is fed through a series of roller pairs undergoing a series of bending moments inducing controlled plastic deformation to straighten the tubes. Tubes subjected to two straightening forces, pressure straightening and bend (or offset) straightening. Hydraulic actuators are used to precisely position the height of the rollers and at least some are driven by motors which grip and rotate the tube while feeding it through the machine. A number of different configurations for this type of machine exist with six and 10 rolls being common. 
+Rotary straightening machines, \cref{StraighteningMachines,straighteningImage6}, are a type of finishing machine developed to straighten and improve ovality of a metal pipes and tubes. A tube is fed through a series of roller pairs and undergoes a sequence of bending moments which induced controlled plastic deformations. Tubes are subjected to two types of straightening forces, pressure straightening and bend (or offset) straightening. Hydraulic actuators are used to precisely position the height of the rollers and at least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine. A number of different configurations for this type of machine exist with six and 10 rolls being common. 
 
-The rollers' profile is not the same as the tube radius but are hyperbolic/parabolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. The rollers can be adjusted from parallel to the pipe up to approximately 45 degrees, with the upper rollers being adjusted in opposite angle to lower rollers.
+The profile of the rollers is not the same as the tube radius but are hyperbolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. The rollers can be adjusted from parallel to the pipe up to approximately 45 degrees, with the upper rollers being adjusted in opposite angle to lower rollers.
 
-Modern machines are equipped with sensors monitor the amount of force being applied, the deformation of the tube, and other relevant parameters ~\cite{zhang2010study}. This feedback allows the machine to make real-time adjustments to the straightening process for optimal results. These sensors, while controlling the process itself can also be used for condition monitoring purposes.
-
-Significant research exists on the mechanical analysis of such machines ~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics, yoshimura2009effect, zhang2019modeling} however there are no studies on the monitoring of such systems using real life data.
+Modern straightening machines are equipped with sensors that monitor the amount of force being applied, the deformation of the tube, and other relevant parameters~\cite{zhang2010study}. This feedback allows the machine to make real-time adjustments to the straightening process for optimal results. These sensors, while controlling the process itself can also be used for condition monitoring purposes. Significant research exists on the mechanical analysis of such machines~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics, yoshimura2009effect, zhang2019modeling} however no studies relating to condition monitoring of such systems using real life data could be found.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{straightening2.png}
-	\caption{Roller profile of a straightening machine~\cite{ma2020effect}}
-	\label{straighteningImage2}
+    \centering
+		\begin{subfigure}{.4\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{straightening2.png}
+			\caption{Straightening machine roller profile~\cite{ma2021analysis}}
+			\label{straighteningImage2}
+		\end{subfigure}%
+		\begin{subfigure}{.55\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{straightening3.jpg}
+			\caption{10 roller straightening machine layout~\cite{zhang2019modeling}}
+			\label{straighteningImage3}
+		\end{subfigure}
+    \caption{Diagrams of straightening machines}
+    \label{StraighteningMachines}
 \end{figure}
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[]{straightening1.jpg}
-%	\caption{A straightening machine~\cite{kato2014straightening}}
-%	\label{straighteningImage1}
-%\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth]{straightening3.jpg}
-	\caption{Straightening machine layout~\cite{ma2021analysis}}
-	\label{straighteningImage3}
-\end{figure}
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=90mm, keepaspectratio]{Straightening5.png}
-%	\caption{A straightening machine~\cite{zhang2019modeling}}
-%	\label{straighteningImage5}
-%\end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth, keepaspectratio]{Straightening6.png}
-	\caption{10 roller straightening machine~\cite{zhang2019modeling}}
+	\caption{Image of a 10 roller straightening machine~\cite{zhang2019modeling}}
 	\label{straighteningImage6}
 \end{figure}
 
 \subsection{Feature Extraction}
 %Why Feature Extraction?
-Feature extraction is the process of computing several numerical values from raw signals. Machine learning algorithms suffer from high amounts of data and information redundancy while requiring vast amounts of storage. By  extracting signal features and deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the signals.
+Machine learning algorithms suffer from high amounts of data and information redundancy while requiring vast amounts of storage. Feature extraction, the process of computing numerical values from raw signals, is one method that can be used to combat these issues. By extracting signal features and deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the signals.
 
 %Feature extraction used in condition monitoring/degradation
-Feature extraction techniques are commonly used to estimate degradation trends ~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
+Feature extraction techniques are commonly used to estimate degradation trends in machines~\cite{caesarendra2017review,adams2017comparison,hong2014condition}.
 %Types of features
-Features can include time domain, frequency domain, time-frequency domain (temporal) and even model based methods ~\cite{teti2010advanced}. Time-frequency features are examples of three dimensional which include wavelet analysis, spectrograms, scalograms, Wigner-Ville distribution, and kurtograms ~\cite{soualhi2021novel}. Some of the most widely used or effective Time domain indicators are mainly based on  rms value, the crest factor, and kurtosis ~\cite{soualhi2021novel}. ~\cite{d2019physical} even proposes a feature set built on experimental data from sensors plus results from building a simplified kinematic and dynamic model.
+Features can include time domain, frequency domain, time-frequency domain (temporal) and model based methods~\cite{teti2010advanced}. Some of the most widely used and effective time domain indicators are mainly based on rms value, the crest factor, and kurtosis~\cite{soualhi2021novel}. Time-frequency values are three dimensional features which include wavelet analysis, spectrograms, scalograms, Wigner-Ville distribution, and kurtograms~\cite{soualhi2021novel}.~\cite{d2019physical} proposes a feature set built on experimental data from sensors plus results from building a simplified kinematic and dynamic model.
 
-Machine \gls{CM} can use various types of sensors including: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography ~\cite{ahmed2020condition}. There is no one size fits all when it comes to condition monitoring. For example a for a slewing bearing, a large low-speed heavy-load bearing, vibration signal is insufficient ~\cite{wang2016multiple} and thus fusion models based on torque, temperature and vibration are needed.
+Machine \gls{CM} can utilize various form of sensors and signals including: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography~\cite{ahmed2020condition}. There is no one size fits all when it comes to condition monitoring. For example a for a slewing bearing, a large low-speed heavy-load bearing, vibration signal is insufficient~\cite{wang2016multiple} and thus fusion models based on torque, temperature and vibration are needed.
 
 \subsection{Time Domain Features} 	
-The list of features used for this project are as follows:
-\subsubsection*{Coefficient of Determination}
-The coefficient of determination, or $R^{2}$ correlation, is a measure of how well a model predicts the actual output values. It is calculated as the one minus the \gls{SSR} divided by \gls{TSS},
-\begin{equation}
-R^{2} = 1 - \frac{\textrm{SSR}}{\textrm{TSS}} = 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2}. 
-\end{equation}
-An $R^{2}$ value of 1 means that the two signals are perfectly linear and a value of zero means there is no linear relationship. A value between 0 and 1 indicates some degree of linear relationship exists with the degree of linearity increasing with the value.
+A non exhaustive list of features used for this project are as follows:
 \subsubsection*{Mean}
 The mean, $ \bar{x} $, is the average value of the signal,
 \begin{equation}
@@ -199,7 +184,7 @@ where $ x_i $ is the $ i $:th element of the signal and $ N $ is the number of s
 \subsubsection*{Standard Deviation}  
 The standard deviation, $\sigma$, is the square root of variance, and measures the dispersion of a data set relative to its mean,
 \begin{equation}
-	\sigma =\sqrt{\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)}}.
+	\sigma = \sqrt{\frac{\sum^N_{i=1}(x_i-\bar{x})^2}{(N-1)}}.
 \end{equation}
 \subsubsection*{\gls{RMS}}
 \gls{RMS} is the square root of the mean squared,
@@ -208,111 +193,122 @@ x_{RMS} = \sqrt{\frac{1}{N} \sum^N_{i=1}x^2_i}.
 \end{equation}
 Excessive variation in the rms level usually means a change in health status and possible failure. 
 \subsubsection*{Shape Factor}
-Root mean square divided by the mean of the absolute value. It is dependent on the signal shape and independent of the 
+Shape factor is the root mean square divided by the mean of the absolute value,
 \begin{equation}
-x_{SF} = \frac{ x_{RMS} }  {\frac{1}{N}\sum^N_{i=1}|x_i|}
+x_{SF} = \frac{ x_{RMS} }  {\frac{1}{N}\sum^N_{i=1}|x_i|}.
 \end{equation}
+It is dependent on the signal shape and independent of the scale of the signal.
 \subsubsection*{Kurtosis}
 Kurtosis is derived from the statistical moment of order 4 and is defined as the ratio between the mean value of the signal raised to the power of 4 and the square of its variance, \begin{equation}
 x_{kurt} = \frac{\sum^N_{i=1}(x_i-\bar{x})^4}{(N-1)\sigma^4}.
 \end{equation}
-It is a statistical quantity used to analyze the flattening of a distribution and therefore to observe the shape of the signal. It is a astatistical measure of the tailedness of a distribution and indicates the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis metric, can be a indication of an impending fault. For normal bearing operation, kurtosis is close to 3 and increases rapidly with faults.
+It is a statistical quantity used to analyze the flattening of a distribution and therefore to observe the shape of the signal. It is a statistical measure of the tailedness of a distribution and indicates the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis, can be a indication of an impending fault. For normal bearing operation, kurtosis is close to 3 and increases rapidly with failure.
 \subsubsection*{Skewness} 
-A measure of asymmetry of through probability density function. Faults can sometimes be revealed through asymmetric distribution.
+A measure of asymmetry of the probability density function,
 \begin{equation}
-x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3}
+x_{skew} = \frac{\sum^2_{i=1}(x_i-m)^3}{(N-1)\sigma^3}.
 \end{equation}
+Faults can sometimes be revealed through asymmetric distribution.
 \subsubsection*{Peak Value}
-Maximum value of a signal
+The maximum value of a signal,
 \begin{equation}
-x_p = \textrm{max}(x_i)
+x_p = \textrm{max}(x_i),
 \end{equation}
+where $x_p$ is the peak value of a signal.
 \subsubsection*{Impulse Factor} 
-The maximum absolute value divided by the mean of absolute value. Comparison of the height of the peak to the average value.
+The maximum absolute value divided by the mean of absolute value,
 \begin{equation}
-x_{IF} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}|x_i|)}
+x_{IF} = \frac{x_p}{\frac{1}{N}\sum^N_{i=1}|x_i|},
 \end{equation}
+in other words a comparison of the height of the peak to the average value.
 \subsubsection*{Crest Factor} 
 Crest Factor is found by dividing the maximum absolute value of a signal by the \gls{RMS} value,
 \begin{equation}
-x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}}\sum^N_{i=1}x^2_i}.
+x_{crest} = \frac{x_p}{\sqrt{\frac{1}{N}\sum^N_{i=1}x^2_i}}.
 \end{equation}
-Faults can often be detected as a peakiness of signals before they become evident in the energy (\gls{RMS}). Other indicators have been developed based on the crest factor, such as the K-factor, by multiplying the peak value by the rms value or the peak-to-peak value, measuring the difference between the amplitudes of the upper and lower peaks ~\cite{soualhi2021novel}.
+Faults can often be detected as a peakiness of signals before they become evident in the energy (\gls{RMS}). Other indicators have been developed based on the crest factor, such as the K-factor, by multiplying the peak value by the rms value or the peak-to-peak value, measuring the difference between the amplitudes of the upper and lower peaks~\cite{soualhi2021novel}.
 \subsubsection*{Clearance Factor} 
-Peak value divided by the squared mean value of the square roots of the absolute values. For a healthy bearings this feature is maximum and decreases as faults develop.
+Clearance factor is the defined as the peak value divided by the squared mean value of the square roots of the absolute values,
 \begin{equation}
-x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2}
+x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2}.
 \end{equation}
+For a healthy bearings this feature is maximum and decreases as faults develop.
 \subsubsection*{\gls{SNR}}
-Ratio of signal power to noise power in decibels.
+Ratio of signal power to noise power in decibels,
+\begin{equation}
+	SNR = 10 \textrm{log}_{10} \frac{P_{signal}}{P_{noise}},
+\end{equation}
+where $P$ is the average power of the signal and noise. It is usually is expressed as decibels.
 \subsubsection*{\gls{SINAD}}
 Ratio of total harmonic component power to fundamental power.
+\begin{equation}
+	SNR = 10 \textrm{log}_{10} \frac{P_{signal} + P_{noise} + P_{distortion}}{P_{noise} + P_{distortion}}, 
+\end{equation}
+where $P$ is the average power of the signal, noise and distortion and is expressed as decibels.
 \subsubsection*{\gls{THD}}
-Ratio of total signal power to total noise-plus-distortion power.
+Ratio of total signal power to total noise-plus-distortion power,
+\begin{equation}
+	THD = \frac{\sqrt{V^2_{h2} + \hdots + V^2_{hN}}}{V_1},
+\end{equation}
+where $V_N$ is the signal's $N$:th harmonic.
+\subsubsection*{Coefficient of Determination}
+The coefficient of determination, or $R^{2}$ correlation, is a measure of how well a model predicts the actual output values. It is calculated as the one minus the \gls{SSR} divided by \gls{TSS},
+\begin{equation}
+R^{2} = 1 - \frac{\textrm{SSR}}{\textrm{TSS}} = 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2}. 
+\end{equation}
+An $R^{2}$ value of 1 means that the two signals are perfectly linear and a value of zero means there is no linear relationship. A value between 0 and 1 indicates some degree of linear relationship exists with the degree of linearity increasing with the value.
 \subsection{Frequency Domain Features}
 In order to computer the frequency features one must first compute a power spectrum.
 \subsubsection*{Band Power}
-The band power is the area beneath the graph, within a frequency range, of the power spectral density vs the frequencies.
-the power of a signal in the selected frequency range.
-The area under the spectrum curve within the chosen band limits.
+The band power is the area beneath the graph, within a selected frequency range, of the power spectral density vs the frequencies.
 \subsubsection*{Peak Amplitude}
 Peak amplitude is the height of the maximum frequency value on the power spectrum.
 \subsubsection*{Peak Frequency}
 Peak frequency is the value of the frequency which has the highest peak.
 \subsection{Feature Selection}
-Once the features have been calculated the challenge is to isolate the most useful and relevant features. Often data sets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss in information. It is ideal remove non-informative and redundant features to reduce complexity, making models easier to interpret. To this point ~\cite{tolocsi2011classification} argues "that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features."
-
-The main task of feature selection is to select a subset of features that are the most relevant to the classification problem. There is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
+Once features have been calculated the challenge is to isolate the most useful and relevant features. Often data sets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss of information. Ideally non-informative and redundant features are removed to reduce complexity, making models easier to interpret. To this point~\cite{tolocsi2011classification} argues that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features. Considering all the research, there is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
 
 %Techniques for selecting features
-% PCA
-~\cite{lu2016degradation} uses a multi-feature fusion technique where PCA is used to fuse the multi-features to obtain the indicator. ~\cite{malhi2004pca} also implements a PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings. 
-
 % Best subset selection (forward/backward step-wise selection)
-A common method for selecting the most suitable features is forward or backward step wise selection ~\cite{james2013introduction}. Forward selection begins with a null model and creates a simple linear regressions for each variable added one at a time and the model with the lowest RSS is selected. Using that model as a starting point for the next stage another variable is added to create a number of 2 variable models with the lowest RSS being selected to more forward. This process is continued until some stopping rule is satisfied.
+A common method for selecting the most suitable features is forward or backward step wise selection~\cite{james2013introduction}. Forward selection begins with a null model and creates simple linear regressions for each feature on it's own and the model with the lowest RSS is selected. Using that model as a starting point for the next stage another variable is added to create a number of 2 variable models with the lowest RSS being selected to more forward. This process is continued until some stopping rule is satisfied.
 
-Among other techniques ~\cite{buckley2023feature} uses recursive feature elimination and feature correlation clustering, the latter involves using thresholds and removing highly correlation features.
+% PCA
+\gls{PCA} appears to be another popule technique used in feature selection. In one paper, PCA is used to fuse multiple features in order to obtain a bearings state~\cite{lu2016degradation}. Another study uses a PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings~\cite{malhi2004pca}. 
 
-This paper, ~\cite{zhang2016degradation}, proposes a goodness metrics of fit which is a combination of correlation, monotonicity and robustness for feature selection.
+Among other techniques~\cite{buckley2023feature} uses recursive feature elimination and feature correlation clustering, the latter involves using thresholds and removing highly correlation features. This study,~\cite{zhang2016degradation}, proposes a goodness metrics of fit which is a combination of correlation, monotonicity and robustness for feature selection.
 
-%Automatic feature extraction?
-Acoustic emission signals were extracted both by discrete wavelet decomposition and autoregressive modeling. The three feature selection methods include the sequential forward floating selection, and two ant colony optimization-based feature selection methods~\cite{liao2010feature}.
+%Acoustic emission signals were extracted both by discrete wavelet decomposition and autoregressive modeling. The three feature selection methods include the sequential forward floating selection, and two ant colony optimization-based feature selection methods~\cite{liao2010feature}.
 
 \subsection{Linear Regression Models}
-Once a subset of features has been settled upon one can create a linear model. By plotting one signal feature against another signal feature relationships in the data can be found. Not only linear relations but quite possibly non-linear relationships too. Calculating a linear regression model is done using linear least squares, 
+Once a subset of features has been settled upon one can create a linear model. By plotting one signal feature against another signal feature relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. Calculating a linear regression model is done using linear least squares, 
 \begin{equation} \label{eq:reqression}
 	\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \cdot \mathbf{X})^{-1} \cdot \mathbf{X}^T \cdot \mathbf{Y},
 \end{equation}
 where $ \hat{\boldsymbol{\theta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
 $ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$.\\
-Equation \ref{eq:reqression} is used for multivariate models as well a two variable models. Once a model has been calculated a normalized goodness of fit function can be used to asses the accuracy of the model,
+Equation \ref{eq:reqression} is used for multivariate models as well a two variable models. Once a model has been calculated a normalized goodness of fit function can be used to assess the accuracy of the model,
 % Fit equation from compare function
 \begin{equation}
-	\textrm{Fit Value} = 100 * \frac{ 1 - \lVert\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }.
+	\textrm{Fit Value} = 100 \times \frac{ 1 - \lVert\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert }.
 \end{equation}
 \subsection{Classification and Clustering}
-In a perfect world, data would be available for every kind fault mode possible for a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could building a model that predicts or estimates an health metric based on one or more inputs. This is obviously often not the case and more likely we have a situation where we have one or more inputs but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get ~\cite{martin2017unsupervised}.
+In a perfect world, data would be available for every kind failure mode possible on a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could building a model that predicts or estimates degradation metrics quite easily based on one or more inputs. This is obviously often not the case and a more likely situation is where a number inputs or parameters exists but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get~\cite{martin2017unsupervised}.
 
 Unsupervised learning is more of an inference task rather than prediction. Techniques such as auto-encoders, K-means clustering and sparse coding are used to find clusters and patters. Once feature models have been created, one can often find different clustering of data when a machine is in a degraded condition compared to a healthy state.
 
 %Often we are forced to do unsupervised learning since we don't have failure data
-Many studies are performed in the lab on specially constructed test rigs which are built to run until destruction ~\cite{soualhi2021novel, wang2016multiple, d2019physical, malhi2004pca}. This is not possible on an operational asset since a company cannot afford to run the machine until it fails which. For this reason studies into \gls{CM} of real life machines are often forced to implement unsupervised learning as opposed to supervised.
+Many studies are performed in the lab on specially constructed test rigs which are built to run until destruction~\cite{soualhi2021novel, wang2016multiple, d2019physical, malhi2004pca}. This is not possible on an operational asset since a company cannot afford to run the machine until it fails which. For this reason studies into \gls{CM} of real life machines are often forced to implement unsupervised learning as opposed to supervised.
 
-
-
-
-
-
-
+\begin{comment}
 These references haven't been used yet.
 
-A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent ~\cite{zhang2019new}
+A new feature extraction approach using improved symbolic aggregate approximation for machinery intelligent~\cite{zhang2019new}
 
-Automatic feature extraction and selection for condition monitoring and related datasets ~\cite{schneider2018automatic}
+Automatic feature extraction and selection for condition monitoring and related datasets~\cite{schneider2018automatic}
 
-Comparison of automated feature selection and reduction methods on the condition monitoring issue ~\cite{de2018comparison}
+Comparison of automated feature selection and reduction methods on the condition monitoring issue~\cite{de2018comparison}
 
-Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network ~\cite{saucedo2021condition}
+Condition monitoring method for the detection of fault graduality in outer race bearing based on vibration-current fusion, statistical features and neural network~\cite{saucedo2021condition}
 
 This paper talks about "top sensitive features" [Feature extraction, condition monitoring, and fault modeling in semiconductor manufacturing systems]~\cite{bleakie2013feature}.
 
@@ -326,11 +322,8 @@ Optimal symbolic entropy: An adaptive feature extraction algorithm for condition
 
 "This paper addresses this issue with an application to tool condition monitoring in
 milling, where classifiers based on support vector machines and random forest were employed."~\cite{assafo2023stability}
-
+\end{comment}
 \clearpage
-
-
-
   
 \section{Data Processing}
 \subsection{Description of Data}
@@ -369,7 +362,7 @@ Signal Index & Signal Number & Signal Name \\
 \end{center}
 
 \subsection{Signal Correlations}
-An analysis of the raw signals was performed using R\textsuperscript{2} value. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle. \Cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. 
+An analysis of the raw signals was performed using R\textsuperscript{2} value. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle.\cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. 
 
 \begin{center}
 \captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
@@ -406,7 +399,7 @@ The data is separated into cycles using this signal to isolate the periods where
     \label{fig:StateDetection}
 \end{figure}
 
-\Cref{fig:StateDetectionFig_B_02_04} shows one of the plots from \cref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
+\Cref{fig:StateDetectionFig_B_02_04} shows one of the plots from\cref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
 
 \begin{figure}[H]
     \centering
@@ -531,7 +524,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \subsubsection*{Feature vs Feature}
 %\Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
 %The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.\\
-%Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness.  \Cref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
+%Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness.\cref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
 
 
 \begin{figure}[H]
