@@ -6,13 +6,13 @@
 load("DFD_FeatureTable_TimeDomain.mat");
 load("DFD_FeatureTable_FreqDomain.mat");
 
-load("DFD_FeatureTable_TimeDomain_DcRemoved.mat");
+%load("DFD_FeatureTable_TimeDomain_DcRemoved.mat");
 % load("DFD_FeatureTable_FreqDomain_DcRemoved.mat");
 
-load("DFD_FeatureTable_TimeDomain_Padded.mat");
+%load("DFD_FeatureTable_TimeDomain_Padded.mat");
 % load("DFD_FeatureTable_FreqDomain_Padded.mat");
 
-load("DFD_FeatureTable_TimeDomain_DcRemovedPadded.mat");
+%load("DFD_FeatureTable_TimeDomain_DcRemovedPadded.mat");
 % load("DFD_FeatureTable_FreqDomain_DcRemovedAndPadded.mat");
 
 % Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07

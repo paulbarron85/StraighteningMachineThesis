@@ -44,6 +44,12 @@
 \newacronym{PCA}{PCA}{Principal Component Analysis}
 \makenoidxglossaries
 
+\newcommand{\appendixpagenumbering}{
+  \break
+  \pagenumbering{arabic}
+  \renewcommand{\thepage}{\thesection\arabic{page}}
+}
+
 \begin{document}
 \setmainfont{Perpetua}
 \setstretch{1.15}
@@ -98,7 +104,8 @@ A number of linear regression models are created based on the results from the c
 \section{Introduction}
 \subsection{Background}
 % What is condition monitoring
-Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters (vibration, temperature, acoustic emissions etc.) which provide inputs to an algorithm that outputs health metrics. This allows operators to gain an understanding of when a machine is likely to fail and instead perform some preventative interventions. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime, especially catastrophic failures, allows the extraction of more value from existing resources and less disruption to production schedules.
+Condition monitoring (\gls{CM}) is the process of predicting machine health through a combination of sensor data and software algorithms. Sensors measure parameters (vibration, temperature, acoustic emissions etc.) which provide inputs to an algorithm that outputs health metrics. This allows operators to gain an under
+ing of when a machine is likely to fail and instead perform some preventative interventions. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime, especially catastrophic failures, allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
 The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges~\cite{buckley2023feature}, large process plants like in the oil and gas industry~\cite{telford2011condition} and also biological systems~\cite{tolocsi2011classification}. 
@@ -372,31 +379,6 @@ Signal Index & Signal Number & Signal Name \\
 \end{tabular}
 \end{center}
 
-\subsection{Signal Correlations}
-An analysis of the raw signals was performed using R\textsuperscript{2} value. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the first data file with the lower triangle being a replica of the upper triangle.\cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. 
-
-\begin{center}
-\captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
-\begin{scriptsize}
-\input{tables/correlationTable.tex} 
-\end{scriptsize}
-\label{correlationTable}
-\end{center}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
-    \caption{Plot of each signal vs every other signal with R-square values between 0.2 and 0.9}
-    \label{fig:RawSignalCorrelationsFile1}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/Signal21_12vSignal21_28.eps}
-    \caption{Signal 21.12 v Signal 21 .28}
-    \label{fig:Signal21_12vSignal21_28}
-\end{figure}
-
 \subsection{Pre-processing}
 State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is none or minimal torque on this sensor and when processing it experiences a much larger moment.
 The data is separated into cycles using this signal to isolate the periods where the machine is in the act of processing a part. A threshold of 600 was used as the threshold and a threshold of 500 samples, 10 seconds, was used to filter out short pulses which aren't believed to be full cycles.
@@ -478,6 +460,32 @@ Using the identified pulses, we can look at all the other signals during the sam
 %\end{figure}
 
 \section{Results}
+\subsection{Signal Correlations}
+An analysis of the raw signals was performed using R\textsuperscript{2} value. This was performed for a few select files and not for all due to the time taken to run the scripts. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the data file 1 with the lower triangle being a replica of the upper triangle.\cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. One signal that is of interest is Signal 6, 21:28 Vibration Measurements, and two combinations it forms with Signal 3: Actual moment over rolls and Signal 5: Actual moment under rolls. Both these combinations have the same correlation value of 0.88 and when looking at \cref{fig:RawSignalCorrelationsFile1} there appears to be a clear non-linear relationship.
+\Cref{fig:File3_Signal5vSignal6} shows more clearly what could be an exponential relationship between the vibrations and the torque values on the upper and lower rollers. This plot, for file 3, is representative of the plots in all the other files. This could be explained by the fact that the larger vibration of the rollers the more torque is experienced or applied by the actuators to keep the rollers in place.
+
+\begin{center}
+\captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
+\begin{scriptsize}
+\input{tables/correlationTable.tex} 
+\end{scriptsize}
+\label{correlationTable}
+\end{center}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
+    \caption{Plot of each signal vs every other signal with R-square values between 0.2 and 0.9}
+    \label{fig:RawSignalCorrelationsFile1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/File3_Signal5vSignal6.eps}
+    \caption{Raw data File 3 Signal 5: 21.20 v Signal 6: 21.28 over approximately one hour}
+    \label{fig:File3_Signal5vSignal6}
+\end{figure}
+
 \subsection{Feature Selection}
 Once the data has been prepossessed and the features calculated then the analysis can begin. Firstly, let us consider a single sensor or channel. Feature values are calculated for each production cycle of this channel. The R\textsuperscript{2} value for each pair of features is computed and they are plotted against each other. This is used as a first stage for filtering out irrelevant data. A small, or zero, R\textsuperscript{2} value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R\textsuperscript{2} value of close to 1 indicates that the two features are perfectly or close to perfectly linear. Neither of these feature pairs are of interest as these are not combinations where signals are varying and unlikely to see degradation trends. 
 
@@ -491,40 +499,23 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 
 \begin{center}
 \captionof{table}{Feature Names}\label{featureNames}
-\begin{tabular}{ |c|l| }
+\begin{tabular}{ |c|l|c|l| }
  \hline
- 1 & Clearance Factor \\
+ 1 & Clearance Factor & 9 & \gls{SINAD}\\
  \hline
- 2 & Crest Factor \\
+ 2 & Crest Factor & 10 & Shape Factor\\
  \hline
- 3 & Impulse Factor \\
+ 3 & Impulse Factor & 11 & Skewness\\
  \hline
- 4 & Kurtosis \\
+ 4 & Kurtosis & 12 & Standard Deviation\\
  \hline
- 5 & Mean \\
+ 5 & Mean & 13 & \gls{THD}\\
  \hline
- 6 & Peak Value \\
+ 6 & Peak Value &  14 & Band Power \\
  \hline
- 7 & \gls{RMS} \\ 
+ 7 & \gls{RMS} & 15 & Peak Amplitude 1\\ 
  \hline              
- 8 & \gls{SNR}  \\
- \hline
- 9 & \gls{SINAD}  \\
- \hline
- 10 & Shape Factor \\
- \hline
- 11 & Skewness \\
- \hline
- 12 & Standard Deviation \\
- \hline
- 13 & \gls{THD} \\
- \hline
- 14 & Band Power \\
- \hline
- 15 & Peak Amplitude 1 \\
- \hline
- 16 & Peak Frequency 1 \\
- \hline
+ 8 & \gls{SNR} & 16 & Peak Frequency 1 \\
 \end{tabular}
 \end{center}
 
@@ -697,12 +688,12 @@ A study of the available data on a steel tube straightening machine was conducte
 \clearpage  
 
 \begin{appendices}
-\pagenumbering{arabic}% resets `page` counter to 1
-\renewcommand*{\thepage}{A\arabic{page}}
+\appendixpagenumbering
 \section{Matlab Code}
 \UseRawInputEncoding
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadRawData.m"}
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadFeatures.m"}
 %\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.mlx"}
+\preto{\endappendices}{\clearpage}
 \end{appendices}
 \end{document}
