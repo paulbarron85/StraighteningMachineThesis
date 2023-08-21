@@ -16,7 +16,6 @@
 \usepackage{pdfpages}
 \usepackage{cleveref}
 \usepackage{verbatim}
-\usepackage[numbers]{natbib}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
@@ -41,7 +40,7 @@
 \newacronym{SINAD}{SINAD}{Signal-to-noise and Distortion Ratio}
 \newacronym{TSS}{TSS}{Total Sum of Squares}
 \newacronym{SSR}{SSR}{Sum of Squared Regression}
-\newacronym{PCR}{PCR}{Principal Component Analysis}
+\newacronym{PCA}{PCA}{Principal Component Analysis}
 \makenoidxglossaries
 
 \begin{document}
@@ -258,13 +257,24 @@ R^{2} = 1 - \frac{\textrm{SSR}}{\textrm{TSS}} = 1 - \frac{\Sigma(y_i - \hat{y_i}
 \end{equation}
 An $R^{2}$ value of 1 means that the two signals are perfectly linear and a value of zero means there is no linear relationship. A value between 0 and 1 indicates some degree of linear relationship exists with the degree of linearity increasing with the value.
 \subsection{Frequency Domain Features}
-In order to computer the frequency features one must first compute a power spectrum.
+In order to computer the frequency features one must first compute a power spectrum. Matab uses the command, 'findpeaks', to locate the maximum values of the power spectrum.
 \subsubsection*{Band Power}
 The band power is the area beneath the graph, within a selected frequency range, of the power spectral density vs the frequencies.
 \subsubsection*{Peak Amplitude}
-Peak amplitude is the height of the maximum frequency value on the power spectrum.
+Peak amplitude is the height of the frequency with the highest amplitude on the power spectrum.
 \subsubsection*{Peak Frequency}
-Peak frequency is the value of the frequency which has the highest peak.
+Peak frequency is the value of the frequency which has the highest peak. Matlab uses the command, trapz, to compute the approximate integral of the signal via the trapezoidal method with unit spacing.
+
+%        [peakAmp,peakFreq] = findpeaks(ps,w/factor,'MinPeakHeight',-Inf, ...
+%            'MinPeakProminence',0,'MinPeakDistance',0.001,'SortStr','descend','NPeaks',1);
+%        peakAmp = [peakAmp(:); NaN(1-numel(peakAmp),1)];
+%        peakFreq = [peakFreq(:); NaN(1-numel(peakFreq),1)];
+%
+%        % Extract individual feature values.
+%        PeakAmp1 = peakAmp(1);
+%        PeakFreq1 = peakFreq(1);
+%        BandPower = trapz(w/factor,ps);
+        
 \subsection{Feature Selection}
 Once features have been calculated the challenge is to isolate the most useful and relevant features. Often data sets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss of information. Ideally non-informative and redundant features are removed to reduce complexity, making models easier to interpret. To this point~\cite{tolocsi2011classification} argues that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features. Considering all the research, there is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
 
@@ -327,7 +337,7 @@ milling, where classifiers based on support vector machines and random forest we
   
 \section{Data Processing}
 \subsection{Description of Data}
-The data provided by the company consists of approximately one hour periods of data over a 15 day duration and it is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of signals made available by the company are shown in Table \ref{signalNames}.
+The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of signals made available are shown in Table \ref{signalNames}.
 \begin{center}
 \captionof{table}{Signal Names}\label{signalNames}
 \begin{tabular}{ |c|c|l| }
@@ -387,8 +397,8 @@ An analysis of the raw signals was performed using R\textsuperscript{2} value. T
 \end{figure}
 
 \subsection{Pre-processing}
-State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is no or minimal torque on this sensor and when processing it experiences a much larger moment.
-The data is separated into cycles using this signal to isolate the periods where the machine is in the act or processing a part. A threshold of 600 was used as the threshold and a threshold of X samples was also used to filter out short pulses which aren't believed to be full cycles.
+State detection for this application is performed using Signal 5: 21:20 Actual moment under Rolls. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is none or minimal torque on this sensor and when processing it experiences a much larger moment.
+The data is separated into cycles using this signal to isolate the periods where the machine is in the act of processing a part. A threshold of 600 was used as the threshold and a threshold of 500 samples, 10 seconds, was used to filter out short pulses which aren't believed to be full cycles.
 
 \Cref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Some of these identified pulses were too short and thus believed to be false positives. Any pulse under 500 samples (10 seconds) was removed from the data for the next stage leaving 224 pulses to extract features from.
 
@@ -399,7 +409,7 @@ The data is separated into cycles using this signal to isolate the periods where
     \label{fig:StateDetection}
 \end{figure}
 
-\Cref{fig:StateDetectionFig_B_02_04} shows one of the plots from\cref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
+\Cref{fig:StateDetectionFig_B_02_04} shows one of the plots from \cref{fig:StateDetection}, B\_02\_04, in greater detail. This particular file is the one with the highest number of pulses.
 
 \begin{figure}[H]
     \centering
@@ -419,15 +429,14 @@ The data is separated into cycles using this signal to isolate the periods where
 
 \Cref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor channel is plotted a different tile. 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}
+	\makebox[\textwidth][c]{\includegraphics[width=1.15\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}}
     \caption{Signal pulses for 224 pulses on each of the 12 signal channels}
     \label{fig:SignalPulses}
 \end{figure}
 
-Using the identified pulses, we can look at all the other signals during the same periods. Signal 1: 21.07 Angle over Rolls and 2: 21.10 Position over Rolls are fairly constant though contain some small deviations. Signal 7: 21:31 Width position and  8: 21:32 Height position are also fairly constant but contain some information when zoomed in. Signal 21.35 is a fully constant signal and contains nothing but a single value. The label for this signal is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
+Using the identified pulses, we can look at all the other signals during the same periods. Signal 1: 21.07 Angle over Rolls and 2: 21.10 Position over Rolls are fairly constant though contain some small deviations. Signal 7: 21:31 Width position and  8: 21:32 Height position are also fairly constant but contain some information when the scale is increased. Signal 21.35 is a fully constant signal and contains nothing but a single value. The label for this signal is set point so it can be assumed that this is a set point that is controlled by the operator and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
 
-\Cref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under rolls, signal in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Channel 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
+\Cref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under rolls, signal in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Signals 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
 
 %\begin{figure}[H]
 %    \centering
@@ -444,8 +453,6 @@ Using the identified pulses, we can look at all the other signals during the sam
 %    \label{fig:SignalPulse3}
 %\end{figure}
 
-
-\Cref{fig:SignalPulse5} shows 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse5.eps}
