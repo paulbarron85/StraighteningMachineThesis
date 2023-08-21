@@ -16,6 +16,7 @@
 \usepackage{pdfpages}
 \usepackage{cleveref}
 \usepackage{verbatim}
+\usepackage[title]{appendix}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
 \setcounter{secnumdepth}{4}
@@ -694,9 +695,14 @@ A study of the available data on a steel tube straightening machine was conducte
 \section{References} 
 \printbibliography[heading=none] 
 \clearpage  
-\section{Appendix A - Matlab Code}
+
+\begin{appendices}
+\pagenumbering{arabic}% resets `page` counter to 1
+\renewcommand*{\thepage}{A\arabic{page}}
+\section{Matlab Code}
 \UseRawInputEncoding
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadRawData.m"}
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadFeatures.m"}
 %\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.mlx"}
+\end{appendices}
 \end{document}
