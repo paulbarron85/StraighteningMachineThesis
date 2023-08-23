@@ -524,17 +524,18 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \end{center}
 
 \subsection{Feature vs Feature Models}
-\Cref{fig:FeatureVsFeatureCombinedSignal6} shows an example of plotting all features against one another for Signal 6: 21:28 Vibration measurements. This was repeated for all signals but just one has been included in the report as an example. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in any model.
+\Cref{fig:FeatureVsFeatureCombinedSignal9} shows an example of plotting all features against one another for Signal XXX. This was repeated for all signals but just one has been included in the report as an example. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in any model.
 The colors used in these plots are used to represent a pseudo time scale. Although since the data is only from 1 hour per day the color spectrum is not linear however it should be good enough to show a trend over time.
 
 
 Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features XXX. However when comparing signals within that subset it is clear we realize that XX is highly correlated with XXX thus only one of these is needed for a model since all 3 signals contain the same information. \cref{fig:Models_Signal9Feature7} shows these three remaining features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created for Feature 1 Clearance Factor for all three other features but \cref{fig:Models_Signal9Feature7_Linear4} shows.....
 
+\subsubsection*{Signal 9, Height Error}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal9.eps}
     \caption{Feature Vs Feature for Signal 9, 21:33 Error position for height}
-    \label{fig:FeatureVsFeatureCombinedSignal6}
+    \label{fig:FeatureVsFeatureCombinedSignal9}
 \end{figure}
 
 \begin{figure}[H]
@@ -551,9 +552,13 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 		  	\caption{Linear Model}
 		  	\label{fig:Models_Signal9Feature7_Linear4}
 		\end{subfigure}
-    \caption{Signal 6, 21:28 Vibration measurements Feature 1}
+    \caption{Signal 9, 21:33 Error position for height Feature 1}
     \label{fig:Models_Signal9Feature7_Caption}
 \end{figure}
+
+
+
+
 
 \begin{figure}[H]
 	\captionsetup[subfigure]{justification=Centering}
@@ -583,10 +588,9 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 		  	\caption{Linear model}
 		  	\label{fig:Models_Signal9Feature11_Linear3}
 		\end{subfigure}
-    \caption{Signal 9 21:33 Error position for height Feature 11}
+    \caption{Signal 9, 21:33 Error position for height Feature 11}
     \label{fig:Models_Signal9Feature11_Caption}
 \end{figure}
-
 
 
 \begin{figure}[H]
@@ -603,26 +607,58 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 		  	\caption{Linear model}
 		  	\label{fig:Models_Signal9Feature12_Linear1}
 		\end{subfigure}
-    \caption{Signal 9 21:33 Error position for height Feature 12}
+    \caption{Signal 9, 21:33 Error position for height Feature 12}
     \label{fig:Models_Signal9Feature12_Caption}
 \end{figure}
 
 
 
 
+
+\subsubsection*{Signal 10, Height Error}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal10.eps}
+    \caption{Feature Vs Feature for Signal 10, 21:34 Error position for the width}
+    \label{fig:FeatureVsFeatureCombinedSignal10}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal10Feature11.eps}
+		  	\caption{Feature values}
+		  	\label{fig:Models_Signal10Feature7}
+		\end{subfigure}%
+		\begin{subfigure}{.5\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal10Feature11_Linear1.eps}
+		  	\caption{Linear Model}
+		  	\label{fig:Models_Signal10Feature11_Linear1}
+		\end{subfigure}
+    \caption{Signal 10, 21:34 Error position for width Feature 11}
+    \label{fig:Models_Signal10Feature11_Caption}
+\end{figure}
+
+
+
+
+
+\subsubsection*{Signal 12, Actual Force}
 \Cref{fig:Models_Signal12Feature1_Caption} shows two relationships of interest. \Cref{fig:Models_Signal12Feature1_Linear1} appears to be a non-linear exponential relationship where the variance is not constant, but increasing as both values move away from 1. \Cref{fig:Models_Signal12Feature1_Linear2} shows a week linear relationship but appears to have two distinct clusters with one on either side of the plot.
 
 \begin{figure}[H]
 	\captionsetup[subfigure]{justification=Centering}
     \centering
     
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}{.45\textwidth}
 		  \centering
     			\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1.eps}
 		  	\caption{Feature values}
 		  	\label{fig:Models_Signal12Feature1}
 		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Linear1.eps}
 		  	\caption{Clearance vs Shape Factor}
@@ -641,7 +677,7 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 		  \centering
  		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Multivariate1.eps}
 		  	\caption{Multivariate Model}
-		  	\label{fig:Models_Signal9Feature1_Multivariate1}
+		  	\label{fig:Models_Signal12Feature1_Multivariate1}
 		\end{subfigure}
 		
     \caption{Signal 12 21:36 Actual force}
@@ -765,6 +801,8 @@ A study of the available data on a steel tube straightening machine was conducte
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotModel.m"}
 
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotModel3D.m"}
+
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/MultivariateModel_FeatureVsFeatureArray_Sample.m"}
 
 %\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.mlx"}
 \preto{\endappendices}{\clearpage}
