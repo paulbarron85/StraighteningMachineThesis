@@ -30,7 +30,7 @@ function [] = fnPlotCorrelations(rawDataArray, r2Values, fileNum, lowerBound, up
     for i = 1:size(sensorNames, 2)
         nexttile((i-1) * numOfSignals + i);
         str = char(sensorNames(i));
-        text(0, 0.5, str(1:5));
+        text(0.5, 0.5, str(1:5), HorizontalAlignment='center', VerticalAlignment='middle');
         xticklabels({});
         yticklabels({});
     end

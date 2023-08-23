@@ -345,7 +345,7 @@ milling, where classifiers based on support vector machines and random forest we
   
 \section{Data Processing}
 \subsection{Description of Data}
-The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of signals made available are shown in Table \ref{signalNames}.
+The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of signals provided are shown in Table \ref{signalNames}.
 \begin{center}
 \captionof{table}{Signal Names}\label{signalNames}
 \begin{tabular}{ |c|c|l| }
@@ -462,6 +462,11 @@ Using the identified pulses, we can look at all the other signals during the sam
 \section{Results}
 \subsection{Signal Correlations}
 An analysis of the raw signals was performed using R\textsuperscript{2} value. This was performed for a few select files and not for all due to the time taken to run the scripts. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the data file 1 with the lower triangle being a replica of the upper triangle.\cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. One signal that is of interest is Signal 6, 21:28 Vibration Measurements, and two combinations it forms with Signal 3: Actual moment over rolls and Signal 5: Actual moment under rolls. Both these combinations have the same correlation value of 0.88 and when looking at \cref{fig:RawSignalCorrelationsFile1} there appears to be a clear non-linear relationship.
+
+Starting with some basic observations of \Cref{fig:File3_Signal5vSignal6}, there are a few combinations that are extremely linear. Two pairs Are highly correlated which means they contain almost exactly the same information. 1: Signal X, 21:31 Width position and Signal X 21:34 Error position for the width, 2: Signal X, 21:32 Height position and Signal X 21:33 Error position for height. Intuitively this makes sense because the errors are so small ....
+
+Signal X, 21:12 Actual moment over Rolls and Signal X, 21:20 Actual moment under Rolls are also highly linear.
+
 \Cref{fig:File3_Signal5vSignal6} shows more clearly what could be an exponential relationship between the vibrations and the torque values on the upper and lower rollers. This plot, for file 3, is representative of the plots in all the other files. This could be explained by the fact that the larger vibration of the rollers the more torque is experienced or applied by the actuators to keep the rollers in place.
 
 \begin{center}
@@ -475,7 +480,7 @@ An analysis of the raw signals was performed using R\textsuperscript{2} value. T
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
-    \caption{Plot of each signal vs every other signal with R-square values between 0.2 and 0.9}
+    \caption{Plot of each signal vs every other signal with R\textsuperscript{2} values between 0.2 and 0.9}
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
 
@@ -491,9 +496,7 @@ Once the data has been pre-processed the feature values are calculated for each 
 
 Two threshold values are used to select a range of R\textsuperscript{2} correlated features with this method. An upper and and a lower R\textsuperscript{2} threshold value are specified which reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
 
-A semi-automated method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R\textsuperscript{2} values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other.
-
-Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
+A semi automatic method can be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R\textsuperscript{2} values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other. Not only can one compare pairs of feature within the same signal but one can also look for relationships between the same feature in varying channels or sensors. 
 
 MATLAB's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. Throughout the remainder of the report some figures are labeled with a feature number instead of the full text due to readability and space constraints. Use Table \ref{signalNames} to refer to which feature the indexes represents.
 
@@ -520,17 +523,17 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \end{tabular}
 \end{center}
 
-\subsection{Feature Extraction}
-\subsubsection*{Feature vs Feature}
-%\Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another for signal 1: 21.07 Angle over Rolls. Each number on the diagonal represents a feature starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in a model.
-%The colours used in these plots are used to represent pseudo time. Although since the data is only from 1 hour per day the colour spectrum is not linear however it should be good enough to show a trend over time.\\
-%Looking at Feature 1 for this channel, it can be seen that the R-square value is within our range when compared with Feature 10 Kurtosis and Feature 11 Skewness.\cref{fig:Models_Signal3Feature1} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same.
+\subsection{Feature vs Feature Models}
+\Cref{fig:FeatureVsFeatureCombinedSignal6} shows an example of plotting all features against one another for Signal 6: 21:28 Vibration measurements. This was repeated for all signals but just one has been included in the report as an example. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in any model.
+The colors used in these plots are used to represent a pseudo time scale. Although since the data is only from 1 hour per day the color spectrum is not linear however it should be good enough to show a trend over time.
 
+
+Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features XXX. However when comparing signals within that subset it is clear we realize that XX is highly correlated with XXX thus only one of these is needed for a model since all 3 signals contain the same information. \cref{fig:Models_Signal9Feature7} shows these three remaining features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created for Feature 1 Clearance Factor for all three other features but \cref{fig:Models_Signal9Feature7_Linear4} shows.....
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal6.eps}
-    \caption{Feature Vs Feature for Signal 6, 21:20 Actual moment under Rolls}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal9.eps}
+    \caption{Feature Vs Feature for Signal 9, 21:33 Error position for height}
     \label{fig:FeatureVsFeatureCombinedSignal6}
 \end{figure}
 
@@ -538,28 +541,18 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
     \centering
 		\begin{subfigure}{.5\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal6Feature1.eps}
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature7.eps}
 		  	\caption{Feature values}
-		  	\label{fig:Models_Signal6Feature1}
+		  	\label{fig:Models_Signal9Feature7}
 		\end{subfigure}%
 		\begin{subfigure}{.5\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature12_Linear1.eps}
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature7_Linear4.eps}
 		  	\caption{Linear Model}
-		  	\label{fig:Models_Signal6Feature1_Linear1}
+		  	\label{fig:Models_Signal9Feature7_Linear4}
 		\end{subfigure}
     \caption{Signal 6, 21:28 Vibration measurements Feature 1}
-    \label{fig:Models_Signal6Feature1_Caption}
-\end{figure}
-
-
-
-\Cref{fig:FeatureVsFeatureCombinedSignal9} shows the features of signal 9 plotted against each other.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal9.eps}
-    \caption{Feature Vs Feature for Signal 9, 21:33 Error position for height}
-    \label{fig:FeatureVsFeatureCombinedSignal9}
+    \label{fig:Models_Signal9Feature7_Caption}
 \end{figure}
 
 \begin{figure}[H]
@@ -616,7 +609,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 
 
 
-\subsubsection*{Signal vs Signal}
+\subsection{Signal vs Signal Models}
 \Cref{fig:SignalVsSignalFeatureFreq3} shows 
 \begin{figure}[H]
     \centering
@@ -643,33 +636,56 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
     \label{fig:Models_Feature16Signal3_Caption}
 \end{figure}
 
-\subsection{Multivariate Models}
+\subsection{Multivariate Feature Models}
 
 \clearpage 
 
 \section{Discussion}
-%In this chapter the results and the chosen method are discussed, as well as the strengths and weaknesses of the work.
+% In this chapter the results and the chosen method are discussed, as well as the strengths and weaknesses of the work.
+% Discuss results - Comments on what signals are related
+This study aimed to give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not. 
 
-%Discuss results and put in context/comparison with references at the beginning. 
-This study aimed to give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not.
+Unsurprisingly the vibration signal is probably the most interesting for finding correlations?????
 
-The work performed in this study has been limited to an analysis of the available data. Future work could include the application of machine learning techniques to the signals highlighted in this project. In particular unsupervised learning approaches such as K nearest neighbors or K-means clustering approach.
+Of the data provided, many of the signals were relatively constant. In particular, Signal 11, 21:35 Set point force is perfectly constant and is not suitable for condition monitoring. The following signals are not overly useful to condition monitoring as they are fairly constant in mean value and contain little variable: 
+1, 21:07 Angle over Rolls
+2, 21:10 Position over Rolls
+4, 21:17 Angle under roll
+7, 21:31 Width position
+8, 21:32 Height position
 
-The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. Perhaps a better selection of data would include a snippet of data every 1-2 weeks and thus one could get a better view of how the machine degrades over a year.
+These signals are most useful for condition monitoring:
+3 21:12 Actual moment over Rolls
+5 21:20 Actual moment under Rolls
+6 21:28 Vibration measurements 
+9 21:33 Error position for height
+10 21:34 Error position for the width
+12 21:36 Actual force           
 
-The straightening machine in this study produces products of of different diameters. At least one of the signals can be used to indicate this diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data and focusing on only one tube width would removed any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
+%Comment on Method
+Comments include.....
 
-One conclusion could be that "for future condition monitoring work we need to only focus on this data (might only be 10\%)".\\
-Another conclusion could be that we need to go forward to doing this and that.\\
-Conclusion could be what we say to the company or what we need.\\
-Would temperature of something be good to monitor?\\
-Worth doing an analysis based on different sizes
-Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
-One conclusion might be just to discard all the signals with constant values.
+It would be good to inquire with the company about whether what they have provided is the full set of available signals. Temperature and acoustic emissions are also highly effective types of sensors for condition monitoring so if there was in fact additional data these would be of interest. If none of these sensors exist perhaps a good consideration might be to add one or more of these types of measurements to complement existing infrastructure.
+
+%Weaknesses
 These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
+
+The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data is provided. Perhaps maintenance is only required on a yearly cycle and the machine degradation, thus we are not really getting a get insight into the degradation of the machine over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
+
+Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
+
+%Put in context/comparison with references at the beginning. 
+This study....
 
 %Enhance scientific research, upgrade the technological capabilities of industrial sectors in all countries, in particular developing countries, including, by 2030, encouraging innovation and substantially increasing the number of research and development workers per 1 million people and public and private research and development spending.
 The subject matter, methods and results used in this report are in good agreement with target 9.5 of the 2030 Agenda for sustainable development\cite{united2015department}. Hopefully this work will upgrade technology capabilities in industrial sectors and will assist workers in the field of research and development. 
+
+\subsection{Future Work}
+This report has identified potential clusters based on visual observations in the data. However, no attempts were made to implement any clustering algorithms. This would be the logical next step, to apply some machine learning techniques, in trying to identify degradation states. In particular methods such as K nearest neighbors or K-means clustering approach.
+
+The straightening machine in this study produces products of of different diameters. At least one of the signals can be used to indicate this diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data and focusing on only one tube width would removed any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
+
+Non-linear modelling.....
 \clearpage
 
 \section{Conclusion}
