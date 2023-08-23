@@ -1,5 +1,7 @@
 %{
-    This script loads the features calculated by Matlab's Diagnostic
+    Date: 2023/08/23
+    Author: Paul Barron
+    Description: This script loads the features calculated by Matlab's Diagnostic
     Feature Designer
 %}
 

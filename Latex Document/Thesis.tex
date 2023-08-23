@@ -610,29 +610,41 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 
 
 
-
+\Cref{fig:Models_Signal12Feature1_Caption} shows two relationships of interest. \Cref{fig:Models_Signal12Feature1_Linear1} appears to be a non-linear exponential relationship where the variance is not constant, but increasing as both values move away from 1. \Cref{fig:Models_Signal12Feature1_Linear2} shows a week linear relationship but appears to have two distinct clusters with one on either side of the plot.
 
 \begin{figure}[H]
+	\captionsetup[subfigure]{justification=Centering}
     \centering
-		\begin{subfigure}{.33\textwidth}
+    
+		\begin{subfigure}{.5\textwidth}
 		  \centering
     			\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1.eps}
 		  	\caption{Feature values}
 		  	\label{fig:Models_Signal12Feature1}
 		\end{subfigure}%
-		\begin{subfigure}{.33\textwidth}
+		\begin{subfigure}{.5\textwidth}
 		  \centering
  		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Linear1.eps}
 		  	\caption{Clearance vs Shape Factor}
 		  	\label{fig:Models_Signal12Feature1_Linear1}
 		\end{subfigure}
-		\begin{subfigure}{.33\textwidth}
+		
+		\bigskip
+		
+		\begin{subfigure}{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Linear2.eps}
-		  	\caption{Clearance v Skewness}
+		  	\caption{Clearance vs Skewness}
 		  	\label{fig:Models_Signal12Feature1_Linear2}
 		\end{subfigure}
-    \caption{Signal 12 21:36 Actual force Feature 1}
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Multivariate1.eps}
+		  	\caption{Multivariate Model}
+		  	\label{fig:Models_Signal9Feature1_Multivariate1}
+		\end{subfigure}
+		
+    \caption{Signal 12 21:36 Actual force}
     \label{fig:Models_Signal12Feature1_Caption}
 \end{figure}
 
@@ -699,14 +711,14 @@ Comments include.....
 It would be good to inquire with the company about whether what they have provided is the full set of available signals. Temperature and acoustic emissions are also highly effective types of sensors for condition monitoring so if there was in fact additional data these would be of interest. If none of these sensors exist perhaps a good consideration might be to add one or more of these types of measurements to complement existing infrastructure.
 
 %Weaknesses
-These types of analysis can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
-
 The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data is provided. Perhaps maintenance is only required on a yearly cycle and the machine degradation, thus we are not really getting a get insight into the degradation of the machine over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
 
 Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
 
 %Put in context/comparison with references at the beginning. 
 This study....
+
+An analysis of such data can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
 
 %Enhance scientific research, upgrade the technological capabilities of industrial sectors in all countries, in particular developing countries, including, by 2030, encouraging innovation and substantially increasing the number of research and development workers per 1 million people and public and private research and development spending.
 The subject matter, methods and results used in this report are in good agreement with target 9.5 of the 2030 Agenda for sustainable development\cite{united2015department}. Hopefully this work will upgrade technology capabilities in industrial sectors and will assist workers in the field of research and development. 
@@ -739,8 +751,21 @@ A study of the available data on a steel tube straightening machine was conducte
 \appendixpagenumbering
 \section{Matlab Code}
 \UseRawInputEncoding
+
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadRawData.m"}
+
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/LoadFeatures.m"}
+
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnStateDetection.m"}
+
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotFeatureVsFeature_Array.m"}
+
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotSignalVsSignal.m"}
+
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotModel.m"}
+
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotModel3D.m"}
+
 %\lstinputlisting[frame=single, numbers=left, style=Matlab-editor]{"./MATLAB Software/PreProcessData.mlx"}
 \preto{\endappendices}{\clearpage}
 \end{appendices}
