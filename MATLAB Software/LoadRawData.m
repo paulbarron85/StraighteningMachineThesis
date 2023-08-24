@@ -4,8 +4,8 @@
     Description: This script loads the data and labals for charts
 %}
 
-clear;
-close all;
+%clear;
+%close all;
 warning off;
 saveFigures = false;
 

@@ -206,7 +206,7 @@ x_{SF} = \frac{ x_{RMS} }  {\frac{1}{N}\sum^N_{i=1}|x_i|}.
 \end{equation}
 It is dependent on the signal shape and independent of the scale of the signal.
 \subsubsection*{Kurtosis}
-Kurtosis is derived from the statistical moment of order 4 and is defined as the ratio between the mean value of the signal raised to the power of 4 and the square of its variance, \begin{equation}
+Kurtosis is derived from the statistical moment of the fourth order and is defined as the ratio between the mean value of the signal raised to the power of 4 and the square of its variance, \begin{equation}
 x_{kurt} = \frac{\sum^N_{i=1}(x_i-\bar{x})^4}{(N-1)\sigma^4}.
 \end{equation}
 It is a statistical quantity used to analyze the flattening of a distribution and therefore to observe the shape of the signal. It is a statistical measure of the tailedness of a distribution and indicates the total degree of outliers present. An increase in the number of outliers, and thus an increase in the Kurtosis, can be a indication of an impending fault. For normal bearing operation, kurtosis is close to 3 and increases rapidly with failure.
@@ -388,7 +388,7 @@ The data is separated into cycles using this signal to isolate the periods where
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig.eps}
-    \caption{State detection signal vs 21:20 Actual moment under Rollers}
+    \caption{Signal 5 21:20 Actual moment under Rollers and State Detection}
     \label{fig:StateDetection}
 \end{figure}
 
@@ -421,21 +421,6 @@ Using the identified pulses, we can look at all the other signals during the sam
 
 \Cref{fig:SignalPulse5} shows the state detection, Signal 5: Moment under rolls, signal in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Signals 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
 
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse1.eps}
-%    \caption{Signal 1 Pulses 21:07 Angle over Rolls (deg)}
-%    \label{fig:SignalPulse1}
-%\end{figure}
- 
- 
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse3.eps}
-%    \caption{Signal 3 Pulses 21:12 Actual moment over Rolls (Nm)}
-%    \label{fig:SignalPulse3}
-%\end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse5.eps}
@@ -443,52 +428,72 @@ Using the identified pulses, we can look at all the other signals during the sam
     \label{fig:SignalPulse5}
 \end{figure}
 
-
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse6.eps}
-%    \caption{Signal 6 Pulses 6 21:28 Vibration measurements (mm/s)}
-%    \label{fig:SignalPulse6}
-%\end{figure}
-
- 
-%\begin{figure}[H]
-%    \centering
-%    \includegraphics[scale = 0.75, keepaspectratio, keepaspectratio]{figures/SignalPulse11.eps}
-%    \caption{Signal 11 Pulses 21:35 Set point force (kN)}
-%    \label{fig:SignalPulse11}
-%\end{figure}
-
 \section{Results}
 \subsection{Signal Correlations}
-An analysis of the raw signals was performed using R\textsuperscript{2} value. This was performed for a few select files and not for all due to the time taken to run the scripts. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for the data file 1 with the lower triangle being a replica of the upper triangle.\cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. One signal that is of interest is Signal 6, 21:28 Vibration Measurements, and two combinations it forms with Signal 3: Actual moment over rolls and Signal 5: Actual moment under rolls. Both these combinations have the same correlation value of 0.88 and when looking at \cref{fig:RawSignalCorrelationsFile1} there appears to be a clear non-linear relationship.
+An analysis of the raw signals was performed using R\textsuperscript{2} value. This was performed for the files with the most pulses and not for all due to the time taken to run the scripts. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for one of the the data files with the lower triangle being a replica of the upper triangle. \Cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots.
 
-Starting with some basic observations of \Cref{fig:File3_Signal5vSignal6}, there are a few combinations that are extremely linear. Two pairs Are highly correlated which means they contain almost exactly the same information. 1: Signal X, 21:31 Width position and Signal X 21:34 Error position for the width, 2: Signal X, 21:32 Height position and Signal X 21:33 Error position for height. Intuitively this makes sense because the errors are so small ....
+Starting with some basic observations from \cref{fig:RawSignalCorrelationsFile1}, there are a few combinations that are extremely linear. Two pairs that are highly correlated meaning they contain almost exactly the same information:
+\begin{enumerate}
+\item Signal 7, 21:31 Width position and Signal 10, 21:34 Error position for the width, 
+\item Signal 8, 21:32 Height position and Signal 9, 21:33 Error position for height.
+\end{enumerate}
+Intuitively this makes sense because the errors are constant and with very small variation. Signal 3, 21:12 Actual moment over Rolls and Signal 5, 21:20 Actual moment under Rolls are also highly linear. This would indicate that the torque on both sides of the pipe are varying together.
 
-Signal X, 21:12 Actual moment over Rolls and Signal X, 21:20 Actual moment under Rolls are also highly linear.
+One signal that is of interest is Signal 6, 21:28 Vibration Measurements, and two combinations it forms with Signal 3, Actual moment over rolls and Signal 5, Actual moment under rolls. Both these combinations have the same correlation value and when looking at \cref{fig:RawSignalCorrelationsFile1} there appears to be a clear non-linear relationship, possibly exponential or cubic.
 
-\Cref{fig:File3_Signal5vSignal6} shows more clearly what could be an exponential relationship between the vibrations and the torque values on the upper and lower rollers. This plot, for file 3, is representative of the plots in all the other files. This could be explained by the fact that the larger vibration of the rollers the more torque is experienced or applied by the actuators to keep the rollers in place.
+\Cref{fig:RawSignalCorrelationsFile1_Caption} shows more clearly what could be an exponential or cubic relationship between the vibrations and the torque values on the upper and lower rollers. The four plots are of the four files with the most pulses and all appear to have similarities in shape. This could be explained by the fact that the larger vibration of the rollers the more torque is experienced or applied by the actuators to keep the rollers in place.
+
+While \cref{fig:RawSignalCorrelationsFile1_Caption} plots the Signal 3, Moment over Rolls, against Signal 6 it should be noted that the plots for Signal 5, Moment under Rolls look very similar but are not included in the report. It is also worth to remember that File 1 and 6 contain no identified pulses so the R\textsuperscript{2} tables for those two files, while not included in the report, look quite different to the others and can be ignored.
 
 \begin{center}
 \captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
 \begin{scriptsize}
-\input{tables/correlationTable.tex} 
+\input{tables/correlationTable4.tex} 
 \end{scriptsize}
 \label{correlationTable}
 \end{center}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile1.eps}
-    \caption{Plot of each signal vs every other signal with R\textsuperscript{2} values between 0.2 and 0.9}
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile4.eps}
+    \caption{Plot of each signal vs every other signal with R\textsuperscript{2} values between 0.2 and 0.9 for File 4}
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
 
+
 \begin{figure}[H]
+	\captionsetup[subfigure]{justification=Centering}
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/File3_Signal5vSignal6.eps}
-    \caption{Raw data File 3 Signal 5: 21.20 v Signal 6: 21.28 over approximately one hour}
-    \label{fig:File3_Signal5vSignal6}
+		\begin{subfigure}{.45\textwidth}
+		  	\centering
+    			\includegraphics[width=\linewidth]{figures/File3_Signal3vSignal6.eps}
+		  	\caption{File 3}
+		  	\label{fig:File3_Signal3vSignal6}
+		\end{subfigure}
+		\hspace{\fill}
+		\begin{subfigure}{.45\textwidth}
+		  	\centering
+ 		   	\includegraphics[width=\linewidth]{figures/File4_Signal3vSignal6.eps}
+		  	\caption{File 4}
+		  	\label{fig:File4_Signal3vSignal6}
+		\end{subfigure}  
+	\bigskip    
+    \centering
+		\begin{subfigure}{.45\textwidth}
+		  	\centering
+    			\includegraphics[width=\linewidth]{figures/File8_Signal3vSignal6.eps}
+		  	\caption{File 8}
+		  	\label{fig:File8_Signal3vSignal6}
+		\end{subfigure}
+		\hspace{\fill}
+		\begin{subfigure}{.45\textwidth}
+		  	\centering
+ 		   	\includegraphics[width=\linewidth]{figures/File13_Signal3vSignal6.eps}
+		  	\caption{File 13}
+		  	\label{fig:File13_Signal3vSignal6}
+		\end{subfigure}
+    \caption{Vibration vs Moment where color equates to time over approximately 1 hour}
+    \label{fig:RawSignalCorrelationsFile1_Caption}    
 \end{figure}
 
 \subsection{Feature Selection}
@@ -541,13 +546,13 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 \begin{figure}[H]
     \centering
 		\begin{subfigure}{.5\textwidth}
-		  \centering
+		  	\centering
     			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature7.eps}
 		  	\caption{Feature values}
 		  	\label{fig:Models_Signal9Feature7}
 		\end{subfigure}%
 		\begin{subfigure}{.5\textwidth}
-		  \centering
+		  	\centering
  		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature7_Linear4.eps}
 		  	\caption{Linear Model}
 		  	\label{fig:Models_Signal9Feature7_Linear4}

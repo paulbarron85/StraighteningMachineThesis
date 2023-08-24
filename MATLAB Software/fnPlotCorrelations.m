@@ -1,3 +1,8 @@
+%{
+    Date: 2023/08/23
+    Author: Paul Barron
+    Description: 
+%}
 function [] = fnPlotCorrelations(rawDataArray, r2Values, fileNum, lowerBound, upperBound, signalName, sensorNames)
     figure();
     t = tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');
@@ -11,14 +16,12 @@ function [] = fnPlotCorrelations(rawDataArray, r2Values, fileNum, lowerBound, up
                 sig1 = cell2mat(rawDataArray{fileNum}(signalIndex1, 2));
                 sig2 = cell2mat(rawDataArray{fileNum}(signalIndex2, 2));
                 nexttile((signalIndex1-1) * numOfSignals + signalIndex2);
-                scatter(sig1, sig2, 3, pointidx, 'filled');
-                colormap( jet(numpoints) );
+                scatter(sig1, sig2, 2, pointidx, 'filled');
+                colormap jet;
                 xticklabels({});
                 yticklabels({});
-
                 DataX = interp1( [0 1], xlim(), 0.5 );
                 DataY = interp1( [0 1], ylim(), 0.5 );
-
                 r2Val = r2Values(fileNum, signalIndex1, signalIndex2);
                 if r2Val > lowerBound && r2Val < upperBound
                     text(DataX, DataY, num2str(r2Val, 2), 'HorizontalAlignment','center');
