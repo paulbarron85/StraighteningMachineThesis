@@ -5,19 +5,41 @@
     Feature Designer
 %}
 
-load("DFD_FeatureTable_TimeDomain.mat");
-load("DFD_FeatureTable_FreqDomain.mat");
+%%% Use Matlab generated code to calculate features from timetable of pulses
+%%% Only need to run once so that it saves the data, next time just load
+% [DFD_FeatureTable_TimeDomain_Standard,~] = DFD_GeneratedCode_TimeDomain(pulseData_Timetable_Standard);
+% save("DFD_FeatureTable_TimeDomain_Standard.mat", 'DFD_FeatureTable_TimeDomain_Standard');
+% 
+% [DFD_FeatureTable_TimeDomain_DcRemoved,~] = DFD_GeneratedCode_TimeDomain(pulseData_Timetable_DcRemoved);
+% save("DFD_FeatureTable_TimeDomain_DcRemoved.mat", 'DFD_FeatureTable_TimeDomain_DcRemoved');
+% 
+% [DFD_FeatureTable_TimeDomain_Padded,~] = DFD_GeneratedCode_TimeDomain(pulseData_Timetable_Padded);
+% save("DFD_FeatureTable_TimeDomain_Padded.mat", 'DFD_FeatureTable_TimeDomain_Padded');
+% 
+% [DFD_FeatureTable_FreqDomain_Standard,~] = DFD_GeneratedCode_FreqDomain(pulseData_Timetable_Standard);
+% save("DFD_FeatureTable_FreqDomain_Standard.mat", 'DFD_FeatureTable_FreqDomain_Standard');
+% 
+% [DFD_FeatureTable_FreqDomain_DcRemoved,~] = DFD_GeneratedCode_FreqDomain(pulseData_Timetable_DcRemoved);
+% save("DFD_FeatureTable_FreqDomain_DcRemoved.mat", 'DFD_FeatureTable_FreqDomain_DcRemoved');
+% 
+% [DFD_FeatureTable_FreqDomain_Padded,~] = DFD_GeneratedCode_FreqDomain(pulseData_Timetable_Padded);
+% save("DFD_FeatureTable_FreqDomain_Padded.mat", 'DFD_FeatureTable_FreqDomain_Padded');
+%%%
 
-%load("DFD_FeatureTable_TimeDomain_DcRemoved.mat");
-% load("DFD_FeatureTable_FreqDomain_DcRemoved.mat");
+%% If already calculated and saved
+load("DFD_FeatureTable_TimeDomain_Standard.mat");
+load("DFD_FeatureTable_FreqDomain_Standard.mat");
 
-%load("DFD_FeatureTable_TimeDomain_Padded.mat");
-% load("DFD_FeatureTable_FreqDomain_Padded.mat");
+load("DFD_FeatureTable_TimeDomain_DcRemoved.mat");
+load("DFD_FeatureTable_FreqDomain_DcRemoved.mat");
 
-%load("DFD_FeatureTable_TimeDomain_DcRemovedPadded.mat");
+load("DFD_FeatureTable_TimeDomain_Padded.mat");
+load("DFD_FeatureTable_FreqDomain_Padded.mat");
+
+% load("DFD_FeatureTable_TimeDomain_DcRemovedPadded.mat");
 % load("DFD_FeatureTable_FreqDomain_DcRemovedAndPadded.mat");
 
-% Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07
+%% Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07
 signalNames_Time = [  
                 "TimeTable_sigstats/"...
                 "TimeTable1_sigstats/"...
@@ -76,8 +98,7 @@ featureNames_Freq = [
                ];
 numOfFeatures_Freq = size(featureNames_Freq, 2);
 
-%% 
-% Convert timetables output from DFD to array
+%% Convert DFD output from Timetables to array
 % Combine time domain features with frequency domain features
 % Output is an array numOfPulses x numOfSignals x numOfFeatures
 numOfTimeFeatures = size(featureNames_Time, 2);
@@ -85,33 +106,23 @@ numOfFreqFeatures = size(featureNames_Freq, 2);
 numOfPulses = size(pulseData_Timetable, 1);
 totalFeatures = numOfTimeFeatures + numOfFreqFeatures;
 featureArray = zeros(numOfPulses, totalFeatures, numOfSignals);
+featureArray_DcRemoved = zeros(numOfPulses, totalFeatures, numOfSignals);
+featureArray_Padded = zeros(numOfPulses, totalFeatures, numOfSignals);
 
 % Take data from the time and freq domain features and combine them into an
 % array
 for signalIndex = 1 : numOfSignals
     for featureIndex = 1 : numOfTimeFeatures
-        featureArray(:, featureIndex, signalIndex) = DFD_FeatureTable_TimeDomain.(signalNames_Time(signalIndex) + featureNames_Time(featureIndex));
+        featureArray(:, featureIndex, signalIndex) = DFD_FeatureTable_TimeDomain_Standard.(signalNames_Time(signalIndex) + featureNames_Time(featureIndex));
+        featureArray_DcRemoved(:, featureIndex, signalIndex) = DFD_FeatureTable_TimeDomain_DcRemoved.(signalNames_Time(signalIndex) + featureNames_Time(featureIndex));
+        featureArray_Padded(:, featureIndex, signalIndex) = DFD_FeatureTable_TimeDomain_DcRemoved.(signalNames_Time(signalIndex) + featureNames_Time(featureIndex));
     end
     for featureIndex = 1 : numOfFreqFeatures
-        featureArray(:, featureIndex + numOfTimeFeatures, signalIndex) = DFD_FeatureTable_FreqDomain.(signalNames_Freq(signalIndex) + featureNames_Freq(featureIndex));
+        featureArray(:, featureIndex + numOfTimeFeatures, signalIndex) = DFD_FeatureTable_FreqDomain_Standard.(signalNames_Freq(signalIndex) + featureNames_Freq(featureIndex));
+        featureArray_DcRemoved(:, featureIndex + numOfTimeFeatures, signalIndex) = DFD_FeatureTable_FreqDomain_DcRemoved.(signalNames_Freq(signalIndex) + featureNames_Freq(featureIndex));
+        featureArray_Padded(:, featureIndex + numOfTimeFeatures, signalIndex)  = DFD_FeatureTable_FreqDomain_DcRemoved.(signalNames_Freq(signalIndex) + featureNames_Freq(featureIndex));
     end   
 end
-%FeatureNames_Combined = [featureNames_Time featureNames_Freq];
-FeatureNames_Combined = [ "1 Clearance Factor"... %1
-                "2 Crest Factor"... %2
-                "3 Impulse Factor"... %3
-                "4 Kurtosis"... %4
-                "5 Mean"... %5
-                "6 PeakValue"... %6
-                "7 RMS"... %7
-                "8 SNR"... %8
-                "9 SINAD"... %9
-                "10 ShapeFactor"... %10
-                "11 Skewness"... %11
-                "12 Std"... %12
-                "13 THD"... %13
-                "14 BandPower"... %14
-                "15 PeakAmp1"... %15
-                "16 PeakFreq1" %16
-               ];
+
+FeatureNames_Combined = [featureNames_Time featureNames_Freq];
 numOfFeatures_Combined = size(FeatureNames_Combined,2);

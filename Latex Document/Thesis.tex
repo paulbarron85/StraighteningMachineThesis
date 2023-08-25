@@ -413,7 +413,7 @@ The data is separated into cycles using this signal to isolate the periods where
 \Cref{fig:SignalPulses} shows the signals for 224 pulses. Each sensor channel is plotted a different tile. 
 \begin{figure}[H]
 	\makebox[\textwidth][c]{\includegraphics[width=1.15\textwidth, height=\textheight, keepaspectratio]{figures/SignalPulses.eps}}
-    \caption{Signal pulses for 224 pulses on each of the 12 signal channels}
+    \caption{Signal pulses for 224 cycles on each of the 12 channels}
     \label{fig:SignalPulses}
 \end{figure}
 
@@ -529,11 +529,98 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \end{center}
 
 \subsection{Feature vs Feature Models}
-\Cref{fig:FeatureVsFeatureCombinedSignal9} shows an example of plotting all features against one another for Signal XXX. This was repeated for all signals but just one has been included in the report as an example. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in any model.
-The colors used in these plots are used to represent a pseudo time scale. Although since the data is only from 1 hour per day the color spectrum is not linear however it should be good enough to show a trend over time.
+\Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another. This was repeated for all signals but just one has been included in the report as an example. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. It can be noted that Features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in any model. This is the same situation for Features 5, 6 and 7.
+
+The colors used in these plots are used to represent a pseudo time scale. Since the data is only from 1 hour per day the color spectrum is not linear however it may be useful in revealing any trends over time.
+
+Looking at Feature 14, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features 10 and 12. \Cref{fig:Models_Signal3Feature14} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created, \cref{Models_Signal3Feature14_Linear1, Models_Signal3Feature14_Linear2} with the FIT value shown in the plots. \Cref{fig:Models_Signal3Feature14_Multivariate1} shows a three dimensional model for all three of those Features which looks extremely linear apart from a few outlines. The FIT value is increased from the individual plots which means it's a pretty good fit.
+
+It's also worth to note, while not the plots aren't included in the report, Signal 5 21:20 Actual moment over rolls has the same characteristics of Signal 3, Actual moment under rolls. That is 
+
+\subsubsection*{Signal 3 21:12 Actual moment over Rolls}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal3.eps}
+    \caption{Feature Vs Feature for Signal 3, 21:12 Actual moment over Rolls}
+    \label{fig:FeatureVsFeatureCombinedSignal3}
+\end{figure}
+
+\begin{comment}
+\begin{figure}[H]
+	\captionsetup[subfigure]{justification=Centering}
+    \centering
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature10.eps}
+		  	\caption{Feature values}
+		  	\label{fig:Models_Signal3Feature111}
+		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature10_Linear1.eps}
+		  	\caption{Linear model 1}
+		  	\label{fig:Models_Signal3Feature10_Linear1}
+		\end{subfigure}
+		\bigskip
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature10_Linear2.eps}
+		  	\caption{Linear model 2}
+		  	\label{fig:Models_Signal3Feature10_Linear2}
+		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature10_Multivariate1.eps}
+		  	\caption{Multivariate Model}
+		  	\label{fig:Models_Signal3Feature10_Multivariate1}
+		\end{subfigure}
+    \caption{Signal 3, 21:12 Actual moment over Rolls Feature 10 Shape Factor}
+    \label{fig:Models_Signal3Feature11_Caption}
+\end{figure}
+\end{comment}
+
+\begin{figure}[H]
+	\captionsetup[subfigure]{justification=Centering}
+    \centering
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14.eps}
+		  	\caption{Feature values}
+		  	\label{fig:Models_Signal3Feature14}
+		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14_Linear1.eps}
+		  	\caption{Linear model 1}
+		  	\label{fig:Models_Signal3Feature14_Linear1}
+		\end{subfigure}
+		\bigskip
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+    			\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14_Linear2.eps}
+		  	\caption{Linear model 2}
+		  	\label{fig:Models_Signal3Feature14_Linear2}
+		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\begin{subfigure}{.45\textwidth}
+		  \centering
+ 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14_Multivariate1.eps}
+		  	\caption{Multivariate Model}
+		  	\label{fig:Models_Signal3Feature14_Multivariate1}
+		\end{subfigure}
+    \caption{Signal 3, 21:12 Actual moment over Rolls Feature 14 Band Power}
+    \label{fig:Models_Signal3Feature14_Caption}
+\end{figure}
 
 
-Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features XXX. However when comparing signals within that subset it is clear we realize that XX is highly correlated with XXX thus only one of these is needed for a model since all 3 signals contain the same information. \cref{fig:Models_Signal9Feature7} shows these three remaining features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created for Feature 1 Clearance Factor for all three other features but \cref{fig:Models_Signal9Feature7_Linear4} shows.....
+
+
+
+
+\subsubsection*{Signal 6, Vibration Measurements}
+
+
+
+
 
 \subsubsection*{Signal 9, Height Error}
 \begin{figure}[H]
@@ -620,7 +707,7 @@ Looking at Feature XXX, it can be seen that the R\textsuperscript{2} value is wi
 
 
 
-\subsubsection*{Signal 10, Height Error}
+\subsubsection*{Signal 10, Width Error}
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal10.eps}
@@ -732,22 +819,32 @@ This study aimed to give suggestions as to what signals and/or signal features a
 Unsurprisingly the vibration signal is probably the most interesting for finding correlations?????
 
 Of the data provided, many of the signals were relatively constant. In particular, Signal 11, 21:35 Set point force is perfectly constant and is not suitable for condition monitoring. The following signals are not overly useful to condition monitoring as they are fairly constant in mean value and contain little variable: 
-1, 21:07 Angle over Rolls
-2, 21:10 Position over Rolls
-4, 21:17 Angle under roll
-7, 21:31 Width position
-8, 21:32 Height position
+\begin{itemize}
+\item Signal 1, 21:07 Angle over Rolls
+\item Signal 2, 21:10 Position over Rolls
+\item Signal 4, 21:17 Angle under roll
+\item Signal 7, 21:31 Width position
+\item Signal 8, 21:32 Height position
+\item Signal 11 21:35 Set point force
+\end{itemize}
 
 These signals are most useful for condition monitoring:
-3 21:12 Actual moment over Rolls
-5 21:20 Actual moment under Rolls
-6 21:28 Vibration measurements 
-9 21:33 Error position for height
-10 21:34 Error position for the width
-12 21:36 Actual force           
+\begin{itemize}
+\item Signal 3 21:12 Actual moment over Rolls
+\item Signal 5 21:20 Actual moment under Rolls
+\item Signal 6 21:28 Vibration measurements 
+\item Signal 9 21:33 Error position for height
+\item Signal 10 21:34 Error position for the width
+\item Signal 12 21:36 Actual force           
+\end{itemize}
+
+
 
 %Comment on Method
 Comments include.....
+
+%Strengths?
+Uses real data with varying scales and units.
 
 It would be good to inquire with the company about whether what they have provided is the full set of available signals. Temperature and acoustic emissions are also highly effective types of sensors for condition monitoring so if there was in fact additional data these would be of interest. If none of these sensors exist perhaps a good consideration might be to add one or more of these types of measurements to complement existing infrastructure.
 
@@ -755,6 +852,8 @@ It would be good to inquire with the company about whether what they have provid
 The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data is provided. Perhaps maintenance is only required on a yearly cycle and the machine degradation, thus we are not really getting a get insight into the degradation of the machine over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
 
 Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
+
+Throughout the report a color spectrum was used to indicate the time order of pulses in an attempt to reveal degradation conditions. It's worth remembering that this machine processes different sized tubes and thus one could confuse clustering in time with clustering in product sizes. This is where more data broken down in to different produced sizes could be better at revealing degradation over time.
 
 %Put in context/comparison with references at the beginning. 
 This study....

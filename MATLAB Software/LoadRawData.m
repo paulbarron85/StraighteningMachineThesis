@@ -1,11 +1,12 @@
 %{
     Date: 2023/08/23
     Author: Paul Barron
-    Description: This script loads the data and labals for charts
+    Description: This script loads the raw data and labels for sensor
+    channels
 %}
 
-%clear;
-%close all;
+clear;
+close all;
 warning off;
 saveFigures = false;
 
