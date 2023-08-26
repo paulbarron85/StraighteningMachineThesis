@@ -318,7 +318,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable3.("21:17 Angle under roll [degrees]");
+        inputSignal = TimeTable3.("21:17 Angle under roll [deg]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
