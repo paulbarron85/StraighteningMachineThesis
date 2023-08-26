@@ -116,7 +116,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable.("21:07 Angle over Rolls (degrees)");
+        x = TimeTable.("21:07 Angle over Rolls [deg]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -166,7 +166,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable1.("21:10 Position over Rolls (mm)");
+        x = TimeTable1.("21:10 Position over Rolls [mm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -466,7 +466,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable7.("31:32 Height position [mm]");
+        x = TimeTable7.("21:32 Height position [mm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
