@@ -1,18 +1,16 @@
-Features = DFD_FeatureTable_TimeDomain;
-FeatureNames = FeatureNames_Combined;
 lowerR2 = 0.3;
 upperR2 = 0.8;
 r2ReducedThreshold = 0.9;
 selectedSignal = 5; % 21:20 & Actual moment under Rolls
 saveFigures = true;
-R2 = fnPlotFeatureVsFeature_Array(featureArray, lowerR2, upperR2, selectedSignal, FeatureNames, sensorNames);
+R2 = fnPlotFeatureVsFeature_Array(featureArray_Standard, lowerR2, upperR2, selectedSignal, FeatureNames_Combined, sensorNames);
 
 disp(num2str(R2, '%.2f  '));
 
 Combination 1
 combination = 1;
 selectedFeature = 1;
-[selectedFeatureArray, selectedFeatureData, numOfSelectedFeatures] = fnSelectFeatures(selectedSignal, selectedFeature, featureArray, R2, upperR2, lowerR2, r2ReducedThreshold, true);
+[selectedFeatureArray, selectedFeatureData, numOfSelectedFeatures] = fnSelectFeatures(selectedSignal, selectedFeature, featureArray_Standard,R2, upperR2, lowerR2, r2ReducedThreshold, true);
 
 figure(); hold on;
 title(sensorNames(selectedSignal));

@@ -5,8 +5,7 @@
 %}
 function [] = fnPlotCorrelations(rawDataArray, r2Values, fileNum, lowerBound, upperBound, signalName, sensorNames)
     figure();
-    t = tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');
-    %title(t, "Raw signals vs each other: File number " + fileNum);
+    tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');
     numOfSignals = size(signalName, 2);
     numpoints = size(cell2mat(rawDataArray{fileNum}(1, 2)), 1);
     pointidx = 1 : numpoints; 

@@ -62,7 +62,7 @@
 \pagenumbering{roman}
 
 \section*{Acknowledgments}
-I would like to thank my supervisors Daniel Rönnow and Oscar Bautista Gonzalez for their guidance and patience. I would like to thank the University of Gävle for offering a Masters Program in Electronics and Automation available to take as distance education. I would like to thank Alleima for providing the data to analyses for this Thesis. I would like to thank my partner, Alex Hamelin, for her support.
+I would like to express deep gratitude to my supervisors, Daniel Rönnow and Oscar Bautista Gonzalez, for their time, guidance and support. To the University of Gävle I am extremely appreciative for offering a Masters Program in Electronics and Automation available to take as distance education which is ideal for full time working professionals and is the only course of it's kind. Special thanks go to thank Alleima for providing the data to analyze for this Thesis, without which it would not have been possible. Finally, I would also like to acknowledge the fact that I um undertaking this study for no personal cost thanks to free education offered by the Swedish Government. More countries should consider offering free education. Knowledge is power.
 \newpage
 
 \section*{Abstract}
@@ -533,9 +533,9 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 
 The colors used in these plots are used to represent a pseudo time scale. Since the data is only from 1 hour per day the color spectrum is not linear however it may be useful in revealing any trends over time.
 
-Looking at Feature 14, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features 10 and 12. \Cref{fig:Models_Signal3Feature14} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created, \cref{Models_Signal3Feature14_Linear1, Models_Signal3Feature14_Linear2} with the FIT value shown in the plots. \Cref{fig:Models_Signal3Feature14_Multivariate1} shows a three dimensional model for all three of those Features which looks extremely linear apart from a few outlines. The FIT value is increased from the individual plots which means it's a pretty good fit.
+Looking at Feature 14, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features 10 and 12. \Cref{fig:Models_Signal3Feature14} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created, \cref{fig:Models_Signal3Feature14_Linear1,fig:Models_Signal3Feature14_Linear2} with the FIT value shown in the plots. \Cref{fig:Models_Signal3Feature14_Multivariate1} shows a three dimensional model for all three of those Features which looks extremely linear apart from a few outlines. The FIT value is increased from the individual plots which means it's a pretty good fit.
 
-It's also worth to note, while not the plots aren't included in the report, Signal 5 21:20 Actual moment over rolls has the same characteristics of Signal 3, Actual moment under rolls. That is 
+It's also worth to note, while the plots are not included in the report, Signal 5 21:20 Actual moment over rolls has the same characteristics of Signal 3, Actual moment under rolls. That is 
 
 \subsubsection*{Signal 3 21:12 Actual moment over Rolls}
 \begin{figure}[H]
@@ -613,6 +613,7 @@ It's also worth to note, while not the plots aren't included in the report, Sign
 
 
 
+%\subsubsection*{Signal 5 Actual moment under Rolls}
 
 
 
@@ -813,8 +814,8 @@ It's also worth to note, while not the plots aren't included in the report, Sign
 
 \section{Discussion}
 % In this chapter the results and the chosen method are discussed, as well as the strengths and weaknesses of the work.
-% Discuss results - Comments on what signals are related
-This study aimed to give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not. 
+% Discuss results - Comments on what signals are suitable and/or are related
+This study aimed to find patterns in the data and  give suggestions as to what signals and/or signal features are of value for future condition monitoring studies and which ones are not. 
 
 Unsurprisingly the vibration signal is probably the most interesting for finding correlations?????
 
@@ -825,17 +826,17 @@ Of the data provided, many of the signals were relatively constant. In particula
 \item Signal 4, 21:17 Angle under roll
 \item Signal 7, 21:31 Width position
 \item Signal 8, 21:32 Height position
-\item Signal 11 21:35 Set point force
+\item Signal 11, 21:35 Set point force
 \end{itemize}
 
 These signals are most useful for condition monitoring:
 \begin{itemize}
-\item Signal 3 21:12 Actual moment over Rolls
-\item Signal 5 21:20 Actual moment under Rolls
-\item Signal 6 21:28 Vibration measurements 
-\item Signal 9 21:33 Error position for height
-\item Signal 10 21:34 Error position for the width
-\item Signal 12 21:36 Actual force           
+\item Signal 3, 21:12 Actual moment over Rolls
+\item Signal 5, 21:20 Actual moment under Rolls
+\item Signal 6, 21:28 Vibration measurements 
+\item Signal 9, 21:33 Error position for height
+\item Signal 10, 21:34 Error position for the width
+\item Signal 12, 21:36 Actual force           
 \end{itemize}
 
 
@@ -851,7 +852,7 @@ It would be good to inquire with the company about whether what they have provid
 %Weaknesses
 The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data is provided. Perhaps maintenance is only required on a yearly cycle and the machine degradation, thus we are not really getting a get insight into the degradation of the machine over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
 
-Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the lifecycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
+Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the life cycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
 
 Throughout the report a color spectrum was used to indicate the time order of pulses in an attempt to reveal degradation conditions. It's worth remembering that this machine processes different sized tubes and thus one could confuse clustering in time with clustering in product sizes. This is where more data broken down in to different produced sizes could be better at revealing degradation over time.
 
@@ -861,14 +862,16 @@ This study....
 An analysis of such data can be expanded exponentially but one can only look at so much before moving on. It is also beneficial to, at least begin with, simple things like two variable linear regression.
 
 %Enhance scientific research, upgrade the technological capabilities of industrial sectors in all countries, in particular developing countries, including, by 2030, encouraging innovation and substantially increasing the number of research and development workers per 1 million people and public and private research and development spending.
-The subject matter, methods and results used in this report are in good agreement with target 9.5 of the 2030 Agenda for sustainable development\cite{united2015department}. Hopefully this work will upgrade technology capabilities in industrial sectors and will assist workers in the field of research and development. 
+The subject matter, methods and results used in this report are inline with target 9.5 of the 2030 Agenda for sustainable development\cite{united2015department}. Hopefully this work will upgrade technology capabilities in industrial sectors and will assist workers in the field of research and development. 
 
 \subsection{Future Work}
-This report has identified potential clusters based on visual observations in the data. However, no attempts were made to implement any clustering algorithms. This would be the logical next step, to apply some machine learning techniques, in trying to identify degradation states. In particular methods such as K nearest neighbors or K-means clustering approach.
+This report has identified patterns in the data and potential clusters based on visual observations in the data. However, no attempts were made to implement any clustering algorithms. This would be the logical next step, to apply some machine learning techniques, in trying to identify degradation states.
 
-The straightening machine in this study produces products of of different diameters. At least one of the signals can be used to indicate this diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data and focusing on only one tube width would removed any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
+The straightening machine in this study produces products of of different diameters. At least one of the signals can be used to indicate this diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data into pipe widths and focusing on only one tube width would removed any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
 
-Non-linear modelling.....
+As mentioned previously, the data for this study was taken over a two week period with no data on maintenance. For the next set of data might it might be beneficial to request periods of data with longer intervals between them. Ideally, obtaining some data before a known maintenance task and after might assist in identify clusters which are indicative of the machine degradation state.
+
+While this report highlighted some non-linear relationship it made no attempt at modeling them. This could be a worthwhile endeavor for the next iteration of work.
 \clearpage
 
 \section{Conclusion}
@@ -908,13 +911,17 @@ A study of the available data on a steel tube straightening machine was conducte
 
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotFeatureVsFeature_Array.m"}
 
+\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotSignalVsSignal.m"}
+
+%FeatureVsFeature_Combined.mlx
+
+%SignalVsSignal.mlx
+
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotModel.m"}
 
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotModel3D.m"}
 
 \lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/MultivariateModel_FeatureVsFeatureArray_Sample.m"}
-
-\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/fnPlotSignalVsSignal.m"}
 
 %\lstinputlisting[frame=single, numbers=left, style=Matlab-editor, basicstyle=\ttfamily\scriptsize]{"./MATLAB Software/MultivariateModel_SignalVsSignalArray_Sample.m"}
 

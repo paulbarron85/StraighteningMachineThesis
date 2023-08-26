@@ -88,18 +88,18 @@ while hasdata(outputEnsemble)
     member = read(outputEnsemble);
 
     % Get all input variables.
-    TimeTable = readMemberData(member,"TimeTable",["Time","21:07 Angle over Rolls (degrees)"]);
-    TimeTable1 = readMemberData(member,"TimeTable1",["Time","21:10 Position over Rolls (mm)"]);
-    TimeTable2 = readMemberData(member,"TimeTable2",["Time","21:12 Actual moment over Rolls (Nm)"]);
-    TimeTable3 = readMemberData(member,"TimeTable3",["Time","21:17 Angle under roll (degrees)"]);
-    TimeTable4 = readMemberData(member,"TimeTable4",["Time","21:20 Actual moment under Rolls (Nm)"]);
-    TimeTable5 = readMemberData(member,"TimeTable5",["Time","21:28 Vibration measurements (mm per s)"]);
-    TimeTable6 = readMemberData(member,"TimeTable6",["Time","21:31 Width position (mm)"]);
-    TimeTable7 = readMemberData(member,"TimeTable7",["Time","21:32 Height position (mm)"]);
-    TimeTable8 = readMemberData(member,"TimeTable8",["Time","21:33 Error position for height (mm)"]);
-    TimeTable9 = readMemberData(member,"TimeTable9",["Time","21:34 Error position for the width (mm)"]);
-    TimeTable10 = readMemberData(member,"TimeTable10",["Time","21:35 Set point force (KN)"]);
-    TimeTable11 = readMemberData(member,"TimeTable11",["Time","21:36 Actual force (KN)"]);
+    TimeTable = readMemberData(member,"TimeTable",["Time","21:07 Angle over Rolls [deg]"]);
+    TimeTable1 = readMemberData(member,"TimeTable1",["Time","21:10 Position over Rolls [mm]"]);
+    TimeTable2 = readMemberData(member,"TimeTable2",["Time","21:12 Actual moment over Rolls [Nm]"]);
+    TimeTable3 = readMemberData(member,"TimeTable3",["Time","21:17 Angle under roll [deg]"]);
+    TimeTable4 = readMemberData(member,"TimeTable4",["Time","21:20 Actual moment under Rolls [Nm]"]);
+    TimeTable5 = readMemberData(member,"TimeTable5",["Time","21:28 Vibration measurements [mm per s]"]);
+    TimeTable6 = readMemberData(member,"TimeTable6",["Time","21:31 Width position [mm]"]);
+    TimeTable8 = readMemberData(member,"TimeTable8",["Time","21:33 Error position for height [mm]"]);
+    TimeTable7 = readMemberData(member,"TimeTable7",["Time","21:32 Height position [mm]"]);
+    TimeTable9 = readMemberData(member,"TimeTable9",["Time","21:34 Error position for the width [mm]"]);
+    TimeTable11 = readMemberData(member,"TimeTable11",["Time","21:36 Actual force [kN]"]);
+    TimeTable10 = readMemberData(member,"TimeTable10",["Time","21:35 Set point force [kN]"]);
 
     % Initialize a table to store results.
     memberResult = table;
@@ -216,7 +216,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable2.("21:12 Actual moment over Rolls (Nm)");
+        x = TimeTable2.("21:12 Actual moment over Rolls [Nm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -266,7 +266,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable3.("21:17 Angle under roll (degrees)");
+        x = TimeTable3.("21:17 Angle under roll [deg]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -316,7 +316,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable4.("21:20 Actual moment under Rolls (Nm)");
+        x = TimeTable4.("21:20 Actual moment under Rolls [Nm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -366,7 +366,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable5.("21:28 Vibration measurements (mm per s)");
+        x = TimeTable5.("21:28 Vibration measurements [mm per s]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -416,7 +416,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable6.("21:31 Width position (mm)");
+        x = TimeTable6.("21:31 Width position [mm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -466,7 +466,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable7.("31:32 Height position (?)");
+        x = TimeTable7.("31:32 Height position [mm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -516,7 +516,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable8.("21:33 Error position for height (?)");
+        x = TimeTable8.("21:33 Error position for height [mm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -566,7 +566,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable9.("21:34 Error position for the width (?)");
+        x = TimeTable9.("21:34 Error position for the width [mm]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -616,7 +616,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable10.("21:35 Set point force (KN)");
+        x = TimeTable10.("21:35 Set point force [kN]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end
@@ -666,7 +666,7 @@ while hasdata(outputEnsemble)
         Ts = 1/Fs;
 
         % Resample non-uniform signals.
-        x = TimeTable11.("21:36 Actual force (KN)");
+        x = TimeTable11.("21:36 Actual force [kN]");
         if irregular
             x = resample(x,tNumeric,Fs,'linear');
         end

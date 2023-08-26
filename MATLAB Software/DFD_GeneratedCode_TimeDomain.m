@@ -194,18 +194,18 @@ while hasdata(outputEnsemble)
     member = read(outputEnsemble);
 
     % Get all input variables.
-    TimeTable = readMemberData(member,"TimeTable",["Time","21:07 Angle over Rolls (degrees)"]);
-    TimeTable1 = readMemberData(member,"TimeTable1",["Time","21:10 Position over Rolls (mm)"]);
-    TimeTable2 = readMemberData(member,"TimeTable2",["Time","21:12 Actual moment over Rolls (Nm)"]);
-    TimeTable3 = readMemberData(member,"TimeTable3",["Time","21:17 Angle under roll (degrees)"]);
-    TimeTable4 = readMemberData(member,"TimeTable4",["Time","21:20 Actual moment under Rolls (Nm)"]);
-    TimeTable5 = readMemberData(member,"TimeTable5",["Time","21:28 Vibration measurements (mm per s)"]);
-    TimeTable6 = readMemberData(member,"TimeTable6",["Time","21:31 Width position (mm)"]);
-    TimeTable8 = readMemberData(member,"TimeTable8",["Time","21:33 Error position for height (mm)"]);
-    TimeTable7 = readMemberData(member,"TimeTable7",["Time","21:32 Height position (mm)"]);
-    TimeTable9 = readMemberData(member,"TimeTable9",["Time","21:34 Error position for the width (mm)"]);
-    TimeTable11 = readMemberData(member,"TimeTable11",["Time","21:36 Actual force (KN)"]);
-    TimeTable10 = readMemberData(member,"TimeTable10",["Time","21:35 Set point force (KN)"]);
+    TimeTable = readMemberData(member,"TimeTable",["Time","21:07 Angle over Rolls [deg]"]);
+    TimeTable1 = readMemberData(member,"TimeTable1",["Time","21:10 Position over Rolls [mm]"]);
+    TimeTable2 = readMemberData(member,"TimeTable2",["Time","21:12 Actual moment over Rolls [Nm]"]);
+    TimeTable3 = readMemberData(member,"TimeTable3",["Time","21:17 Angle under roll [deg]"]);
+    TimeTable4 = readMemberData(member,"TimeTable4",["Time","21:20 Actual moment under Rolls [Nm]"]);
+    TimeTable5 = readMemberData(member,"TimeTable5",["Time","21:28 Vibration measurements [mm per s]"]);
+    TimeTable6 = readMemberData(member,"TimeTable6",["Time","21:31 Width position [mm]"]);
+    TimeTable8 = readMemberData(member,"TimeTable8",["Time","21:33 Error position for height [mm]"]);
+    TimeTable7 = readMemberData(member,"TimeTable7",["Time","21:32 Height position [mm]"]);
+    TimeTable9 = readMemberData(member,"TimeTable9",["Time","21:34 Error position for the width [mm]"]);
+    TimeTable11 = readMemberData(member,"TimeTable11",["Time","21:36 Actual force [kN]"]);
+    TimeTable10 = readMemberData(member,"TimeTable10",["Time","21:35 Set point force [kN]"]);
 
     % Initialize a table to store results.
     memberResult = table;
@@ -213,7 +213,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable.("21:07 Angle over Rolls (degrees)");
+        inputSignal = TimeTable.("21:07 Angle over Rolls [deg]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -248,7 +248,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable1.("21:10 Position over Rolls (mm)");
+        inputSignal = TimeTable1.("21:10 Position over Rolls [mm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -283,7 +283,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable2.("21:12 Actual moment over Rolls (Nm)");
+        inputSignal = TimeTable2.("21:12 Actual moment over Rolls [Nm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -318,7 +318,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable3.("21:17 Angle under roll (degrees)");
+        inputSignal = TimeTable3.("21:17 Angle under roll [degrees]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -353,7 +353,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable4.("21:20 Actual moment under Rolls (Nm)");
+        inputSignal = TimeTable4.("21:20 Actual moment under Rolls [Nm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -388,7 +388,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable5.("21:28 Vibration measurements (mm per s)");
+        inputSignal = TimeTable5.("21:28 Vibration measurements [mm per s]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -423,7 +423,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable6.("21:31 Width position (mm)");
+        inputSignal = TimeTable6.("21:31 Width position [mm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -458,7 +458,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable8.("21:33 Error position for height (?)");
+        inputSignal = TimeTable8.("21:33 Error position for height [mm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -493,7 +493,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable7.("31:32 Height position (?)");
+        inputSignal = TimeTable7.("21:32 Height position [mm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -528,7 +528,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable9.("21:34 Error position for the width (?)");
+        inputSignal = TimeTable9.("21:34 Error position for the width [mm]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -563,7 +563,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable11.("21:36 Actual force (KN)");
+        inputSignal = TimeTable11.("21:36 Actual force [KN]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
@@ -598,7 +598,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable10.("21:35 Set point force (KN)");
+        inputSignal = TimeTable10.("21:35 Set point force [kN]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));

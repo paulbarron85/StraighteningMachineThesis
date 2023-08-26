@@ -2,9 +2,8 @@ function [R2] = fnPlotFeatureVsFeature_Array(featureArray, lowerBound, upperBoun
     figure();
     numpoints = size(featureArray, 1); 
     numOfFeatures = size(featureArray, 2);
-    t = tiledlayout(numOfFeatures, numOfFeatures, 'TileSpacing','None', 'Padding','tight');
-    %title(t, "Signal " + signalIndex + ": " + sensorNames(signalIndex));
-    "Signal " + signalIndex + ": " + sensorNames(signalIndex)
+    tiledlayout(numOfFeatures, numOfFeatures, 'TileSpacing','None', 'Padding','tight');
+    fprintf("Signal %i: %s", signalIndex, sensorNames(signalIndex));
     R2 = zeros(numOfFeatures, numOfFeatures);
     pointidx = 1 : numpoints;
     % Loop through features #1
@@ -33,7 +32,6 @@ function [R2] = fnPlotFeatureVsFeature_Array(featureArray, lowerBound, upperBoun
     end
     for featureIndex = 1 : numOfFeatures
         nexttile((featureIndex-1) * numOfFeatures + featureIndex);
-        %text(0, 0.5, featureNames(featureIndex));
         text(0.5, 0.5, int2str(featureIndex), HorizontalAlignment='center',VerticalAlignment='middle');
         xticklabels({});
         yticklabels({});
