@@ -563,7 +563,7 @@ while hasdata(outputEnsemble)
     %% SignalFeatures
     try
         % Compute signal features.
-        inputSignal = TimeTable11.("21:36 Actual force [KN]");
+        inputSignal = TimeTable11.("21:36 Actual force [kN]");
         ClearanceFactor = max(abs(inputSignal))/(mean(sqrt(abs(inputSignal)))^2);
         CrestFactor = peak2rms(inputSignal);
         ImpulseFactor = max(abs(inputSignal))/mean(abs(inputSignal));
