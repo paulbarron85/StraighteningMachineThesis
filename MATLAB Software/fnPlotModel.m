@@ -11,7 +11,6 @@ function [beta] = fnPlotModel(Y, X1, txtTitle, labelY, labelX1)
     figure(); hold on;
     pointidx = 1 : n;
     scatter(X1, Y, 10, pointidx, 'o', 'filled');
-    %scatter(X1, Y, 10);
     colormap( jet(n) );
     interval = max(X1) - min(X1);
     x1fit = min(X1):interval:max(X1);
