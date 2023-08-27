@@ -1,10 +1,13 @@
+function [] = fnPlotCorrelations(rawDataArray, r2Values, fileNum, lowerBound, upperBound, signalName, sensorNames)
 %{
     Date: 2023/08/23
+    Filename: fnPlotCorrelations.m
     Author: Paul Barron
-    Description: 
+    Description: This function plots the signals against each other as well
+    as printing the R2 values on the plots which are within the specified
+    range.
 %}
-function [] = fnPlotCorrelations(rawDataArray, r2Values, fileNum, lowerBound, upperBound, signalName, sensorNames)
-    figure();
+figure();
     tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');
     numOfSignals = size(signalName, 2);
     numpoints = size(cell2mat(rawDataArray{fileNum}(1, 2)), 1);

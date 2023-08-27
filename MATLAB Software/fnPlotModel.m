@@ -1,4 +1,13 @@
 function [beta] = fnPlotModel(Y, X1, txtTitle, labelY, labelX1)
+%{
+    Date: 2023/08/23
+    Filename: SignalVsSignal.mlx
+    Author: Paul Barron
+    Description: This function calculates a linear model using least
+    squares and calculates the normalized FIT value. It plot the data using
+    a scatter plot and then plots the linear model over the top of the
+    data.
+%}
     n = size(Y, 1);
     X = [ones(n,1) X1];
     k = size(X, 2) - 1; % Number of parameters for model

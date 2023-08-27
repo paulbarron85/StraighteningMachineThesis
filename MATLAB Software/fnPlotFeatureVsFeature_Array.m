@@ -1,4 +1,12 @@
 function [R2] = fnPlotFeatureVsFeature_Array(featureArray, lowerBound, upperBound, signalIndex, featureNames, sensorNames)
+%{
+    Date: 2023/08/23
+    Filename: fnPlotFeatureVsFeature.m
+    Author: Paul Barron
+    Description: This function plots all the features against each other
+    and prints the R2 values on the charts which are within the specified
+    range.
+%}
     figure();
     numpoints = size(featureArray, 1); 
     numOfFeatures = size(featureArray, 2);

@@ -1,8 +1,8 @@
 %{
     Date: 2023/08/23
+    Filename: LoadFeatures.m
     Author: Paul Barron
-    Description: This script loads the features calculated by Matlab's Diagnostic
-    Feature Designer
+    Description: This script loads the features calculated by Matlab's Diagnostic Feature Designer
 %}
 
 % Time Tables are equivelant to the Signal Numbers i.e. TimeTable = 21.07

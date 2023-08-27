@@ -1,8 +1,10 @@
 function [R2] = fnPlotSignalVsSignal(FeatureTable, lowerBound, upperBound, featureIndex, featureNames, signalName, sensorNames)
 %{
     Date: 2023/08/23
+    Filename: fnPlotSignalVsSignal.m
     Author: Paul Barron
-    Description: 
+    Description: This function plots each signal against every other signal
+    for a particular feature
 %}
     figure();
     tiledlayout(12,12,'TileSpacing','None', 'Padding','tight');

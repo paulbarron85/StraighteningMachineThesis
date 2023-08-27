@@ -1,4 +1,10 @@
 function [] = fnPlotSignals(rawDataArray, fileNum, signalIndex1, signalIndex2, sensorNames)
+%{
+    Date: 2023/08/23
+    Filename: fnPlotSignals.m
+    Author: Paul Barron
+    Description: This function plots one signal against another signal
+%}
     figure();    
     numpoints = size(cell2mat(rawDataArray{fileNum}(1, 2)), 1);
     pointidx = 1 : numpoints; 

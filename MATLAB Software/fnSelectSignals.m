@@ -1,25 +1,11 @@
 function [selectedSignalArrayReduced, selectedSignalDataReduced, numOfSelectedSignalsReduced] = fnSelectSignals( ...
 selectedSignal, selectedFeature, featureArray, R2, upperR2, lowerR2, r2ReducedThreshold, verbose)
 %{
-Description: This function...
-Date: 2023/03/19
-Author: Paul Barron
-Inputs:  
-    selectedSignal: INT, Signal # to analyse
-    selectedFeature: INT, The feature selected to use for comparison with all the
-    other signals
-    featureArray: 3D array of INT, The feature data, an arry with dimensions
-    num of pusles x num of features x num of sensors (224 x 16 x 12)
-    R2: R2 data for all combinations of sensors, num of features x num of
-    features (16 x 16)
-    upperR2: INT, Upper range for the R2 threshold
-    lowerR2: INT, Lower range for the R2 threshold
-    r2ReducedThreshold: INT, Threshold for comparing subsequent R2 values
-    verbose: Boolean, print out intermediate values
-Outputs:    
-    selectedSignalArray: 
-    selectedSignalData:
-    numOfSelectedSignals:
+    Date: 2023/08/23
+    Filename: fnSelectSignals.m
+    Author: Paul Barron
+    Description: This function removes signals that are highly correlated
+    from a set of original signals.
 %}
     numOfCombinedFeatures = size(R2, 1);
     selectedSignalArray = []; % Array of correlated features

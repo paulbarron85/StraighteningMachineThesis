@@ -1,4 +1,12 @@
 function [Y_est] = fnModelPlot3D(Y, X1, X2, txtTitle, labelY, labelX1, labelX2)
+%{
+    Date: 2023/08/23
+    Filename: SignalVsSignal.mlx
+    Author: Paul Barron
+    Description: This function calculates a 3D model plus the normalized
+    FIT value. It then plots the original data, the model and the FIT
+    value.
+%}
     n = size(Y, 1);
     X = [ones(n,1) X1 X2];
     beta = inv(X' * X) * (X' * Y);

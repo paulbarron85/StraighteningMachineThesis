@@ -1,10 +1,11 @@
 %{
     Date: 2023/08/23
+    Filename: LoadRawData.m
     Author: Paul Barron
-    Description: This script loads the raw data and labels for sensor
+    Description: Loads the raw data from files and create labels for sensor
     channels
 %}
-
+%%
 clear;
 close all;
 warning off;

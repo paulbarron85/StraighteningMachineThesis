@@ -1,17 +1,15 @@
-%{
-    Description: This function...
+function [pulses, mask, flag, maxPulseLength] = fnStateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
+ %{
     Date: 2023/03/19
+    Filename: fnStateDetction.m
     Author: Paul Barron
+    Description: 
     pulses: numOfPulses x numOfSignals x pulseNumOfSamples
     mask:   array that is 1 x length (numOfSamples)
-    flag:   array that is 1 x numOfPulses, true = number of samples in pulse is
-            less than min threshold to be considred a real pulse
-    maxPulseLength: integer for the max number of samples in the longest
-    pulse
-%}
+    flag:   array that is 1 x numOfPulses, true = number of samples in pulse is less than min threshold to be considred a real pulse
+    maxPulseLength: integer for the max number of samples in the longest pulse
+ %}
 
-function [pulses, mask, flag, maxPulseLength] = fnStateDetection(dataArrayLocal, threshold, minPulseTimeThreshold, signalNumber)
-    
     % Extract signal #5 (Signal 20)
     signal20 = dataArrayLocal(signalNumber,2);
     signal20 = cell2mat(signal20);
