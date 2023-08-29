@@ -17,6 +17,7 @@
 \usepackage{cleveref}
 \usepackage{verbatim}
 \usepackage{chngcntr}
+\usepackage{upgreek}
 \usepackage[title]{appendix}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
@@ -315,13 +316,13 @@ Among other techniques~\cite{buckley2023feature} uses recursive feature eliminat
 \subsection{Linear Regression Models}
 Once a subset of features has been settled upon one can create a linear model,
 \begin{equation} \label{eq:linearModel}
-	\mathbf{Y} = \hat{\boldsymbol{\theta}} \mathbf{X}.
+	\mathbf{Y} = \hat{\boldsymbol{\uptheta}} \mathbf{X}.
 \end{equation}
 By plotting one signal feature against another signal feature, relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. Calculating a linear regression model is done using linear least squares, 
 \begin{equation} \label{eq:regression}
-	\hat{\boldsymbol{\theta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y},
+	\hat{\boldsymbol{\uptheta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y},
 \end{equation}
-where $ \hat{\boldsymbol{\theta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
+where $ \hat{\boldsymbol{\uptheta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
 $ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$ ~\cite{james2013introduction}.\\
 Equation \ref{eq:regression} is used for multivariate models as well as two variable models. Once a model has been calculated a normalized goodness of fit function can be used to assess the accuracy of the model,
 % Fit equation from compare function
@@ -555,8 +556,14 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \subsection{Feature vs Feature Models}
 \Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another. This was repeated for all signals, one is shown in the main section of this report, the rest can be found in Appendix \ref{appendix:Plots}. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. The colors used in these plots are used to represent a pseudo time scale. Since the data is only from 1 hour per day the color spectrum is non linear however it may be useful in revealing any trends over time.
 
+Once a subset of features are chosen equation \ref{eq:linearModel} is utilized to create a two variable model. If two features are selected, for example take kurtosis and mean, then the model is given by
+\begin{equation}
+\mathbf{X}_{\textrm{kurtosis}} = \boldsymbol{\uptheta}'\mathbf{X}_{\textrm{mean}}
+\end{equation}
+where $\mathbf{X}_{\textrm{kurtosis}}$ is an $N\times1$ array, $\boldsymbol{\uptheta}$ is a $2\times1$ array and $\mathbf{X} = \begin{bmatrix} 1 & \mathbf{X}_{\textrm{mean}}(1) \\ \vdots & \vdots \\ 1 & \mathbf{X}_{\textrm{mean}}(N) \end{bmatrix}$, which is an $N\times2$ matrix. 
+
 %\subsubsection*{Signal 3 21:12 Actual moment over Rolls}
-It can be noted in \cref{fig:FeatureVsFeatureCombinedSignal3} that Features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are extremely linear and need only include one of these in any model. This is the same situation for Features 5, 6 and 7.
+It can be noted in \cref{fig:FeatureVsFeatureCombinedSignal3} that Features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are linearly correlated with correlation values between x-y, and need only include one of these in any model. This is the same situation for Features 5, 6 and 7.
 Looking at Feature 14, Band Power, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features 10 and 12. \Cref{fig:Models_Signal3Feature14} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created, \cref{fig:Models_Signal3Feature14_Linear1,fig:Models_Signal3Feature14_Linear2} with the FIT value shown in the plots. \Cref{fig:Models_Signal3Feature14_Multivariate1} shows a three dimensional model for all three of those Features which looks extremely linear apart from a few outlines. The FIT value is increased from the individual plots which means it's a pretty good fit. It's also worth to note, while the figures are not included in the report, Signal 5 21:20 Actual moment over rolls has the same characteristics of Signal 3, Actual moment under rolls.
 
 \begin{figure}[H]
