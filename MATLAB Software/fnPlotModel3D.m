@@ -36,6 +36,9 @@ function [Y_est] = fnModelPlot3D(Y, X1, X2, txtTitle, labelY, labelX1, labelX2)
 
     % Fit equation from compare function
     FitValue = 100 * (1-norm(Y-Y_est)/norm(Y-mean(Y)));
-
-    annotation('textbox', [0.1 0.8, 0.1, 0.1], 'String', FitValue);
+    stringValue = sprintf('%.1f', FitValue);
+    annotation('textbox', [0.1 0.8, 0.1, 0.1], ...
+        'String', convertStringsToChars(stringValue),...
+        HorizontalAlignment= 'center', ...
+        VerticalAlignment='middle');
 end

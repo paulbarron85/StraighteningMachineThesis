@@ -18,6 +18,7 @@
 \usepackage{verbatim}
 \usepackage{chngcntr}
 \usepackage{upgreek}
+\usepackage{url}
 \usepackage[title]{appendix}
 \usepackage[sorting=none, backend=biber, style=ieee]{biblatex} 
 \addbibresource{Thesis.bib}
@@ -149,13 +150,13 @@ Modern straightening machines are equipped with sensors that monitor the amount 
     \centering
 		\begin{subfigure}{.4\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{straightening2.png}
+    			\includegraphics[width=.95\linewidth]{straightening2.png}
 			\caption{Straightening machine roller profile~\cite{ma2021analysis}}
 			\label{straighteningImage2}
 		\end{subfigure}%
 		\begin{subfigure}{.55\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{straightening3.jpg}
+ 		   	\includegraphics[width=.95\linewidth]{straightening3.jpg}
 			\caption{10 roller straightening machine layout~\cite{zhang2019modeling}}
 			\label{straighteningImage3}
 		\end{subfigure}
@@ -320,7 +321,7 @@ Once a subset of features has been settled upon one can create a linear model,
 \end{equation}
 By plotting one signal feature against another signal feature, relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. Calculating a linear regression model is done using linear least squares, 
 \begin{equation} \label{eq:regression}
-	\hat{\boldsymbol{\uptheta}} = (\mathbf{X}^T \mathbf{X})^{-1} \mathbf{X}^T \mathbf{Y},
+	\hat{\boldsymbol{\uptheta}} = (\mathbf{X}^{\textrm{T}} \mathbf{X})^{-1} \mathbf{X}^{\textrm{T}} \mathbf{Y},
 \end{equation}
 where $ \hat{\boldsymbol{\uptheta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
 $ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$ ~\cite{james2013introduction}.\\
@@ -366,7 +367,7 @@ milling, where classifiers based on support vector machines and random forest we
   
 \section{Data Processing}
 \subsection{Description of Data}
-The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds. The list of channels provided are shown in Table \ref{signalNames}.
+The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ da	ta acquisition system with a sampling time 0.02 seconds ~\cite{ibaMDAQ}. The list of channels provided are shown in Table \ref{signalNames}.
 \begin{center}
 \captionof{table}{Signal Names}\label{signalNames}
 \begin{tabular}{ |c|c|l| }
@@ -487,7 +488,7 @@ While \cref{fig:RawSignalCorrelationsFile1_Caption} plots the Signal 3, Moment o
 
 
 \begin{figure}[H]
-	\captionsetup[subfigure]{justification=Centering}
+	\captionsetup[subfigure]{}
     \centering
 		\begin{subfigure}{.45\textwidth}
 		  	\centering
@@ -556,7 +557,7 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \subsection{Feature vs Feature Models}
 \Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another. This was repeated for all signals, one is shown in the main section of this report, the rest can be found in Appendix \ref{appendix:Plots}. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. The colors used in these plots are used to represent a pseudo time scale. Since the data is only from 1 hour per day the color spectrum is non linear however it may be useful in revealing any trends over time.
 
-Once a subset of features are chosen equation \ref{eq:linearModel} is utilized to create a two variable model. If two features are selected, for example take kurtosis and mean, then the model is given by
+Once a subset of features are chosen equation \ref{eq:linearModel} is used to create a model. If two features are selected, for example take kurtosis and mean, then the model is given by
 \begin{equation}
 \mathbf{X}_{\textrm{kurtosis}} = \boldsymbol{\uptheta}'\mathbf{X}_{\textrm{mean}}
 \end{equation}
@@ -573,37 +574,35 @@ Looking at Feature 14, Band Power, it can be seen that the R\textsuperscript{2} 
     \label{fig:FeatureVsFeatureCombinedSignal3}
 \end{figure}
 
-
-
 \begin{figure}[H]
-	\captionsetup[subfigure]{justification=Centering}
+	\captionsetup[subfigure]{}
     \centering
 		\begin{subfigure}{.45\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14.eps}
-		  	\caption{Feature values}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14.eps}
+		  	\caption{Feature values over time: Shape Factor (blue), Standard Deviation (blue) and Band Power (red).}
 		  	\label{fig:Models_Signal3Feature14}
-		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\end{subfigure}\hspace{\fill}% 
 		\begin{subfigure}{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14_Linear1.eps}
-		  	\caption{Linear model 1}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14_Linear1.eps}
+		  	\caption{Band power vs Shape factor with data points in color ordered in time and linear model in red with Fit = 26.2.}
 		  	\label{fig:Models_Signal3Feature14_Linear1}
 		\end{subfigure}
 		\bigskip
 		\begin{subfigure}{.45\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14_Linear2.eps}
-		  	\caption{Linear model 2}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14_Linear2.eps}
+		  	\caption{Band power vs Standard Deviation with data points in color ordered in time and linear model in red with Fit = 48.1.}
 		  	\label{fig:Models_Signal3Feature14_Linear2}
-		\end{subfigure}\hspace{\fill} % maximize horizontal separation
+		\end{subfigure}\hspace{\fill}%
 		\begin{subfigure}{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal3Feature14_Multivariate1.eps}
-		  	\caption{Multivariate Model}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14_Multivariate1.eps}
+		  	\caption{Multivariate Model of Shape Factor, Standard Deviation and Band Power with Fit = 61.5.}
 		  	\label{fig:Models_Signal3Feature14_Multivariate1}
 		\end{subfigure}
-    \caption{Signal 3, 21:12 Actual moment over Rolls Feature 14 Band Power}
+    \caption{Signal 3, 21:12 Actual moment over Rolls}
     \label{fig:Models_Signal3Feature14_Caption}
 \end{figure}
 
@@ -617,16 +616,16 @@ Looking at Feature 14, Band Power, it can be seen that the R\textsuperscript{2} 
 The vibration features in \cref{fig:Models_Signal6Feature2_Caption} shows an interesting relationship. Five of the features are have correlation values within the specified range but one combination in particular has a different relationship to the others. The Crest Factor vs Band Power exhibits a relationship with an increasing variance. 
 \begin{figure}[H]
     \centering
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  	\centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal6Feature2.eps}
-		  	\caption{Feature values}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal6Feature2.eps}
+		  	\caption{Feature values over time: Crest Factor (blue), Mean (red), Shape Factor (blue dashed), Skewness (blue dotted) and Band power (blue dash-dotted).}
 		  	\label{fig:Models_Signal6Feature1}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
+		\end{subfigure}\hspace{\fill}% maximize horizontal separation
+		\begin{subfigure}[t]{.45\textwidth}
 		  	\centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal6Feature2_Linear4.eps}
-		  	\caption{Linear Model}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal6Feature2_Linear4.eps}
+		  	\caption{Crest factor vs Band power with data points in color ordered in time and linear model in red with Fit = 33.7.}
 		  	\label{fig:Models_Signal6Feature2_Linear4}
 		\end{subfigure}
     \caption{Signal 6, 21:28 Vibration measurements}
@@ -634,86 +633,80 @@ The vibration features in \cref{fig:Models_Signal6Feature2_Caption} shows an int
 \end{figure}
 
 
+
 %\subsubsection*{Signal 9, Height Error}
 Looking at the error for the height position, there is an an interesting pattern in the data for Feature 7, \gls{RMS}. \Cref{fig:Models_Signal9Feature7} shows a number of the correlated features drawn on the same plot however the combination of \gls{RMS} and Standard Deviation is the one of interest. \Cref{fig:Models_Signal9Feature7_Linear4} shows these two features plotted against each other and there is a straight line clearly apparent however some other little clusters appear adjacent to this line.
 \begin{figure}[H]
     \centering
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  	\centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature7.eps}
-		  	\caption{Feature values}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature7.eps}
+		  	\caption{Feature values over time: Clearance Factor (blue), Peak Value (dotted blue), RMS (red), Shape Factor (dashed red) and Standard Deviation (dotted red).}
 		  	\label{fig:Models_Signal9Feature7}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
+		\end{subfigure}\hspace{\fill}%
+		\begin{subfigure}[t]{.45\textwidth}
 		  	\centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature7_Linear4.eps}
-		  	\caption{Linear Model}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature7_Linear4.eps}
+		  	\caption{RMS vs Standard Deviation with data points in color ordered in time and linear model in red with Fit = 17.9.}
 		  	\label{fig:Models_Signal9Feature7_Linear4}
 		\end{subfigure}
-    \caption{Signal 9, 21:33 Error position for height Feature 1}
+    \caption{Signal 9, 21:33 Error position for height}
     \label{fig:Models_Signal9Feature7_Caption}
 \end{figure}
 
 
 \begin{figure}[H]
-	\captionsetup[subfigure]{justification=Centering}
+	\captionsetup[subfigure]{}
     \centering
-		\begin{subfigure}{.45\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11.eps}
-		  	\caption{Feature values}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11.eps}
+		  	\caption{Feature values over time: Kurtosis (blue), Mean (red), Shape Factor (dashed red), Skewness (dashed blue) and Peak Frequency (dotted blue).}
 		  	\label{fig:Models_Signal9Feature11}
 		\end{subfigure}\hspace{\fill} % maximize horizontal separation
-		\begin{subfigure}{.45\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11_Linear1.eps}
-		  	\caption{Linear model}
-		  	\label{fig:Models_Signal9Feature11_Linear1}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11_Linear1.eps}
+		  	\caption{Skewness vs Kurtosis with data points in color ordered in time and linear model in red with Fit = 41.7.}
+		  	\label{fig:Models_Signal9Feature12_Linear1}
 		\end{subfigure}
 		\bigskip
-		\begin{subfigure}{.45\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11_Linear2.eps}
-		  	\caption{Linear model}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11_Linear2.eps}
+		  	\caption{Skewness vs Mean with data points in color ordered in time and linear model in red with Fit = 17.6.}
 		  	\label{fig:Models_Signal9Feature11_Linear2}
 		\end{subfigure}\hspace{\fill} % maximize horizontal separation
-		\begin{subfigure}{.45\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal9Feature11_Linear3.eps}
-		  	\caption{Linear model}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11_Linear3.eps}
+		  	\caption{Skewness vs Shape Factor with data points in color ordered in time and linear model in red with Fit = 44.7.}
 		  	\label{fig:Models_Signal9Feature11_Linear3}
 		\end{subfigure}
-    \caption{Signal 9, 21:33 Error position for height Feature 11}
+    \caption{Signal 9, 21:33 Error position for height}
     \label{fig:Models_Signal9Feature11_Caption}
 \end{figure}
 
 
 
 %\subsubsection*{Signal 10, Width Error}
-\begin{comment}
+\Cref{fig:Models_Signal10Feature11_Caption} plots two features for Signal 10, Width error. \Cref{fig:Models_Signal10Feature11_Linear1} shows a clear non-linear parabolic relationship between the Skewness and the Kurtosis.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal10.eps}
-    \caption{Feature Vs Feature for Signal 10, 21:34 Error position for the width}
-    \label{fig:FeatureVsFeatureCombinedSignal10}
-\end{figure}
-\end{comment}
-
-\begin{figure}[H]
-    \centering
-		\begin{subfigure}{.5\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal10Feature11.eps}
-		  	\caption{Feature values}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal10Feature11.eps}
+		  	\caption{Feature values over time: Kurtosis (blue) and Skewness (red).}
 		  	\label{fig:Models_Signal10Feature7}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
+		\end{subfigure}
+		\hspace*{\fill}%
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal10Feature11_Linear1.eps}
-		  	\caption{Linear Model}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal10Feature11_Linear1.eps}
+		  	\caption{Skewness vs Kurtosis with data points in color ordered in time and linear model in red with Fit = 16.6.}
 		  	\label{fig:Models_Signal10Feature11_Linear1}
 		\end{subfigure}
-    \caption{Signal 10, 21:34 Error position for width Feature 11}
+    \caption{Signal 10, 21:34 Error position for width}
     \label{fig:Models_Signal10Feature11_Caption}
 \end{figure}
 
@@ -723,32 +716,34 @@ Looking at the error for the height position, there is an an interesting pattern
 \Cref{fig:Models_Signal12Feature1_Caption} shows two relationships of interest. \Cref{fig:Models_Signal12Feature1_Linear1} appears to be a non-linear exponential relationship where the variance is not constant, but increasing as both values move away from 1. \Cref{fig:Models_Signal12Feature1_Linear2} shows a week linear relationship but appears to have two distinct clusters with one on either side of the plot.
 
 \begin{figure}[H]
-	\captionsetup[subfigure]{justification=Centering}
+	\captionsetup[subfigure]{}
     \centering
     
-		\begin{subfigure}{.45\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1.eps}
-		  	\caption{Feature values}
+    			\includegraphics[width=.95\linewidth]{figures/Models_Signal12Feature1.eps}
+		  	\caption{Feature values over time: Clearance Factor (blue), Shape Factor (orange) and Skewness (red).}
 		  	\label{fig:Models_Signal12Feature1}
-		\end{subfigure}%
-		\begin{subfigure}{.45\textwidth}
+		\end{subfigure}
+		\hspace*{\fill}%
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Linear1.eps}
-		  	\caption{Clearance vs Shape Factor}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal12Feature1_Linear1.eps}
+		  	\caption{Clearance Factor vs Shape Factor with data points in color ordered in time and linear model in red with Fit = 59.1.}
 		  	\label{fig:Models_Signal12Feature1_Linear1}
 		\end{subfigure}
 		\bigskip
-		\begin{subfigure}{.45\textwidth}
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Linear2.eps}
-		  	\caption{Clearance vs Skewness}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal12Feature1_Linear2.eps}
+		  	\caption{Clearance vs Skewness Band power vs Crest factor with data points in color ordered in time and linear model in red with Fit = 27.5.}
 		  	\label{fig:Models_Signal12Feature1_Linear2}
 		\end{subfigure}
-		\begin{subfigure}{.45\textwidth}
+		\hspace*{\fill}%
+		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Signal12Feature1_Multivariate1.eps}
-		  	\caption{Multivariate Model}
+ 		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal12Feature1_Multivariate1.eps}
+		  	\caption{Multivariate Model with Shape Factor vs Skewness vs Clearance Factor and a Fit value of 69.9.}
 		  	\label{fig:Models_Signal12Feature1_Multivariate1}
 		\end{subfigure}
 		
@@ -775,18 +770,19 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 
 \begin{figure}[H]
     \centering
-		\begin{subfigure}{.5\textwidth}
-		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Feature2Signal1.eps}
-		  	\caption{Feature values}
-		  	\label{fig:Models_Feature2Signal9}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
-		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Feature2Signal1_Linear1.eps}
-		  	\caption{Linear Model}
-		  	\label{fig:Models_Feature2Signal1_Linear1}
-		\end{subfigure}
+	\begin{subfigure}[t]{.45\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{figures/Models_Feature2Signal1.eps}
+		\caption{Feature values over time: Clearance Factor (blue), Shape Factor (orange) and Skewness (red).}
+		\label{fig:Models_Feature2Signal9}
+	\end{subfigure}
+	\hspace*{\fill}%
+	\begin{subfigure}[t]{.45\textwidth}
+		\centering
+ 		\includegraphics[width=.95\linewidth]{figures/Models_Feature2Signal1_Linear1.eps}
+		\caption{Angle over Rolls vs Vibration with data points in color ordered in time and linear model in red with Fit = 17.}
+		\label{fig:Models_Feature2Signal1_Linear1}
+	\end{subfigure}
     \caption{Feature 2 Crest Factor}
     \label{fig:Models_Feature2Signal1_Caption}
 \end{figure}
@@ -794,21 +790,22 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 
 
 %\subsubsection*{Time Feature 4, Kurtosis}
-\Cref{fig:Models_Feature4Signal1_Caption} shows the Kurtosis values for the Height vs the Height Error. It is interesting to note in \cref{fig:Models_Feature4Signal9_Linear1} the there is again increasing variance as the the values increase, but also that there appears to be a cluster of data the forms an very straight line in the lower portion of the graph. This could indicate a certain operating condition and the rest of the data indicates something else.
+\Cref{fig:Models_Feature4Signal1_Caption} shows the Kurtosis values for the Height vs the Height Error. It is interesting to note in \cref{fig:Models_Feature4Signal9_Linear1} the there is again increasing variance as the the values increase, but also that there appears to be a cluster of data the forms an very straight line in the lower portion of the graph. This could indicate a certain operating condition and the rest of the data indicates something else. This linear model is valid for errors in Height between 2 to 6mm and height position between 2 to 10mm.
 \begin{figure}[H]
     \centering
-		\begin{subfigure}{.5\textwidth}
-		  \centering
-    			\includegraphics[width=.9\linewidth]{figures/Models_Feature4Signal9.eps}
-		  	\caption{Feature values}
-		  	\label{fig:Models_Feature4Signal9}
-		\end{subfigure}%
-		\begin{subfigure}{.5\textwidth}
-		  \centering
- 		   	\includegraphics[width=.9\linewidth]{figures/Models_Feature4Signal9_Linear1.eps}
-		  	\caption{Linear Model}
-		  	\label{fig:Models_Feature4Signal9_Linear1}
-		\end{subfigure}
+	\begin{subfigure}[t]{.45\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{figures/Models_Feature4Signal9.eps}
+		\caption{Feature values over time: Clearance Factor (blue), Shape Factor (orange) and Skewness (red).}
+		\label{fig:Models_Feature4Signal9}
+	\end{subfigure}
+	\hspace*{\fill}%
+	\begin{subfigure}[t]{.45\textwidth}
+		\centering
+		\includegraphics[width=.95\linewidth]{figures/Models_Feature4Signal9_Linear1.eps}
+		\caption{Height Error vs Height Position with data points in color ordered in time and linear model in red with Fit = 23.8.}
+		\label{fig:Models_Feature4Signal9_Linear1}
+	\end{subfigure}
     \caption{Feature 4 Kurtosis}
     \label{fig:Models_Feature4Signal1_Caption}
 \end{figure}
@@ -818,16 +815,17 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 \Cref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over Rolls vs Actual moment under Rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}[t]{.45\textwidth}
 		\centering
-    		\includegraphics[width=.9\linewidth]{figures/Models_Feature16Signal3.eps}
-	 	\caption{Feature values}
+    		\includegraphics[width=.95\linewidth]{figures/Models_Feature16Signal3.eps}
+	 	\caption{Feature values over time: Clearance Factor (blue), Shape Factor (orange) and Skewness (red).}
 	  	\label{fig:Models_Feature16Signal3}
-	\end{subfigure}%
-	\begin{subfigure}{.5\textwidth}
+	\end{subfigure}
+	\hspace*{\fill}%
+	\begin{subfigure}[t]{.45\textwidth}
 	  \centering
- 	   	\includegraphics[width=.9\linewidth]{figures/Models_Feature16Signal3_Linear1.eps}
-	  	\caption{Linear Model}
+ 	   	\includegraphics[width=.95\linewidth]{figures/Models_Feature16Signal3_Linear1.eps}
+	  	\caption{Actual moment under Rolls vs Actual Moment under Rolls with data points in color ordered in time and linear model in red with Fit = 33.6.}
 	  	\label{fig:Models_Feature16Signal3_Linear1}
 	\end{subfigure}
    	\caption{Feature 16 Peak Frequency 1 Signal 3 Combination 1}
