@@ -67,7 +67,7 @@
 \pagenumbering{roman}
 
 \section*{Acknowledgments}
-I would like to express deep gratitude to my supervisors, Daniel Rönnow and Oscar Bautista Gonzalez, for their time, guidance and support. To the University of Gävle I am extremely appreciative for opportunity to complete a Masters Program in Electronics and Automation available as distance education. This is ideal for full time working professionals and is the only course of it's kind in Sweden. Special thanks to thank Alleima for providing the data to analyze for this Thesis, without which it would not have been possible. Finally, I would also like to acknowledge the fact that I um undertaking this study for no personal cost thanks to free education offered by the Swedish Government. More countries should consider offering free education. Knowledge is power.
+I would like to express deep gratitude to my supervisors, Daniel Rönnow and Oscar Bautista Gonzalez, for their time, guidance and support. To the University of Gävle I am extremely appreciative for opportunity to complete a Masters Program in Electronics and Automation available as distance education. This is ideal for full time working professionals and is the only course of it's kind in Sweden. Special thanks to thank Alleima for providing the data to analyze for this Thesis, without which it would not have been possible. Finally, I would also like to acknowledge the fact that I am undertaking this study for no personal cost thanks to free education offered by the Swedish Government. More countries should consider offering free education. Knowledge is power.
 \newpage
 
 \section*{Abstract}
@@ -75,13 +75,13 @@ I would like to express deep gratitude to my supervisors, Daniel Rönnow and Osc
 The availability of industrial machinery is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime can be disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to maintaining machine availability. On the other hand, it's undesirable to expend resources performing unrequited maintenance. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and in turn preventing failures.
 
 % What the project is about
-This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification. In a broad sense the aim of the project is to find relationships and patterns in the data that could be varying with time as the machine degrades.
+This thesis analyses data from a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data comes from a real world application provided by a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification. In a broad sense the aim of the project is to identify relationships and patterns in the data that could be varying with time as the machine degrades.
 
 % Outling of project steps
 The data consists of twelve channels taken over a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these is then further processed to extract time and frequency domain features. The features within each channel are compared with each other using the $R_2$ coefficient of determination to find combinations that are correlated. A semi automated process is used to select the feature combinations. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
-A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a goodness of fit metric, \gls{NRMSE}. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection and analysis going forward.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a goodness of fit metric, \gls{NRMSE}. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of correlations between signals, potential non-linear relationships and suggestions for future data collection and analysis going forward.
 \clearpage
 
 \setcounter{tocdepth}{3}
@@ -109,39 +109,39 @@ A number of linear regression models are created based on the results from the c
 \section{Introduction}
 \subsection{Background}
 % What is condition monitoring
-\gls{CM} is the process of predicting machine health through a combination of sensor data and software. Sensors are used to measure parameters (vibration, temperature, acoustic emissions etc.) which provide inputs to an algorithm that outputs health metrics. This allows operators to gain an understanding of when a machine is likely to fail and instead plan or perform some preventative interventions. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime, especially catastrophic failures, allows the extraction of more value from existing resources and less disruption to production schedules.
+\gls{CM} is the process of predicting machine health through a combination of sensor data and software. Sensors are used to measure parameters (vibration, temperature, acoustic emissions etc.) which provide inputs to an algorithm that outputs health metrics. This allows operators to gain an understanding of when a machine is likely to fail and instead plan and perform preventative interventions. The ability to monitor equipment health and predict remaining lifetime has valuable benefits. Avoiding unplanned downtime, especially catastrophic failures, allows the extraction of more value from existing resources and less disruption to production schedules.
 
 % Discuss why CM is important
-The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges~\cite{buckley2023feature}, large process plants like in the oil and gas industry~\cite{telford2011condition} and also biological systems~\cite{tolocsi2011classification}. 
+The application of \gls{CM} and \gls{PM} is a large area of research in the machine and manufacturing sector. Of course it is not only limited to machines, being utilized on other engineering structures like bridges~\cite{buckley2023feature}, process plants like in the oil and gas industry~\cite{telford2011condition} and also biological systems~\cite{tolocsi2011classification}. 
 % Discuss more specifically bearing vibration analysis
 A common application of \gls{CM} and \gls{PM} in manufacturing is the vibration analysis of rotating machines~\cite{tiboni2022review, kateris2014machine}. Breakdowns in these types of machines are most commonly caused by failures in bearing subsystems. The degradation of a bearing results changes in the vibration signal, among others, which can be a indicator of bearing health and remaining life~\cite{zhang2016degradation}. 
 
 %Even more specifically a tube straightening machine
 One such example of an industrial machine that uses roller bearings is a rotary tube straightening machine~\cite{kato2014straightening, ma2020effect, ma2021analysis, yu2018theoretical, das1991mechanics, yoshimura2009effect, zhang2019modeling}. These are used as a finishing process in the steel industry for the manufacturing of metal tubes. They are crucial for straightening the tube in the longitudinal direction and improving ovality of the product. 
 % Explain why condition monitoring would be useful for a straightening machine
-Straightening machines, like many other industrial machines, are expensive to procure and down time is costly. Performance may also be impacted by the machine being in poor condition and in need of maintenance. Thus it is in the interest of the operators to be able to schedule planned maintenance instead of having unplanned downtime and catastrophic failures.
+Straightening machines, like many other industrial machines, are expensive to procure and down time is costly. Performance may also be impacted by the machine being in poor condition and in need of maintenance. Thus it is in the interest of operators to be able to schedule planned maintenance instead of having unplanned downtime and catastrophic failures.
 
 % Challenges for CM
 %Advantage of having access to this data
 While there is a vast array of research around bearing vibration and \gls{CM}, all machines have their nuances so one \gls{CM} strategy is not necessarily suitable for all. No research specifically involving \gls{CM} on a straightening machine could be found. Unlike a simulation study, \gls{CM} requires real-world data which is not always readily available unless employed by the company owing the machine. This study assesses real world data from such a machine at a Swedish steel manufacturer, Alleima.
 
 % Big Data -> What is Feature Extraction
-One of the challenges in implementing \gls{CM} is that there are often huge amounts of data to process and sift through. Thus Feature extraction can be used to reduce the amount of the data whilst preserving the information. By analyzing the features one can then select the most relevant channels and reduce the dimensionality of the data by removing irrelevant, highly correlation or noisy signals. There exist many automated and non-automated methods to select the best features and is a current area of research. This study uses a semi-automated method using the $R_2$ correlation coefficient to select the most appropriate features.
+One of the challenges in implementing \gls{CM} is that there are often huge amounts of data to process and sift through. Feature extraction can be used to reduce the amount of the data whilst preserving the information. By analyzing the features one can then select the most relevant channels and reduce the dimensionality of the data by removing irrelevant, highly correlation or noisy signals. There exist many automated and non-automated methods to select the best features and is a current area of research. This study uses a semi-automated method using the $R_2$ correlation coefficient to select the most appropriate features.
 
 % Supervised vs Unsupervised learning
-\gls{CM} often uses supervised learning utilizes labeled data to perform classification, i.e. data is labeled as normal or fault condition. Another difficulty with \gls{CM} research is the limited access to failure data meaning one is often forced to implement unsupervised learning methods. It is common to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised learning. Here the data analysis is geared towards pattern recognition and clustering since no or failure information is available to go with the data. This study has no access to fault or maintenance data and therefore has the goal of trying to find patterns in the data, identify potential clustering opportunities and look at possible trends over time.
+\gls{CM} often uses supervised learning which utilizes labeled data to perform classification, i.e. data is labeled as normal or fault condition. Another difficulty with \gls{CM} research is the limited access to failure data meaning one is often forced to implement unsupervised learning methods. It is common to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised learning. Here the data analysis is geared towards pattern recognition and clustering since no failure information is available to go with the data. This study has no access to fault or maintenance data and therefore has the goal of trying to find patterns in the data, identify potential clustering opportunities and look for trends over time.
 
 \subsection{Project Aim}
 The aim of this project is to examine the existing data available for a tube straightening machine and make some observations as to whether it is possible to perform \gls{CM} and/or remaining life analysis for this machine. The first step is to analyze the available data that can be be attained using the existing sensors and data acquisition system. The end goal is to begin developing a strategy that will assist the company to know when the machine requires maintenance. The specific goals of this project are summarized as follows:
 \begin{itemize}
 \item Understand what signals are related to each other.
 \item Understand the signals from a statistical point of view.
-\item Calculate signal features, identify which related to each other and whether or not they are useful for condition monitoring i.e. which features may represent degradation conditions.
+\item Calculate signal features, identify which are related to each other and whether or not they are useful for condition monitoring i.e. which features may represent degradation conditions.
 \item Combine appropriate features to create data models and identify trends.
 \end{itemize}
 \clearpage  
-\section{Theory}
-\subsection{System}
+
+\section{System}
 Rotary straightening machines, \cref{StraighteningMachines,straighteningImage6}, are a type of finishing machine developed to straighten and improve ovality of a metal pipes and tubes. A tube is fed through a series of roller pairs and undergoes a sequence of bending moments which induce controlled plastic deformations. Tubes are subjected to two types of straightening forces, pressure straightening and bend (or offset) straightening. Hydraulic actuators are used to precisely position the height of the rollers and at least some of the rollers are driven by motors which grip and rotate the tube while feeding it through the machine. A number of different configurations for this type of machine exist with six and 10 rolls being common. 
 
 The profile of the rollers is not the same as the tube radius but are hyperbolic in shape and only contact the tube in 3 places. This shape allows it to accommodate different tube diameters by adjusting the gap or height between the upper and lower rollers as well as the angle between them and the tube. The rollers can be adjusted from parallel to the pipe up to approximately 45 degrees, with the upper rollers being adjusted in the opposite angle to lower rollers.
@@ -169,10 +169,11 @@ Modern straightening machines are equipped with sensors that monitor the amount 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth, keepaspectratio]{Straightening6.png}
-	\caption{Image of a 10 roller straightening machine~\cite{zhang2019modeling}}
+	\caption[Image of a 10 roller straightening machine]{Image of a 10 roller straightening machine~\cite{zhang2019modeling}}
 	\label{straighteningImage6}
 \end{figure}
 
+\section{Theory}
 \subsection{Feature Extraction}
 %Why Feature Extraction?
 Machine learning algorithms suffer from high amounts of data and information redundancy while requiring vast amounts of storage. Feature extraction, the process of computing numerical values from raw signals, is one method that can be used to combat these issues. By extracting signal features and deciding which are irrelevant one can reduce the amount of data that needs to be stored and processed while still retaining the essence of the signals.
@@ -255,13 +256,13 @@ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2}.
 \end{equation}
 For a healthy bearings this feature is maximum and decreases as faults develop.
 
+The next features come from the frequency domain and one must first calculate the \gls{FFT} before computing the features themselves.
 %SNR
 \gls{SNR} is the ratio of signal power to noise power in decibels,
 \begin{equation}
 	SNR = 10 \textrm{log}_{10} \frac{P_{signal}}{P_{noise}},
 \end{equation}
-where $P_{signal}$ is the average power of the signal and $P_{noise}$ is the average power of the noise. It is usually is expressed as decibels.
-
+where $P_{signal}$ is the average power of the signal and $P_{noise}$ is the average power of the noise.
 %   R = SNR(X) computes the signal to noise ratio (SNR), in dBc, of the
 %   real sinusoidal input signal X. The computation is performed over a
 %   periodogram of the same length as the input using a Kaiser window and
@@ -749,7 +750,7 @@ Looking at the error for the height position, there is an an interesting pattern
 		  	\label{fig:Models_Signal12Feature1_Multivariate1}
 		\end{subfigure}
 		
-    \caption{Signal 12 21:36 Actual force}
+    \caption{Signal 12, 21:36 Actual force}
     \label{fig:Models_Signal12Feature1_Caption}
 \end{figure}
 
@@ -830,7 +831,7 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 	  	\caption{Actual moment under rolls vs Actual Moment under rolls with data points in color ordered in time and linear model in red with \gls{NRMSE} = 33.6.}
 	  	\label{fig:Models_Feature16Signal3_Linear1}
 	\end{subfigure}
-   	\caption{Feature 16 Peak Frequency 1 Signal 3 Combination 1}
+   	\caption{Feature 16 Peak Frequency 1}
     \label{fig:Models_Feature16Signal3_Caption}
 \end{figure}
 
@@ -888,7 +889,7 @@ While this report highlighted some non-linear relationship it made no attempt at
 
 \section{Conclusion}
 %Here the work should be concluded and the major results presented. Suggestions of continuation and spin-off projects may be brought forward, usually under a separate subsection called “Future Work”.
-A study of the available data on a steel tube straightening machine was conducted with an eye to using the existing infrastructure for condition monitoring. $R_2$ correlation was useful for identifying relationships between the sensor channels and between features. Range thresholds of about ~0.2 to ~0.9 were a good choice for narrowing down the signals to a manageable number.
+A study of the available data on a steel tube straightening machine was conducted with an eye to using the existing infrastructure for condition monitoring. $R_2$ correlation was useful for identifying relationships between the sensor channels and between features. Range thresholds of about \~0.2 to \~0.9 were a good choice for narrowing down the signals to a manageable number.
 
 The most promising signals for condition monitoring are the two torque moments (under and over rolls), the two error positions (height and width), the vibration measurement and the actual force. This already reduces the data by 50\%. No one feature stood out above all others for condition monitoring suitability.
 
@@ -898,6 +899,12 @@ Specific relationships recommended for further investigations are:
 \item Skewness vs Kurtosis of Signal 10, 21:34 Error position for width.
 \item Clearance Factor vs Shape Factor of Signal 12, 21:36 Actual Force.
 \item Moment under vs Moment over rolls for Feature 16, Peak Frequency 1.
+\end{itemize}
+
+Potential non-linear relations were identified in:
+\begin{itemize}
+\item Signal 10, 21:34 Error position for width - Skewness vs Kurtosis
+\item Signal 12, 21:36 Actual force - Clearance Factor vs Shape Factor
 \end{itemize}
 \newpage
 
