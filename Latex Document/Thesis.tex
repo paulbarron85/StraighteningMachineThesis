@@ -45,6 +45,8 @@
 \newacronym{TSS}{TSS}{Total Sum of Squares}
 \newacronym{SSR}{SSR}{Sum of Squared Regression}
 \newacronym{PCA}{PCA}{Principal Component Analysis}
+\newacronym{NRMSE}{NRMSE}{Normalized Root Mean Square Error}
+\newacronym{FFT}{FFT}{Fast Fourier Transform}
 \makenoidxglossaries
 
 \newcommand{\appendixpagenumbering}{
@@ -70,16 +72,16 @@ I would like to express deep gratitude to my supervisors, Daniel Rönnow and Osc
 
 \section*{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime can be disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to maintaining machine availability. On the other hand, one does not want to waste resources performing maintenance when not required. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and thus preventing failures.
+The availability of industrial machinery is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime can be disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to maintaining machine availability. On the other hand, it's undesirable to expend resources performing unrequited maintenance. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and in turn preventing failures.
 
 % What the project is about
 This thesis analyses a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data for this project comes from a real world application from a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification. In a broad sense the aim of the project is to find relationships and patterns in the data that could be varying with time as the machine degrades.
 
 % Outling of project steps
-The data consists of twelve channels taken over a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these is then further processed to extract time and frequency domain features. The features within each channel are compared with each other using the R\textsuperscript{2} coefficient of determination to find combinations that are correlated. A semi automated process is used to select the feature combinations. The same process is performed between signals for each feature. 
+The data consists of twelve channels taken over a two week duration. It is prepossessed to isolate periods where the machine is operating and separated into cycles. Each of these is then further processed to extract time and frequency domain features. The features within each channel are compared with each other using the $R_2$ coefficient of determination to find combinations that are correlated. A semi automated process is used to select the feature combinations. The same process is performed between signals for each feature. 
 
 % The conclusions of the project
-A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a normalized fit metric. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection and analysis going forward.
+A number of linear regression models are created based on the results from the correlated features as well as some multivariate models. These are then compared using a goodness of fit metric, \gls{NRMSE}. Potential clustering of machine states are highlighted based on observations in the feature combinations. The conclusions drawn from this study include identification of relationships between signals, potential non-linear correlations and suggestions for future data collection and analysis going forward.
 \clearpage
 
 \setcounter{tocdepth}{3}
@@ -124,7 +126,7 @@ Straightening machines, like many other industrial machines, are expensive to pr
 While there is a vast array of research around bearing vibration and \gls{CM}, all machines have their nuances so one \gls{CM} strategy is not necessarily suitable for all. No research specifically involving \gls{CM} on a straightening machine could be found. Unlike a simulation study, \gls{CM} requires real-world data which is not always readily available unless employed by the company owing the machine. This study assesses real world data from such a machine at a Swedish steel manufacturer, Alleima.
 
 % Big Data -> What is Feature Extraction
-One of the challenges in implementing \gls{CM} is that there are often huge amounts of data to process and sift through. Thus Feature extraction can be used to reduce the amount of the data whilst preserving the information. By analyzing the features one can then select the most relevant channels and reduce the dimensionality of the data by removing irrelevant, highly correlation or noisy signals. There exist many automated and non-automated methods to select the best features and is a current area of research. This study uses a semi-automated method using the R\textsuperscript{2} correlation coefficient to select the most appropriate features.
+One of the challenges in implementing \gls{CM} is that there are often huge amounts of data to process and sift through. Thus Feature extraction can be used to reduce the amount of the data whilst preserving the information. By analyzing the features one can then select the most relevant channels and reduce the dimensionality of the data by removing irrelevant, highly correlation or noisy signals. There exist many automated and non-automated methods to select the best features and is a current area of research. This study uses a semi-automated method using the $R_2$ correlation coefficient to select the most appropriate features.
 
 % Supervised vs Unsupervised learning
 \gls{CM} often uses supervised learning utilizes labeled data to perform classification, i.e. data is labeled as normal or fault condition. Another difficulty with \gls{CM} research is the limited access to failure data meaning one is often forced to implement unsupervised learning methods. It is common to have partially labeled or totally unlabeled data and thus a different set of techniques exist for unsupervised learning. Here the data analysis is geared towards pattern recognition and clustering since no or failure information is available to go with the data. This study has no access to fault or maintenance data and therefore has the goal of trying to find patterns in the data, identify potential clustering opportunities and look at possible trends over time.
@@ -182,8 +184,8 @@ Features can include time domain, frequency domain, time-frequency domain (tempo
 
 Machine \gls{CM} can utilize various form of sensors and signals including: vibration monitoring, acoustic emission monitoring, a fusion of vibration and acoustic, electric motor current monitoring, oil analysis, thermography~\cite{ahmed2020condition}. There is no one size fits all when it comes to condition monitoring. For a slewing bearing, which is a large low-speed heavy-load bearing, vibration signals are insufficient~\cite{wang2016multiple} and thus fusion models based on torque, temperature and vibration are needed.
 
-\subsection{Time Domain Features} 	
-A non exhaustive list of features, in particular the ones used in this project, are as follows:
+\subsection{Signal Features} 	
+A non exhaustive list of features, in particular the ones used in this project, are as follows~\cite{diagnosticFeatureDesigner}:
 
 %Mean
 The mean, $ \bar{x} $, is the average value of the signal,
@@ -254,51 +256,49 @@ x_{clear} = \frac{x_p}{(\frac{1}{N}\sum^N_{i=1}\sqrt{|x_i|})^2}.
 For a healthy bearings this feature is maximum and decreases as faults develop.
 
 %SNR
-\gls{SNR} is ratio of signal power to noise power in decibels,
+\gls{SNR} is the ratio of signal power to noise power in decibels,
 \begin{equation}
 	SNR = 10 \textrm{log}_{10} \frac{P_{signal}}{P_{noise}},
 \end{equation}
-where $P$ is the average power of the signal and noise. It is usually is expressed as decibels.
+where $P_{signal}$ is the average power of the signal and $P_{noise}$ is the average power of the noise. It is usually is expressed as decibels.
+
+%   R = SNR(X) computes the signal to noise ratio (SNR), in dBc, of the
+%   real sinusoidal input signal X. The computation is performed over a
+%   periodogram of the same length as the input using a Kaiser window and
+%   excludes the power of first six harmonics (including the fundamental).
 
 %SINAD
-\gls{SINAD} is ratio of total harmonic component power to fundamental power.
+\gls{SINAD} is the ratio of total signal power to total noise-plus-distortion power,
 \begin{equation}
 	SNR = 10 \textrm{log}_{10} \frac{P_{signal} + P_{noise} + P_{distortion}}{P_{noise} + P_{distortion}}, 
 \end{equation}
-where $P$ is the average power of the signal, noise and distortion and is expressed as decibels.
+where $P_{signal}$ is the average power of the signal, $P_{noise}$ is the average power of the noise and $P_{distortion}$ the average power of the distortion.
 
-\gls{THD} is the ratio of total signal power to total noise-plus-distortion power,
+\gls{THD} is calculated as the ratio of total harmonic power to fundamental power,
 \begin{equation}
-	THD = \frac{\sqrt{V^2_{h2} + \hdots + V^2_{hN}}}{V_1},
+	THD = \frac{P_{h}}{P_{f}} = \frac{\sqrt{P^2_{h2} + \hdots + P^2_{hN}}}{P_1},
 \end{equation}
-where $V_N$ is the signal's $N$:th harmonic.
+where $P_{f}$ is the power of the fundamental frequency and $P_{h}$ is the power of the the remaining harmonics. $P_N$ is the $N$:th harmonic of the \gls{FFT} and MATLAB takes the first five harmonics using a modified periodogram of the same length as the input signal. The modified periodogram uses a Kaiser window.
 
-The coefficient of determination, or $R^{2}$ correlation, is a measure of how well a model predicts the actual output values. It is calculated as the one minus the \gls{SSR} divided by \gls{TSS},
-\begin{equation}
-R^{2} = 1 - \frac{\textrm{SSR}}{\textrm{TSS}} = 1 - \frac{\Sigma(y_i - \hat{y_i})^2}{\Sigma(y_i - \bar{y_i})^2}. 
-\end{equation}
-An $R^{2}$ value of 1 means that the two signals are perfectly linear and a value of zero means there is no linear relationship. A value between 0 and 1 indicates some degree of linear relationship exists with the degree of linearity increasing with the value.
-\subsection{Frequency Domain Features}
-In order to computer the frequency features one must first compute a power spectrum. Matab uses the command, 'findpeaks', to locate the maximum values of the power spectrum.
-
-%Band Power
-The band power is the area beneath the graph, within a selected frequency range, of the power spectral density vs the frequencies.
-
-%Peak Amplitude
-Peak amplitude is the height of the frequency with the highest amplitude on the power spectrum.
-
+\subsection{Spectral Features}
+In order to compute spectral features one must first compute the power spectral density which indicates the distribution of power per unit frequency. MATLAB does this via periodogram method. It then uses the command, 'findpeaks', to locate the maximum values of the power spectrum. A local peak is classified as a sample which is either larger than the two neighboring samples or is equal to infinity. Two features come directly from the peak data 1)
 %Peak Frequency
-Peak frequency is the value of the frequency which has the highest peak. Matlab uses the command, trapz, to compute the approximate integral of the signal via the trapezoidal method with unit spacing.
+Peak Frequency is the value of the frequency which has the highest peak and 2)
+%Peak Amplitude
+Peak Amplitude is the height of this same peak on the power spectrum.
+%Band Power
+The Band Power is the area beneath the power spectral density graph, within a selected frequency range. MATLAB uses the command, 'trapz', to compute the approximate integral of the signal via the trapezoidal method with unit spacing.
 
-%        [peakAmp,peakFreq] = findpeaks(ps,w/factor,'MinPeakHeight',-Inf, ...
-%            'MinPeakProminence',0,'MinPeakDistance',0.001,'SortStr','descend','NPeaks',1);
-%        peakAmp = [peakAmp(:); NaN(1-numel(peakAmp),1)];
-%        peakFreq = [peakFreq(:); NaN(1-numel(peakFreq),1)];
-%
-%        % Extract individual feature values.
-%        PeakAmp1 = peakAmp(1);
-%        PeakFreq1 = peakFreq(1);
-%        BandPower = trapz(w/factor,ps);
+\subsection{$R^{2}$ correlation}
+The coefficient of determination, or $R^{2}$ correlation, is a measure of how well a model predicts the actual output values. It is calculated as the one minus the \gls{SSR} divided by \gls{TSS},
+
+\begin{comment}
+%R^{2} = 1 - \frac{\textrm{SSR}}{\textrm{TSS}} = 1 - \frac{\sum^N_{i=1}(x_i - \hat{x_i})^2}{\sum^N_{i=1}(x_i - \bar{x_i})^2},
+\end{comment}
+\begin{equation}
+R^{2} = 1 - \frac{\textrm{RSS}}{\textrm{TSS}} = 1-\frac{\sum^N_{i=1}(y_i - \hat{y_i})^2}{\sum^N_{i=1}(y_i - \bar{y})^2},
+\end{equation}
+where $y_i$ is the $i$:th output, $\hat{y_i}$ is the predicted value of the model and $\bar{y}$ is the mean of $y$~\cite{james2013introduction}. An $R^{2}$ value of 1 means that the two signals are perfectly identical expect for a multiplicative constant and a value of zero means there is no linear relationship. A value between 0 and 1 indicates some degree of linear relationship exists with the degree of linearity increasing with the value.
         
 \subsection{Feature Selection}
 Once features have been calculated the challenge is to isolate the most useful and relevant features. Often data sets contain irrelevant, highly correlated or noisy features that can be removed without a significant loss of information. Ideally non-informative and redundant features are removed to reduce complexity, making models easier to interpret. To this point,~\cite{tolocsi2011classification} argues that several widely used classification algorithms can generate misleading feature rankings when the training datasets contain large groups of correlated features. Considering all the research, there is no consensus on which feature/combination of features are best suited for the identification of and distinguishing between faults. 
@@ -325,14 +325,15 @@ By plotting one signal feature against another signal feature, relationships in 
 \end{equation}
 where $ \hat{\boldsymbol{\uptheta}} = \begin{bmatrix} \hat{\theta_{1}} \\ \vdots \\ \hat{\theta_{n}} \end{bmatrix} $, $ \mathbf{X} = \begin{bmatrix} x_{1}(1) & \hdots & x_{k}(1) \\ \vdots & \ddots & \vdots \\ x_{1}(n) & \hdots & x_{k}(n)  \end{bmatrix}$ and 
 $ \mathbf{Y} = \begin{bmatrix} y(1) \\ \vdots \\ y(2)\end{bmatrix}$ ~\cite{james2013introduction}.\\
-Equation \ref{eq:regression} is used for multivariate models as well as two variable models. Once a model has been calculated a normalized goodness of fit function can be used to assess the accuracy of the model,
+Equation \ref{eq:regression} is used for multivariate models as well as two variable models. Once a model has been calculated a normalized goodness of fit function~\cite{gonzalez2023time}, \gls{NRMSE}, can be used to assess the accuracy of the model,
 % Fit equation from compare function
 \begin{equation}
-	\textrm{Fit Value} = 100 \times \frac{ 1 - \lVert\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert },
+	NRMSE = 100 \times \frac{ 1 - \lVert\mathbf{Y} - \mathbf{\hat{Y}}\rVert } { \lVert \mathbf{Y} - \mathbf{\bar{Y}} \rVert },
 \end{equation}
-where $\mathbf{\hat{Y}}$ is the estimated value of the model and $\mathbf{\bar{Y}}$ is the mean of the mean of the $\mathbf{Y}$ signal.
+where $\mathbf{Y}$ is an $(N \times 1)$ vector containing the the original feature signal selected as the model output, $\mathbf{\hat{Y}}$ is an $(N \times 1)$ vector containing the model’s output, $\mathbf{\bar{Y}}$ is an $(N \times 1)$ vector containing the mean value of $\mathbf{Y}$ and ||.|| denotes the Euclidean norm.
+
 \subsection{Classification and Clustering}
-In a perfect world, data would be available for every kind failure mode possible on a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could building a model that predicts or estimates degradation metrics quite easily based on one or more inputs. This is obviously often not the case and a more likely situation is where a number inputs or parameters exists but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get~\cite{martin2017unsupervised}.
+In a perfect world, data would be available for every kind of failure mode possible on a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could building a model that predicts or estimates degradation metrics quite easily based on one or more inputs. This is obviously often not the case and a more likely situation is where a number inputs or parameters exists but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get~\cite{martin2017unsupervised}.
 
 Unsupervised learning is more of an inference task rather than prediction. Techniques such as auto-encoders, K-means clustering and sparse coding are used to find clusters and patters. Once feature models have been created, one can often find different clustering of data when a machine is in a degraded condition compared to a healthy state.
 
@@ -367,22 +368,22 @@ milling, where classifiers based on support vector machines and random forest we
   
 \section{Data Processing}
 \subsection{Description of Data}
-The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ da	ta acquisition system with a sampling time 0.02 seconds ~\cite{ibaMDAQ}. The list of channels provided are shown in Table \ref{signalNames}.
+The data provided by Alleima consists of approximately a one hour period of data each day over a 15 day duration. It is assumed that it was taken from the same period of time each day. The data was captured by an Iba-DAQ data acquisition system with a sampling time 0.02 seconds ~\cite{ibaMDAQ}. The list of channels provided are shown in Table \ref{signalNames}.
 \begin{center}
 \captionof{table}{Signal Names}\label{signalNames}
 \begin{tabular}{ |c|c|l| }
  \hline
 Signal Index & Signal Number & Signal Name \\ 
  \hline
-1 & 21:07 & Angle over Rolls [deg] \\
+1 & 21:07 & Angle over rolls [deg] \\
  \hline
-2 & 21:10 & Position over Rolls [mm] \\
+2 & 21:10 & Position over rolls [mm] \\
  \hline
-3 & 21:12 & Actual moment over Rolls [Nm] \\
+3 & 21:12 & Actual moment over rolls [Nm] \\
  \hline
-4 & 21:17 & Angle under roll [deg] \\
+4 & 21:17 & Angle under rolls [deg] \\
  \hline
-5 & 21:20 & Actual moment under Rolls [Nm] \\
+5 & 21:20 & Actual moment under rolls [Nm] \\
  \hline
 6 & 21:28 & Vibration measurements [mm/s] \\ 
  \hline              
@@ -402,14 +403,14 @@ Signal Index & Signal Number & Signal Name \\
 \end{center}
 
 \subsection{Pre-processing}
-State detection for this application is performed using the Signal 5, 21:20 Actual moment under Rolls. This was suggested by the team at Alleima as the most appropriate signal to use. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is none or minimal torque on this sensor and when processing it experiences a much larger moment. The data is separated into cycles using this signal to isolate the periods where the machine is in the act of processing a part. A threshold of 500 samples, 10 seconds, was used to filter out short pulses which aren't believed to be full cycles.
+State detection for this application is performed using the Signal 5, 21:20 Actual moment under rolls. This was suggested by the team at Alleima, who have expert knowledge with the system, as the most appropriate signal to use. When the machine is not actively processing a tube this value is much less than when it is processing a tube. When no tube is in the system there is none or minimal torque on this sensor and when processing it experiences a much larger moment. The data is separated into cycles using this signal to isolate the periods where the machine is in the act of processing a part. A threshold of 500 samples, 10 seconds, was used to filter out short pulses which aren't believed to be full cycles.
 
 \Cref{fig:StateDetection} shows the windows that were identified from each file where the 21.20 signal was above the threshold. Two files, B\_30\_03 and B\_04\_04, contained no identified pulses. In total 240 pulses were identified where the 21.20 signal crosses the threshold. Any pulse under 500 samples was removed from the data for the next stage leaving 224 pulses to extract features from.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/StateDetectionFig.eps}
-    \caption{Signal 5 21:20 Actual moment under Rollers and State Detection}
+    \caption{Signal 5 21:20 Actual moment under rolls and State Detection}
     \label{fig:StateDetection}
 \end{figure}
 
@@ -438,14 +439,14 @@ State detection for this application is performed using the Signal 5, 21:20 Actu
     \label{fig:SignalPulses}
 \end{figure}
 
-Using the identified pulses, one can look at all the other signals during the same periods. Signal 1: 21.07 Angle over Rolls and 2: 21.10 Position over Rolls are fairly constant though contain some small deviations. Signal 7, 21:31 Width position and 8, 21:32 Height position are also fairly constant but contain some information when the scale is increased. Signal 21.35, Force Set Point is a 100\% constant signal and contains nothing but a single value. Considering the label, it can be assumed that this is a set point that is controlled by the operator or control system and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
+Using the identified pulses, one can look at all the other signals during the same periods. Signal 1: 21.07 Angle over rolls and 2: 21.10 Position over rolls are fairly constant though contain some small deviations. Signal 7, 21:31 Width position and 8, 21:32 Height position are also fairly constant but contain some information when the scale is increased. Signal 21.35, Force Set Point is a 100\% constant signal and contains nothing but a single value. Considering the label, it can be assumed that this is a set point that is controlled by the operator or control system and not as sensor on the machine providing feedback. Apart from using this signal for further separating the data into different categories it's likely not that useful for condition monitoring.
 
-\Cref{fig:SignalPulse5} shows the state detection Signal 5, Moment under Rolls, in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Signals 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
+\Cref{fig:SignalPulse5} shows the state detection Signal 5, Moment under rolls, in more detail. Visually one can see these are a type of pulse single with a small amplitude frequency component. Signal 3: Moment over rolls looks like a very similar type of signal. Signals 6, 9, 10 and 11 contain some interesting information that can be used for characterize the machine state.
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale = 0.75, keepaspectratio]{figures/SignalPulse5.eps}
-    \caption{Signal 5 Pulses 21:20 Actual moment under Rolls}
+    \caption{Signal 5 Pulses 21:20 Actual moment under rolls}
     \label{fig:SignalPulse5}
 \end{figure}
 
@@ -454,25 +455,25 @@ Additional data sets were created by adding some addition preprocessing steps. O
 
 \section{Results}
 \subsection{Signal Correlations}
-An comparison of the raw signals was performed using R\textsuperscript{2} values. This was not performed for all files due to the long time taken to run the script, just the ones with the most pulses. Table \ref{correlationTable} shows the R\textsuperscript{2} value for each pair of signals for file 4, the one with the most pulses, with the lower triangle being a replica of the upper triangle. \Cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other for file 4 with the R\textsuperscript{2} values in the range of 0.2 to 0.9 printed on the plots. The colors used in the figure are used to represent the time scale with the start of the time scale being blue and trending towards red.
+A comparison of the raw signals was performed using $R_2$ values. This was not performed for all files due to the long time taken to run the script, just the ones with the most pulses. Table \ref{correlationTable} shows the $R_2$ values for each pair of signals for file 4, the one with the most pulses, with the lower triangle being a replica of the upper triangle. \Cref{fig:RawSignalCorrelationsFile1} plots all of the signals against each other for file 4 with the $R_2$ values in the range of 0.2 to 0.9 printed on the plots. The colors used in the figure are used to represent the time scale with the start of the time scale being blue and trending towards red.
 
 Starting with some basic observations from \cref{fig:RawSignalCorrelationsFile1}, there are a few combinations that are extremely linear. Two pairs that are highly correlated are:
 \begin{enumerate}
 \item Signal 7, 21:31 Width position and Signal 10, 21:34 Error position for width.
 \item Signal 8, 21:32 Height position and Signal 9, 21:33 Error position for height.
 \end{enumerate}
-These pairs appear to form a V shape plot with two straight lines. Intuitively this makes sense because the error signals themselves are fairly constant with very small variation. And as the height/width position increases or decreases further away from the set point the larger or smaller the error gets. Therefore these two pairs should always be highly correlated.  
+These data pairs appear to form a V shape with two straight lines meeting at a point. Intuitively this makes sense because the error signals themselves are fairly constant with very small variation. As the height/width position increases or decreases further away from the set point the larger or smaller the error gets. Therefore these two pairs should always be highly correlated.  
 
-Signal 3, 21:12 Actual moment over Rolls and Signal 5, 21:20 Actual moment under Rolls are also highly linear. This would indicate that the torque on both dimensions of the pipe are varying together.
+Signal 3, 21:12 Actual moment over rolls and Signal 5, 21:20 Actual moment under rolls are also highly linear. This would indicate that the torque on both dimensions of the pipe are varying together.
 
-One signal that is of interest is Signal 6, 21:28 Vibration Measurements, and two combinations it forms with Signal 3, Actual moment over rolls and Signal 5, Actual moment under rolls. Both these combinations have the same correlation value and when looking at \cref{fig:RawSignalCorrelationsFile1} there appears to be a clear non-linear relationship, possibly exponential or cubic.
+One signal that is of interest is Signal 6, 21:28 Vibration Measurements, and two combinations it forms with Signal 3, Actual moment over rolls and Signal 5, Actual moment under rolls. Both these combinations have the same correlation value and when looking at \cref{fig:RawSignalCorrelationsFile1} there appears to be a clear non-linear relationship.
 
 \Cref{fig:RawSignalCorrelationsFile1_Caption} shows more clearly what could be an exponential or cubic relationship between the vibrations and the torque values on the upper and lower rollers. The four plots are of the four files with the most pulses and all appear to have similarities in shape. This could be explained by the fact that the larger vibration of the rollers the more torque is experienced or applied by the actuators to keep the rollers in place. \Cref{fig:File3_Signal3vSignal6} shows what could be a time dependent relationship since the colors trend from red to blue on the right side of the plot but this is not really evident in the other plants. 
 
-While \cref{fig:RawSignalCorrelationsFile1_Caption} plots the Signal 3, Moment over Rolls, against Signal 6 it should be noted that the plots for Signal 5, Moment under Rolls look very similar but are not included in the report. It is also worth to remember that File 1 and 6 contain no identified pulses so the R\textsuperscript{2} tables for those two files, while not included in the report, look quite different to the others and should be ignored.
+While \cref{fig:RawSignalCorrelationsFile1_Caption} plots the Signal 3, Moment over rolls, against Signal 6 it should be noted that the plots for Signal 5, Moment under rolls look very similar but are not included in the report. It is also worth to remember that File 1 and 6 contain no identified pulses so the $R_2$ tables for those two files, while not included in the report, look quite different to the others and should be ignored.
 
 \begin{center}
-\captionof{table}{R\textsuperscript{2} values for each signal vs. each other signal}
+\captionof{table}{$R_2$ values for each signal vs. each other signal}
 \begin{scriptsize}
 \input{tables/correlationTable4.tex} 
 \end{scriptsize}
@@ -482,7 +483,7 @@ While \cref{fig:RawSignalCorrelationsFile1_Caption} plots the Signal 3, Moment o
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/RawSignalCorrelationsFile4.eps}
-    \caption{Plot of each signal vs every other signal with R\textsuperscript{2} values between 0.2 and 0.9 for File 4}
+    \caption{Plot of each signal vs every other signal with $R_2$ values between 0.2 and 0.9 for File 4}
     \label{fig:RawSignalCorrelationsFile1}
 \end{figure}
 
@@ -523,11 +524,11 @@ While \cref{fig:RawSignalCorrelationsFile1_Caption} plots the Signal 3, Moment o
 \end{figure}
 
 \subsection{Feature Selection}
-Once the data has been pre-processed the feature values are calculated for each identified production cycle. For every channel, the R\textsuperscript{2} value for every pair of signal features is computed and the pairs of data points for each cycle are plotted against each other in a scatter plot. This is used as a first stage for filtering out irrelevant data. A small, or zero, R\textsuperscript{2} value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an R\textsuperscript{2} value of close to 1 indicates that the two features are perfectly or close to perfectly linear.
+Once the data has been pre-processed the feature values are calculated for each identified production cycle. For every channel, the $R_2$ value for every pair of signal features is computed and the pairs of data points for each cycle are plotted against each other in a scatter plot. This is used as a first stage for filtering out irrelevant data. A small, or zero, $R_2$ value indicates that there is a very weak or no linear relationship between that pair of features. On the other hand an $R_2$ value of close to 1 indicates that the two features are perfectly or close to perfectly linear.
 
-Two threshold values are used to select a range of R\textsuperscript{2} correlated features with this method. An upper and and a lower R\textsuperscript{2} threshold value are specified which reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
+Two threshold values are used to select a range of $R_2$ correlated features with this method. An upper and and a lower $R_2$ threshold value are specified which reveals feature pairs which are somewhat linear or varying in nature. These are the combinations that are of interest to look for condition indicators.
 
-A semi automated method is be used to narrow down on feature pairs of interest. An algorithm can cycle through the table of R\textsuperscript{2} values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other. Not only can one compare pairs of features within the same signal but one can also look for relationships between the same feature over multiple channels. A manual approach was then used to select a few relationships of interest to include in the report.
+A semi automated method is be used to narrow down on feature pairs of interest. An algorithm cycles through the table of $R_2$ values and the features correlated to a number of others can be isolated. Within that combination one can then remove those signals from the group which are highly correlated with each other. Not only can one compare pairs of features within the same signal but one can also look for relationships between the same feature over multiple channels. A manual approach was then used to select a few relationships of interest to include in the report.
 
 MATLAB's Diagnostic Feature Designer was used calculate the features from the signal pulse data with Table \ref{signalNames} showing the features that were extracted. Throughout the remainder of the report some figures are labeled with a feature number instead of the full text due to readability and space constraints. Use Table \ref{signalNames} to refer to which feature the indexes represents.
 
@@ -555,22 +556,22 @@ MATLAB's Diagnostic Feature Designer was used calculate the features from the si
 \end{center}
 
 \subsection{Feature vs Feature Models}
-\Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another. This was repeated for all signals, one is shown in the main section of this report, the rest can be found in Appendix \ref{appendix:Plots}. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the time domain followed by the frequency domain. Only the R\textsuperscript{2} values between 0.3 and 0.8 are printed on the relevant plots. The colors used in these plots are used to represent a pseudo time scale. Since the data is only from 1 hour per day the color spectrum is non linear however it may be useful in revealing any trends over time.
+\Cref{fig:FeatureVsFeatureCombinedSignal3} shows an example of plotting all features against one another. This was repeated for all signals, one is shown in the main section of this report, the rest can be found in Appendix \ref{appendix:Plots}. Each number on the diagonal represents a feature from Table \ref{signalNames}, starting with the signal features followed by the spectral features. Only the $R_2$ values between 0.3 and 0.8 are printed on the relevant plots. The colors used in these plots are used to represent a pseudo time scale. Since the data is only from 1 hour per day the color spectrum is non linear however it may be useful in revealing any trends over time.
 
-Once a subset of features are chosen equation \ref{eq:linearModel} is used to create a model. If two features are selected, for example take kurtosis and mean, then the model is given by
+Once a subset of features are chosen, equation \ref{eq:linearModel} is used to create a model. If two features are selected, for example kurtosis and mean, then the model is given by
 \begin{equation}
 \mathbf{X}_{\textrm{kurtosis}} = \boldsymbol{\uptheta}'\mathbf{X}_{\textrm{mean}}
 \end{equation}
-where $\mathbf{X}_{\textrm{kurtosis}}$ is an $N\times1$ array, $\boldsymbol{\uptheta}$ is a $2\times1$ array and $\mathbf{X} = \begin{bmatrix} 1 & \mathbf{X}_{\textrm{mean}}(1) \\ \vdots & \vdots \\ 1 & \mathbf{X}_{\textrm{mean}}(N) \end{bmatrix}$, which is an $N\times2$ matrix. 
+where $\mathbf{X}_{\textrm{kurtosis}}$ is an $(N\times1)$ array, $\boldsymbol{\uptheta}$ is a $(2\times1)$ array and $\mathbf{X} = \begin{bmatrix} 1 & \mathbf{X}_{\textrm{mean}}(1) \\ \vdots & \vdots \\ 1 & \mathbf{X}_{\textrm{mean}}(N) \end{bmatrix}$, which is an $(N\times2)$ matrix. 
 
-%\subsubsection*{Signal 3 21:12 Actual moment over Rolls}
-It can be noted in \cref{fig:FeatureVsFeatureCombinedSignal3} that Features 1, 2 and 3 all have very straight lines for the plots so here we can say that these features (Clearance, Crest and Impulse Factor), are linearly correlated with correlation values between x-y, and need only include one of these in any model. This is the same situation for Features 5, 6 and 7.
-Looking at Feature 14, Band Power, it can be seen that the R\textsuperscript{2} value is within the specified range when compared with Features 10 and 12. \Cref{fig:Models_Signal3Feature14} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created, \cref{fig:Models_Signal3Feature14_Linear1,fig:Models_Signal3Feature14_Linear2} with the FIT value shown in the plots. \Cref{fig:Models_Signal3Feature14_Multivariate1} shows a three dimensional model for all three of those Features which looks extremely linear apart from a few outlines. The FIT value is increased from the individual plots which means it's a pretty good fit. It's also worth to note, while the figures are not included in the report, Signal 5 21:20 Actual moment over rolls has the same characteristics of Signal 3, Actual moment under rolls.
+%\subsubsection*{Signal 3 21:12 Actual moment over rolls}
+It can be noted in \cref{fig:FeatureVsFeatureCombinedSignal3} that Features 1, 2 and 3 all have very straight lines so here we can say that these features (Clearance, Crest and Impulse Factor), are linearly correlated and thus need only include one of these in any model. This is the same situation for Features 5, 6 and 7 (Mean, Peak Value and RMS).
+Looking at Feature 14, Band Power, it can be seen that the $R_2$ value is within the specified range when compared with Features 10 and 12. \Cref{fig:Models_Signal3Feature14} shows these three features plotted against one another for all cycles. As expected they are somewhat similar in pattern but not exactly the same. Linear regression models were created, \cref{fig:Models_Signal3Feature14_Linear1,fig:Models_Signal3Feature14_Linear2} with the \gls{NRMSE} value shown in the plots. \Cref{fig:Models_Signal3Feature14_Multivariate1} shows a three dimensional model for all three of those Features which looks extremely linear apart from a few outlines. The \gls{NRMSE} value is increased from the individual plots which means it's a pretty good fit. It's also worth to note, while the figures are not included in the report, Signal 5 21:20 Actual moment over rolls has the same characteristics of Signal 3, Actual moment under rolls which means one can not make an assumption that the variance is constant along the signal.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth, height=\textheight, keepaspectratio]{figures/FeatureVsFeatureCombinedSignal3.eps}
-    \caption{Feature vs Feature for Signal 3, 21:12 Actual moment over Rolls}
+    \caption{Feature vs Feature for Signal 3, 21:12 Actual moment over rolls}
     \label{fig:FeatureVsFeatureCombinedSignal3}
 \end{figure}
 
@@ -586,29 +587,29 @@ Looking at Feature 14, Band Power, it can be seen that the R\textsuperscript{2} 
 		\begin{subfigure}{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14_Linear1.eps}
-		  	\caption{Band power vs Shape factor with data points in color ordered in time and linear model in red with Fit = 26.2.}
+		  	\caption{Band power vs Shape factor with data points in color ordered in time and linear model in red with \gls{NRMSE} = 26.2.}
 		  	\label{fig:Models_Signal3Feature14_Linear1}
 		\end{subfigure}
 		\bigskip
 		\begin{subfigure}{.45\textwidth}
 		  \centering
     			\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14_Linear2.eps}
-		  	\caption{Band power vs Standard Deviation with data points in color ordered in time and linear model in red with Fit = 48.1.}
+		  	\caption{Band power vs Standard Deviation with data points in color ordered in time and linear model in red with \gls{NRMSE} = 48.1.}
 		  	\label{fig:Models_Signal3Feature14_Linear2}
 		\end{subfigure}\hspace{\fill}%
 		\begin{subfigure}{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal3Feature14_Multivariate1.eps}
-		  	\caption{Multivariate Model of Shape Factor, Standard Deviation and Band Power with Fit = 61.5.}
+		  	\caption{Multivariate Model of Shape Factor, Standard Deviation and Band Power with \gls{NRMSE} = 61.5.}
 		  	\label{fig:Models_Signal3Feature14_Multivariate1}
 		\end{subfigure}
-    \caption{Signal 3, 21:12 Actual moment over Rolls}
+    \caption{Signal 3, 21:12 Actual moment over rolls}
     \label{fig:Models_Signal3Feature14_Caption}
 \end{figure}
 
 
 
-%\subsubsection*{Signal 5 Actual moment under Rolls}
+%\subsubsection*{Signal 5 Actual moment under rolls}
 
 
 
@@ -625,7 +626,7 @@ The vibration features in \cref{fig:Models_Signal6Feature2_Caption} shows an int
 		\begin{subfigure}[t]{.45\textwidth}
 		  	\centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal6Feature2_Linear4.eps}
-		  	\caption{Crest factor vs Band power with data points in color ordered in time and linear model in red with Fit = 33.7.}
+		  	\caption{Crest factor vs Band power with data points in color ordered in time and linear model in red with \gls{NRMSE} = 33.7.}
 		  	\label{fig:Models_Signal6Feature2_Linear4}
 		\end{subfigure}
     \caption{Signal 6, 21:28 Vibration measurements}
@@ -635,7 +636,7 @@ The vibration features in \cref{fig:Models_Signal6Feature2_Caption} shows an int
 
 
 %\subsubsection*{Signal 9, Height Error}
-Looking at the error for the height position, there is an an interesting pattern in the data for Feature 7, \gls{RMS}. \Cref{fig:Models_Signal9Feature7} shows a number of the correlated features drawn on the same plot however the combination of \gls{RMS} and Standard Deviation is the one of interest. \Cref{fig:Models_Signal9Feature7_Linear4} shows these two features plotted against each other and there is a straight line clearly apparent however some other little clusters appear adjacent to this line.
+Looking at the error for the height position, there is an an interesting pattern in the data for Feature 7, \gls{RMS}. \Cref{fig:Models_Signal9Feature7} shows a number of the correlated features drawn on the same plot however the combination of \gls{RMS} and Standard Deviation is the one of interest. \Cref{fig:Models_Signal9Feature7_Linear4} shows these two features plotted against each other and there is a straight line clearly apparent however some other little clusters appear adjacent to this line. The straight line could represent when the machine is working in a good operating window and the clusters when it deviates from this.
 \begin{figure}[H]
     \centering
 		\begin{subfigure}[t]{.45\textwidth}
@@ -647,7 +648,7 @@ Looking at the error for the height position, there is an an interesting pattern
 		\begin{subfigure}[t]{.45\textwidth}
 		  	\centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature7_Linear4.eps}
-		  	\caption{RMS vs Standard Deviation with data points in color ordered in time and linear model in red with Fit = 17.9.}
+		  	\caption{RMS vs Standard Deviation with data points in color ordered in time and linear model in red with \gls{NRMSE} = 17.9.}
 		  	\label{fig:Models_Signal9Feature7_Linear4}
 		\end{subfigure}
     \caption{Signal 9, 21:33 Error position for height}
@@ -655,6 +656,7 @@ Looking at the error for the height position, there is an an interesting pattern
 \end{figure}
 
 
+\Cref{fig:Models_Signal9Feature11_Caption} shows the subset of features for Feature 11, Skewness. Two combinations appear to show exponential relationships, Skewness vs Kurtosis \cref{fig:Models_Signal9Feature11_Linear1} and Skewness vs Shape Factor \cref{fig:Models_Signal9Feature11_Linear3}.
 \begin{figure}[H]
 	\captionsetup[subfigure]{}
     \centering
@@ -667,20 +669,20 @@ Looking at the error for the height position, there is an an interesting pattern
 		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11_Linear1.eps}
-		  	\caption{Skewness vs Kurtosis with data points in color ordered in time and linear model in red with Fit = 41.7.}
-		  	\label{fig:Models_Signal9Feature12_Linear1}
+		  	\caption{Skewness vs Kurtosis with data points in color ordered in time and linear model in red with \gls{NRMSE} = 41.7.}
+		  	\label{fig:Models_Signal9Feature11_Linear1}
 		\end{subfigure}
 		\bigskip
 		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
     			\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11_Linear2.eps}
-		  	\caption{Skewness vs Mean with data points in color ordered in time and linear model in red with Fit = 17.6.}
+		  	\caption{Skewness vs Mean with data points in color ordered in time and linear model in red with \gls{NRMSE} = 17.6.}
 		  	\label{fig:Models_Signal9Feature11_Linear2}
 		\end{subfigure}\hspace{\fill} % maximize horizontal separation
 		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal9Feature11_Linear3.eps}
-		  	\caption{Skewness vs Shape Factor with data points in color ordered in time and linear model in red with Fit = 44.7.}
+		  	\caption{Skewness vs Shape Factor with data points in color ordered in time and linear model in red with \gls{NRMSE} = 44.7.}
 		  	\label{fig:Models_Signal9Feature11_Linear3}
 		\end{subfigure}
     \caption{Signal 9, 21:33 Error position for height}
@@ -690,7 +692,7 @@ Looking at the error for the height position, there is an an interesting pattern
 
 
 %\subsubsection*{Signal 10, Width Error}
-\Cref{fig:Models_Signal10Feature11_Caption} plots two features for Signal 10, Width error. \Cref{fig:Models_Signal10Feature11_Linear1} shows a clear non-linear parabolic relationship between the Skewness and the Kurtosis.
+\Cref{fig:Models_Signal10Feature11_Caption} plots two features for Signal 10, Width error. \Cref{fig:Models_Signal10Feature11_Linear1} shows a clear non-linear parabolic relationship between the Skewness and the Kurtosis. There could also be a time varying relationship here since the left side of the data set appears to be mostly red and moves to predominantly blue as the skewness increases.
 \begin{figure}[H]
     \centering
 		\begin{subfigure}[t]{.45\textwidth}
@@ -703,7 +705,7 @@ Looking at the error for the height position, there is an an interesting pattern
 		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal10Feature11_Linear1.eps}
-		  	\caption{Skewness vs Kurtosis with data points in color ordered in time and linear model in red with Fit = 16.6.}
+		  	\caption{Skewness vs Kurtosis with data points in color ordered in time and linear model in red with \gls{NRMSE} = 16.6.}
 		  	\label{fig:Models_Signal10Feature11_Linear1}
 		\end{subfigure}
     \caption{Signal 10, 21:34 Error position for width}
@@ -713,7 +715,7 @@ Looking at the error for the height position, there is an an interesting pattern
 
 
 %\subsubsection*{Signal 12, Actual Force}
-\Cref{fig:Models_Signal12Feature1_Caption} shows two relationships of interest. \Cref{fig:Models_Signal12Feature1_Linear1} appears to be a non-linear exponential relationship where the variance is not constant, but increasing as both values move away from 1. \Cref{fig:Models_Signal12Feature1_Linear2} shows a week linear relationship but appears to have two distinct clusters with one on either side of the plot.
+\Cref{fig:Models_Signal12Feature1_Caption} shows two relationships of interest. \Cref{fig:Models_Signal12Feature1_Linear1} appears to be a non-linear exponential relationship where the variance is not constant, but increasing as both values move away from 1. \Cref{fig:Models_Signal12Feature1_Linear2} shows a week linear relationship but appears to have two distinct clusters with one on either side of the plot. The 3D model in \cref{fig:Models_Signal12Feature1_Multivariate1} shows the combination of all three of these variables where there is a dense cluster of data in the lower left of the plot and some clusters of outliers higher up.
 
 \begin{figure}[H]
 	\captionsetup[subfigure]{}
@@ -729,14 +731,14 @@ Looking at the error for the height position, there is an an interesting pattern
 		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal12Feature1_Linear1.eps}
-		  	\caption{Clearance Factor vs Shape Factor with data points in color ordered in time and linear model in red with Fit = 59.1.}
+		  	\caption{Clearance Factor vs Shape Factor with data points in color ordered in time and linear model in red with \gls{NRMSE} = 59.1.}
 		  	\label{fig:Models_Signal12Feature1_Linear1}
 		\end{subfigure}
 		\bigskip
 		\begin{subfigure}[t]{.45\textwidth}
 		  \centering
  		   	\includegraphics[width=.95\linewidth]{figures/Models_Signal12Feature1_Linear2.eps}
-		  	\caption{Clearance vs Skewness Band power vs Crest factor with data points in color ordered in time and linear model in red with Fit = 27.5.}
+		  	\caption{Clearance vs Skewness Band power vs Crest factor with data points in color ordered in time and linear model in red with \gls{NRMSE} = 27.5.}
 		  	\label{fig:Models_Signal12Feature1_Linear2}
 		\end{subfigure}
 		\hspace*{\fill}%
@@ -757,7 +759,7 @@ Looking at the error for the height position, there is an an interesting pattern
 Just as in the last section, where each feature was plotted against every other feature within the same signal, the same thing can be done within a feature. For example we can take the mean of all sensor channels and plot these against each other.
 
 %\subsubsection*{Time Feature 2, Crest Factor}
-One feature that was chosen to include in the report is the Crest Factor, \cref{fig:Models_Feature2Signal1_Caption}. \Cref{fig:Models_Feature2Signal9} shows Signal 1 21:07 Angle over Rolls vs Signal 6 21:28 Vibrations where the linear model is very accurate close to the Y axis with increasing variance as the Crest Factor of the Angle Over Rolls increases.
+One feature that was chosen to include in the report is the Crest Factor, \cref{fig:Models_Feature2Signal1_Caption}. \Cref{fig:Models_Feature2Signal9} shows Signal 1 21:07 Angle over rolls vs Signal 6 21:28 Vibrations where the linear model is very accurate close to the Y axis with increasing variance as the Crest Factor of the Angle Over rolls increases.
 \begin{comment}
 \Cref{fig:SignalVsSignalFeatureFreq3} shows 
 \begin{figure}[H]
@@ -780,7 +782,7 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 	\begin{subfigure}[t]{.45\textwidth}
 		\centering
  		\includegraphics[width=.95\linewidth]{figures/Models_Feature2Signal1_Linear1.eps}
-		\caption{Angle over Rolls vs Vibration with data points in color ordered in time and linear model in red with Fit = 17.}
+		\caption{Angle over rolls vs Vibration with data points in color ordered in time and linear model in red with \gls{NRMSE} = 17.}
 		\label{fig:Models_Feature2Signal1_Linear1}
 	\end{subfigure}
     \caption{Feature 2 Crest Factor}
@@ -790,7 +792,7 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 
 
 %\subsubsection*{Time Feature 4, Kurtosis}
-\Cref{fig:Models_Feature4Signal1_Caption} shows the Kurtosis values for the Height vs the Height Error. It is interesting to note in \cref{fig:Models_Feature4Signal9_Linear1} the there is again increasing variance as the the values increase, but also that there appears to be a cluster of data the forms an very straight line in the lower portion of the graph. This could indicate a certain operating condition and the rest of the data indicates something else. This linear model is valid for errors in Height between 2 to 6mm and height position between 2 to 10mm.
+\Cref{fig:Models_Feature4Signal1_Caption} shows the Kurtosis values for the Height vs the Height Error. It is interesting to note in \cref{fig:Models_Feature4Signal9_Linear1} the there is again increasing variance as the the values increase, but also that there appears to be a cluster of data the forms a very straight line in the lower portion of the graph. This could indicate a certain operating condition and the rest of the data indicates something else. This linear model is valid for errors in Height between 2 to 6mm and height position between 2 to 10mm but outside of these this is not enough data.
 \begin{figure}[H]
     \centering
 	\begin{subfigure}[t]{.45\textwidth}
@@ -803,7 +805,7 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 	\begin{subfigure}[t]{.45\textwidth}
 		\centering
 		\includegraphics[width=.95\linewidth]{figures/Models_Feature4Signal9_Linear1.eps}
-		\caption{Height Error vs Height Position with data points in color ordered in time and linear model in red with Fit = 23.8.}
+		\caption{Height Error vs Height Position with data points in color ordered in time and linear model in red with \gls{NRMSE} = 23.8.}
 		\label{fig:Models_Feature4Signal9_Linear1}
 	\end{subfigure}
     \caption{Feature 4 Kurtosis}
@@ -812,7 +814,7 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 
 
 %\subsubsection*{Frequency Feature 16, Peak Frequency 1}
-\Cref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over Rolls vs Actual moment under Rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
+\Cref{fig:Models_Feature16Signal3_Linear1} shows the peak frequency of the Actual Moment over rolls vs Actual moment under rolls. It can be noted that a majority of the data points follow the a linear model very well. However, a subset of the available data appear to form another linear relationship with a similar gradient but slightly lower intercept.
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[t]{.45\textwidth}
@@ -825,7 +827,7 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 	\begin{subfigure}[t]{.45\textwidth}
 	  \centering
  	   	\includegraphics[width=.95\linewidth]{figures/Models_Feature16Signal3_Linear1.eps}
-	  	\caption{Actual moment under Rolls vs Actual Moment under Rolls with data points in color ordered in time and linear model in red with Fit = 33.6.}
+	  	\caption{Actual moment under rolls vs Actual Moment under rolls with data points in color ordered in time and linear model in red with \gls{NRMSE} = 33.6.}
 	  	\label{fig:Models_Feature16Signal3_Linear1}
 	\end{subfigure}
    	\caption{Feature 16 Peak Frequency 1 Signal 3 Combination 1}
@@ -839,18 +841,18 @@ One feature that was chosen to include in the report is the Crest Factor, \cref{
 % Discuss results - Comments on what signals are suitable and/or are related
 This study aimed to find patterns in the data and  give suggestions as to which signals and signal features are of value for future condition monitoring studies and which are not. Of the data provided, many of the signals were relatively constant showing minimal variance. In particular, Signal 11, 21:35 Set point force is perfectly constant and is not suitable for condition monitoring. The following signals are not overly useful to condition monitoring as they are fairly constant in mean value and contain little variability: 
 \begin{itemize}
-\item Signal 1, 21:07 Angle over Rolls
-\item Signal 2, 21:10 Position over Rolls
-\item Signal 4, 21:17 Angle under roll
+\item Signal 1, 21:07 Angle over rolls
+\item Signal 2, 21:10 Position over rolls
+\item Signal 4, 21:17 Angle under rolls
 \item Signal 7, 21:31 Width position
 \item Signal 8, 21:32 Height position
 \item Signal 11, 21:35 Set point force
 \end{itemize}
 
-Excluding these signals from future studies already reduced the data by 50\%. The remaining signals are most useful for condition monitoring:
+Excluding these signals from future studies already reduces the data by 50\%. The remaining signals are most useful for condition monitoring:
 \begin{itemize}
-\item Signal 3, 21:12 Actual moment over Rolls
-\item Signal 5, 21:20 Actual moment under Rolls
+\item Signal 3, 21:12 Actual moment over rolls
+\item Signal 5, 21:20 Actual moment under rolls
 \item Signal 6, 21:28 Vibration measurements 
 \item Signal 9, 21:33 Error position for height
 \item Signal 10, 21:34 Error position for the width
@@ -862,9 +864,9 @@ Excluding these signals from future studies already reduced the data by 50\%. Th
 The strength in this study lies in using data from an operational machine with varying scales and units. It would be worthwhile to inquire with the company about whether what they have provided is the full set of available signals. Temperature and acoustic emissions are also highly effective types of sensors for condition monitoring so if there was in fact additional data these would be of interest. If none of these sensors exist perhaps it might be a good good consideration add one or more of these types of measurements to complement existing infrastructure.
 
 %Weaknesses
-The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data is provided. Perhaps maintenance is only required on a yearly cycle and the machine degradation, thus we are not really getting a get insight into the degradation of the machine over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
+The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data was provided. Perhaps maintenance is only required on a yearly cycle, thus the data is not full representative of the machine degradation over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
 
-Ideally we would have data over the lifespan of a machine. The data we have right know, we don't know whether is is normal operating data. It could be right at the beginning of the life cycle or could be just at the end of the machines lifecycle. A system that has been operating for a long period of time will undergo changes due to the natural wear of the system.
+A system that has been operating for a long period of time will undergo changes due to the natural wear of the system. Ideally, data over the lifespan of a machine would be available. It is not known whether the current data is normal operating data. It could be right at the beginning of the life cycle or could be just at the end of the machines life cycle. 
 
 Throughout the report a color spectrum was used to indicate the time order of pulses in an attempt to reveal degradation conditions. It's worth remembering that this machine processes different sized tubes and thus one could confuse clustering in time with clustering in product sizes. This is where more data broken down in to different produced sizes could be better at revealing degradation over time.
 
@@ -886,14 +888,16 @@ While this report highlighted some non-linear relationship it made no attempt at
 
 \section{Conclusion}
 %Here the work should be concluded and the major results presented. Suggestions of continuation and spin-off projects may be brought forward, usually under a separate subsection called “Future Work”.
-A study of the available data on a steel tube straightening machine was conducted with regards to using the existing infrastructure for condition monitoring.
+A study of the available data on a steel tube straightening machine was conducted with an eye to using the existing infrastructure for condition monitoring. $R_2$ correlation was useful for identifying relationships between the sensor channels and between features. Range thresholds of about ~0.2 to ~0.9 were a good choice for narrowing down the signals to a manageable number.
+
+The most promising signals for condition monitoring are the two torque moments (under and over rolls), the two error positions (height and width), the vibration measurement and the actual force. This already reduces the data by 50\%. No one feature stood out above all others for condition monitoring suitability.
+
+Specific relationships recommended for further investigations are:
 \begin{itemize}
-\item Correlation was performed on the raw signal data to identify relationships between the sensor channels.
-\item The data was prepossessed using an amplitude threshold for the state detection and then a time threshold to eliminate false cycles.
-\item Time and frequency domain features were extracted from the cycles.
-\item For every sensor channel, each feature was plotted against every other feature and the R\textsuperscript{2} correlation coefficient was calculated.
-\item An upper and lower threshold, was used to selected a combination of features that are somewhat correlated but not well perfectly correlated.
-\item The most promising signals for condition monitoring are the two torque moments (under and over rolls), the two error positions (height and width), the vibration measurements and the actual force.
+\item \gls{RMS} vs Standard Deviation of Signal 9, 21:33 Error position for height.
+\item Skewness vs Kurtosis of Signal 10, 21:34 Error position for width.
+\item Clearance Factor vs Shape Factor of Signal 12, 21:36 Actual Force.
+\item Moment under vs Moment over rolls for Feature 16, Peak Frequency 1.
 \end{itemize}
 \newpage
 
