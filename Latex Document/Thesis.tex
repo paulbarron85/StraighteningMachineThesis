@@ -309,7 +309,7 @@ Once features have been calculated the challenge is to isolate the most useful a
 A common method for selecting the most suitable features is forward or backward step wise selection~\cite{james2013introduction}. Forward selection begins with a null model and creates simple linear regressions for each feature on it's own and the model with the lowest RSS is selected. Using that model as a starting point for the next stage another variable is added to create a number of 2 variable models with the lowest RSS being selected to more forward. This process is continued until some stopping rule is satisfied.
 
 % PCA
-\gls{PCA} appears to be another popular technique used in feature selection. In one paper, PCA is used to fuse multiple features in order to obtain a bearings state~\cite{lu2016degradation}. Another study uses a PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings~\cite{malhi2004pca}. 
+\gls{PCA} appears to be another popular technique used in feature selection. In one study, PCA is used to fuse multiple features in order to obtain a bearings state~\cite{lu2016degradation}. Another study uses a PCA-based approach to selecting the most representative features for the classification of defective components and defect severity in three types of rolling bearings~\cite{malhi2004pca}. 
 
 Among other techniques~\cite{buckley2023feature} uses recursive feature elimination and feature correlation clustering, the latter involves using thresholds and removing highly correlation features. Usually some kind of goodness of fit metric is used to compare feature models, Zang proposes a combination of correlation, monotonicity and robustness for feature selection~\cite{zhang2016degradation}.
 
@@ -318,9 +318,9 @@ Among other techniques~\cite{buckley2023feature} uses recursive feature eliminat
 \subsection{Linear Regression Models}
 Once a subset of features has been settled upon one can create a linear model,
 \begin{equation} \label{eq:linearModel}
-	\mathbf{Y} = \hat{\boldsymbol{\uptheta}} \mathbf{X}.
+	\mathbf{Y} = \boldsymbol{\uptheta} \mathbf{X},
 \end{equation}
-By plotting one signal feature against another signal feature, relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. Calculating a linear regression model is done using linear least squares, 
+where $\mathbf{X}$ is the input vector (or the feature 1), $\mathbf{Y}$ is the output vector of the model (or feature 2) and $\boldsymbol{\uptheta}$ are the model values. By plotting one signal feature against another signal feature, linear relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. The parameters $\boldsymbol{\uptheta}$ of the linear model are estimated using linear least squares, 
 \begin{equation} \label{eq:regression}
 	\hat{\boldsymbol{\uptheta}} = (\mathbf{X}^{\textrm{T}} \mathbf{X})^{-1} \mathbf{X}^{\textrm{T}} \mathbf{Y},
 \end{equation}
