@@ -316,11 +316,11 @@ Among other techniques~\cite{buckley2023feature} uses recursive feature eliminat
 %Acoustic emission signals were extracted both by discrete wavelet decomposition and autoregressive modeling. The three feature selection methods include the sequential forward floating selection, and two ant colony optimization-based feature selection methods~\cite{liao2010feature}.
 
 \subsection{Linear Regression Models}
-Once a subset of features has been settled upon one can create a linear model,
+Once a subset of features has been selected linear models can be created between two features,
 \begin{equation} \label{eq:linearModel}
 	\mathbf{Y} = \boldsymbol{\uptheta} \mathbf{X},
 \end{equation}
-where $\mathbf{X}$ is the input vector (or the feature 1), $\mathbf{Y}$ is the output vector of the model (or feature 2) and $\boldsymbol{\uptheta}$ are the model values. By plotting one signal feature against another signal feature, linear relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. The parameters $\boldsymbol{\uptheta}$ of the linear model are estimated using linear least squares, 
+where $\mathbf{X}$ is the input vector (or the feature 1), $\mathbf{Y}$ is the output vector of the model (or feature 2) and $\boldsymbol{\uptheta}$ are the model values. By plotting one signal feature against another signal feature, linear relationships in the data can be revealed. Not only linear relations but quite possibly non-linear relationships too. The parameters, $\boldsymbol{\uptheta}$, of the linear model are estimated using linear least squares, 
 \begin{equation} \label{eq:regression}
 	\hat{\boldsymbol{\uptheta}} = (\mathbf{X}^{\textrm{T}} \mathbf{X})^{-1} \mathbf{X}^{\textrm{T}} \mathbf{Y},
 \end{equation}
@@ -334,7 +334,7 @@ Equation \ref{eq:regression} is used for multivariate models as well as two vari
 where $\mathbf{Y}$ is an $(N \times 1)$ vector containing the the original feature signal selected as the model output, $\mathbf{\hat{Y}}$ is an $(N \times 1)$ vector containing the model’s output, $\mathbf{\bar{Y}}$ is an $(N \times 1)$ vector containing the mean value of $\mathbf{Y}$ and ||.|| denotes the Euclidean norm.
 
 \subsection{Classification and Clustering}
-In a perfect world, data would be available for every kind of failure mode possible on a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could building a model that predicts or estimates degradation metrics quite easily based on one or more inputs. This is obviously often not the case and a more likely situation is where a number inputs or parameters exists but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get~\cite{martin2017unsupervised}.
+In a perfect world, data would be available for every kind of failure mode possible on a machine. If this were true, supervised learning could be used to train an algorithm to recognize all kinds of degradation conditions and faults. One could build a model that predicts or estimates degradation metrics quite easily based on one or more inputs. This is often not the case and a more likely situation is where a number inputs or parameters exists but no quantitative outputs. However, one can still learn about the relationships between signals and the structure from such data using unsupervised learning. The aim here is to identify patterns in the input-output signals from unlabeled data. Thus, it is useful for modeling complex data for which prior knowledge is hard to get~\cite{martin2017unsupervised}.
 
 Unsupervised learning is more of an inference task rather than prediction. Techniques such as auto-encoders, K-means clustering and sparse coding are used to find clusters and patters. Once feature models have been created, one can often find different clustering of data when a machine is in a degraded condition compared to a healthy state.
 
@@ -451,8 +451,10 @@ Using the identified pulses, one can look at all the other signals during the sa
     \label{fig:SignalPulse5}
 \end{figure}
 
+\begin{comment}
 Additional data sets were created by adding some addition preprocessing steps. One set where the signal mean was subtracted from all the channels and another where zero padding was used to make all the signal lengths are the same. 
 %The reason for this ......
+\end{comment}
 
 \section{Results}
 \subsection{Signal Correlations}
@@ -880,7 +882,7 @@ The subject matter, methods and results used in this report are inline with targ
 \subsection{Future Work}
 This report has identified patterns in the data and potential clusters based on visual observations. However, no attempts were made to implement any clustering algorithms. This would be the logical next step, to apply machine learning techniques, in trying to identify degradation and failure states.
 
-The straightening machine in this study produces tubes of of different diameters. At least one of the signals, Height and/or Width Position, can be used to indicate the diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data into pipe widths and focusing on only one tube width would removed any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
+The straightening machine in this study produces tubes of different diameters. At least one of the signals, Height and/or Width Position, can be used to indicate the diameter. This could be used to classify the data further into different tube widths. A suggestion for future studies is to perform an additional prepossessing step to separate data into periods where the machine is producing tubes with certain diameters. Some of the clustering suggestions or relationships given in this study could just be identifying when the machine is producing a tube of a certain width. Separating data into pipe widths and focusing on only one tube width would remove any chance of this. A method like this would have been challenging since only 224 pulses were identified to begin with and thus a further reduction might result in not enough data to make meaningful observations.
 
 As mentioned previously, the data for this study was taken over a two week period with no data on maintenance. For the next set of data might it might be beneficial to request periods of data with longer intervals between them. Ideally, obtaining some data before a known maintenance task and after might assist in identify clusters which are indicative of the machine degradation state.
 
@@ -889,7 +891,7 @@ While this report highlighted some non-linear relationship it made no attempt at
 
 \section{Conclusion}
 %Here the work should be concluded and the major results presented. Suggestions of continuation and spin-off projects may be brought forward, usually under a separate subsection called “Future Work”.
-A study of the available data on a steel tube straightening machine was conducted with an eye to using the existing infrastructure for condition monitoring. $R_2$ correlation was useful for identifying relationships between the sensor channels and between features. Range thresholds of about \~0.2 to \~0.9 were a good choice for narrowing down the signals to a manageable number.
+A study of the available data on a steel tube straightening machine was conducted with an eye to using the existing infrastructure for condition monitoring. $R_2$ correlation was useful for identifying relationships between the sensor channels and between features. Range thresholds of around 0.2 to 0.9 were a good choice for narrowing down the signals to a manageable number.
 
 The most promising signals for condition monitoring are the two torque moments (under and over rolls), the two error positions (height and width), the vibration measurement and the actual force. This already reduces the data by 50\%. No one feature stood out above all others for condition monitoring suitability.
 
