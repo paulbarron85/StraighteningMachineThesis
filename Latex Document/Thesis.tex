@@ -14,6 +14,7 @@
 \usepackage{float}
 \usepackage{matlab-prettifier}
 \usepackage{pdfpages}
+\usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{verbatim}
 \usepackage{chngcntr}
@@ -72,7 +73,7 @@ I would like to express deep gratitude to my supervisors, Daniel Rönnow and Osc
 
 \section*{Abstract}
 % Some general comment on the reasons for the project
-The availability of industrial machinery is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime can be disruptive and costly. Small failures can lead to catastrophic failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to maintaining machine availability. On the other hand, it's undesirable to expend resources performing unrequited maintenance. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and in turn preventing failures.
+The availability of industrial machinery is crucial to any business operating in the manufacturing sector. Mechanical failures halt production and unplanned downtime can be disruptive and costly. Small failures can escalate to more serious failures which exponentially increases downtime and repair costs. Identifying a degradation condition before reaching catastrophic failure is key to maintaining machine availability. On the other hand, it's undesirable to expend resources performing unrequited maintenance. For these reasons a large field of academic work is dedicated to analyzing the health of a machine, predicting it's remaining life and in turn preventing failures.
 
 % What the project is about
 This thesis analyses data from a tube straightening machine used in the steel industry with the end goal of implementing a condition monitoring strategy. The data comes from a real world application provided by a multinational manufacturer of steel products. It was obtained using the existing sensors and data acquisition system. The project serves as a study of the existing infrastructure (available sensors) and it's suitability for implementing a condition monitoring strategy. The work is the first step in a larger study and does not attempt to perform any implementation or fault identification. In a broad sense the aim of the project is to identify relationships and patterns in the data that could be varying with time as the machine degrades.
@@ -864,14 +865,14 @@ Excluding these signals from future studies already reduces the data by 50\%. Th
 
 %Comment on Method
 %Strengths?
-The strength in this study lies in using data from an operational machine with varying scales and units. It would be worthwhile to inquire with the company about whether what they have provided is the full set of available signals. Temperature and acoustic emissions are also highly effective types of sensors for condition monitoring so if there was in fact additional data these would be of interest. If none of these sensors exist perhaps it might be a good good consideration add one or more of these types of measurements to complement existing infrastructure.
+The strength in this study lies in using data from an operational machine with varying scales and units. It would be worthwhile to inquire with the company about whether what they have provided is the full set of available signals. Temperature and acoustic emissions are also highly effective types of sensors for condition monitoring so if there was in fact additional data these would be of interest. If none of these sensors exist perhaps it might be a good consideration add one or more of these types of measurements to complement existing infrastructure.
 
 %Weaknesses
 The data supplied for the project is from a two week period which probably does not give a good insight into the life cycle of the machine. No maintenance data was provided. Perhaps maintenance is only required on a yearly cycle, thus the data is not full representative of the machine degradation over time. Perhaps a better selection of data would include a snippet of data every 1-2 weeks over a year long period and thus one could get a better view of how the machine degrades over a year.
 
 A system that has been operating for a long period of time will undergo changes due to the natural wear of the system. Ideally, data over the lifespan of a machine would be available. It is not known whether the current data is normal operating data. It could be right at the beginning of the life cycle or could be just at the end of the machines life cycle. 
 
-Throughout the report a color spectrum was used to indicate the time order of pulses in an attempt to reveal degradation conditions. It's worth remembering that this machine processes different sized tubes and thus one could confuse clustering in time with clustering in product sizes. This is where more data broken down in to different produced sizes could be better at revealing degradation over time.
+Throughout the report a color spectrum was used to indicate the time order of pulses in an attempt to reveal degradation conditions. It's worth remembering that this machine processes different sized tubes and thus one could confuse clustering in time with clustering in product sizes. This is where more data broken down in to different product sizes could be better at revealing degradation over time.
 
 %Put in context/comparison with references at the beginning. 
 This study utilizes relatively simple methods to in comparison to the types of methods mentioned in earlier sections of the report. An analysis of such data can be expanded exponentially but one can only look at so much. It is also beneficial to, at least begin with, simple things like two variable linear regression and perhaps this is all that is required to identify a indicator of degradation state.
